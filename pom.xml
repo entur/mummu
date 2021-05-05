@@ -11,7 +11,7 @@
     <artifactId>mummu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mummu</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Read-only API for stop place related NeTEx entities</description>
     <properties>
         <netex-parser-java.version>1.0-SNAPSHOT</netex-parser-java.version>
     </properties>
