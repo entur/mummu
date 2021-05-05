@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="188" xsi:schemaLocation="">
+    <PublicationTimestamp>2021-05-04T03:24:52.46</PublicationTimestamp>
+    <ParticipantRef>NSR</ParticipantRef>
+    <dataObjects>
+        <ServiceFrame modification="new" version="1" id="NSR:ServiceFrame:1">
+            <FrameDefaults>
+                <DefaultLocale>
+                    <TimeZone>Europe/Oslo</TimeZone>
+                </DefaultLocale>
+            </FrameDefaults>
+        </ServiceFrame>
+        <SiteFrame modification="new" version="1" id="NSR:SiteFrame:1">
+            <Description>Site frame ExportParams{topographicPlaceExportMode=RELEVANT, municipalityReferences=[], countyReferences=[], countryReferences=[], stopPlaceSearch=StopPlaceSearch{stopPlaceType=[], netexIdList=[], allVersions=false, versionValidity=CURRENT, withoutLocationOnly=false, withoutQuaysOnly=false, withDuplicatedQuayImportedIds=false, withTags=[], tags=[], page=0, size=20}, tariffZoneExportMode=RELEVANT, serviceFrameExportMode=ALL}</Description>
+            <FrameDefaults>
+                <DefaultLocale>
+                    <TimeZone>Europe/Oslo</TimeZone>
+                </DefaultLocale>
+            </FrameDefaults>
+            <topographicPlaces>
+                <TopographicPlace changed="2019-12-31T15:45:23.643" modification="new" version="10" id="KVE:TopographicPlace:03">
+                    <ValidBetween>
+                        <FromDate>2020-01-01T00:00:00</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>assad.riaz</Value>
+                        </KeyValue>
+                    </keyList>
+                    <ns2:Polygon ns2:id="GEN-PolygonType-8572">
+                        <ns2:exterior>
+                            <ns2:LinearRing>
+                                <ns2:posList>59.97051212619426 10.618176216470726 59.9743234543499 10.613956056256821 59.9743234543499 10.613956056256821</ns2:posList>
+                            </ns2:LinearRing>
+                        </ns2:exterior>
+                    </ns2:Polygon>
+                    <IsoCode>NO-03</IsoCode>
+                    <Descriptor>
+                        <Name lang="no">Oslo</Name>
+                    </Descriptor>
+                    <TopographicPlaceType>county</TopographicPlaceType>
+                    <CountryRef ref="no"></CountryRef>
+                </TopographicPlace>
+                <TopographicPlace changed="2019-12-31T15:45:30.762" modification="new" version="11" id="KVE:TopographicPlace:0301">
+                    <ValidBetween>
+                        <FromDate>2020-01-01T00:00:00</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>assad.riaz</Value>
+                        </KeyValue>
+                    </keyList>
+                    <ns2:Polygon ns2:id="GEN-PolygonType-8573">
+                        <ns2:exterior>
+                            <ns2:LinearRing>
+                                <ns2:posList>59.986904371508665 10.575235977116373 59.987004983676805 10.575069425000665 59.987004983676805 10.575069425000665</ns2:posList>
+                            </ns2:LinearRing>
+                        </ns2:exterior>
+                    </ns2:Polygon>
+                    <Descriptor>
+                        <Name lang="no">Oslo</Name>
+                    </Descriptor>
+                    <TopographicPlaceType>municipality</TopographicPlaceType>
+                    <CountryRef ref="no"></CountryRef>
+                    <ParentTopographicPlaceRef ref="KVE:TopographicPlace:03" version="10"/>
+                </TopographicPlace>
+                <TopographicPlace created="2019-12-31T15:45:23.952" modification="new" version="1" id="KVE:TopographicPlace:30">
+                    <ValidBetween>
+                        <FromDate>2020-01-01T00:00:00</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>assad.riaz</Value>
+                        </KeyValue>
+                    </keyList>
+                    <ns2:Polygon ns2:id="GEN-PolygonType-8307">
+                        <ns2:exterior>
+                            <ns2:LinearRing>
+                                <ns2:posList>60.10712230902629 8.930259032345518 60.10802438814405 8.928232168993702 60.10802438814405 8.928232168993702 60.109022857618136 8.925970188857187</ns2:posList>
+                            </ns2:LinearRing>
+                        </ns2:exterior>
+                    </ns2:Polygon>
+                    <IsoCode>NO-30</IsoCode>
+                    <Descriptor>
+                        <Name lang="no">Viken</Name>
+                    </Descriptor>
+                    <TopographicPlaceType>county</TopographicPlaceType>
+                    <CountryRef ref="no"></CountryRef>
+                </TopographicPlace>
+                <TopographicPlace changed="2019-12-31T15:45:29.163" modification="new" version="2" id="KVE:TopographicPlace:3012">
+                    <ValidBetween>
+                        <FromDate>2020-01-01T00:00:00</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>assad.riaz</Value>
+                        </KeyValue>
+                    </keyList>
+                    <ns2:Polygon ns2:id="GEN-PolygonType-8308">
+                        <ns2:exterior>
+                            <ns2:LinearRing>
+                                <ns2:posList>59.20457865062021 11.586049374546915 59.20458933205665 11.586048833051793 59.2046153702071 11.586047808667514 59.204635073281715 11.586058808211225</ns2:posList>
+                            </ns2:LinearRing>
+                        </ns2:exterior>
+                    </ns2:Polygon>
+                    <Descriptor>
+                        <Name lang="no">Aremark</Name>
+                    </Descriptor>
+                    <TopographicPlaceType>municipality</TopographicPlaceType>
+                    <CountryRef ref="no"></CountryRef>
+                    <ParentTopographicPlaceRef ref="KVE:TopographicPlace:30" version="1"/>
+                </TopographicPlace>
+            </topographicPlaces>
+            <groupsOfStopPlaces>
+                <GroupOfStopPlaces created="2018-03-08T11:22:54.29" changed="2018-03-13T16:01:40.524" modification="new" version="5" id="NSR:GroupOfStopPlaces:1">
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value></Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>johan</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Oslo</Name>
+                    <Description lang="nor"></Description>
+                    <members>
+                        <StopPlaceRef ref="NSR:StopPlace:58366"/>
+                        <StopPlaceRef ref="NSR:StopPlace:6505"/>
+                        <StopPlaceRef ref="NSR:StopPlace:58382"/>
+                        <StopPlaceRef ref="NSR:StopPlace:337"/>
+                    </members>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.747898</Longitude>
+                            <Latitude>59.911379</Latitude>
+                        </Location>
+                    </Centroid>
+                </GroupOfStopPlaces>
+            </groupsOfStopPlaces>
+            <stopPlaces>
+                <StopPlace created="2017-06-19T19:17:49.097" changed="2021-04-22T18:14:46.467" modification="new" version="72" id="NSR:StopPlace:4004">
+                    <keyList>
+                        <KeyValue>
+                            <Key>merged-id</Key>
+                            <Value>NSR:StopPlace:3986</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>HED:StopPlace:3010013,OPP:StopPlace:3010013,RUT:StopPlace:03010013</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Jernbanetorget</Name>
+                    <Description lang="nor">foran Oslo S</Description>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.750063</Longitude>
+                            <Latitude>59.911560</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="76" id="NSR:AccessibilityAssessment:4004">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="70" id="142129">
+                                <WheelchairAccess>unknown</WheelchairAccess>
+                                <StepFreeAccess>unknown</StepFreeAccess>
+                                <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                <LiftFreeAccess>unknown</LiftFreeAccess>
+                                <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2021-05-04T05:01:42.752" version="11"/>
+                    <ParentSiteRef ref="NSR:StopPlace:58366" version="65"/>
+                    <adjacentSites>
+                        <SiteRef ref="NSR:StopPlace:4000"/>
+                    </adjacentSites>
+                    <TransportMode>tram</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <tariffZones>
+                        <TariffZoneRef ref="BRA:FareZone:31" version="1"/>
+                        <TariffZoneRef ref="OPP:TariffZone:2100" version="1"/>
+                        <TariffZoneRef ref="HED:TariffZone:2100" version="1"/>
+                        <TariffZoneRef ref="BRA:TariffZone:311" version="1"/>
+                        <TariffZoneRef ref="INN:TariffZone:2100" version="2"/>
+                        <TariffZoneRef ref="RUT:FareZone:4" version="2"/>
+                        <TariffZoneRef ref="INN:FareZone:207" version="1"/>
+                        <TariffZoneRef ref="RUT:TariffZone:1" version="1"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetTram</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2018-12-11T15:59:12.027" modification="new" version="72" id="NSR:Quay:7209">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>RUT:Quay:0301001311,RUT:Quay:301001311</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>11</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>10.750296</Longitude>
+                                    <Latitude>59.911733</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="27" id="NSR:AccessibilityAssessment:60420">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="27" id="142130">
+                                        <WheelchairAccess>unknown</WheelchairAccess>
+                                        <StepFreeAccess>unknown</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode>C</PublicCode>
+                            <CompassBearing>59.0</CompassBearing>
+                        </Quay>
+                        <Quay changed="2018-12-11T15:59:12.026" modification="new" version="72" id="NSR:Quay:7210">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>RUT:Quay:0301001312,RUT:Quay:301001312</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>12</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>10.749827</Longitude>
+                                    <Latitude>59.911401</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="54" id="NSR:AccessibilityAssessment:59780">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="54" id="142131">
+                                        <WheelchairAccess>unknown</WheelchairAccess>
+                                        <StepFreeAccess>unknown</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode>B</PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+            </stopPlaces>
+            <parkings>
+                <Parking created="2017-06-19T19:13:11.803" changed="2018-05-14T14:52:33.573" modification="new" version="5" id="NSR:Parking:1">
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>NSB:Parking:107bike</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>monica.toften</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Drammen</Name>
+                    <Description>Med tak.</Description>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.203112</Longitude>
+                            <Latitude>59.740488</Latitude>
+                        </Location>
+                    </Centroid>
+                    <Covered>covered</Covered>
+                    <ParentSiteRef ref="NSR:StopPlace:11"/>
+                    <ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>
+                    <TotalCapacity>0</TotalCapacity>
+                    <ParkingPaymentProcess></ParkingPaymentProcess>
+                </Parking>
+            </parkings>
+            <tariffZones>
+                <TariffZone created="2019-04-11T10:44:22.658" modification="new" version="1" id="ATB:TariffZone:13">
+                    <ValidBetween>
+                        <FromDate>2019-04-11T10:44:22.658</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value></Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>assad.riaz</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">E2</Name>
+                    <ns2:Polygon ns2:id="GEN-PolygonType-6805">
+                        <ns2:exterior>
+                            <ns2:LinearRing>
+                                <ns2:posList>65.277138 10.920255 65.396286 11.027007 65.297673 11.401724 65.149675 11.946132 65.098742063 12.026596069 65.067183 12.048615 65.02008 12.148794 65.002037 12.189125 64.9932 12.394452 64.988255 12.434634 64.932998196 12.312927246 64.896089 12.306025 64.846859 12.277253 64.805422 12.192291 64.786469 12.103583 64.7598 11.842545 64.785652 11.648871 64.702366 11.297554 64.645542 10.705308 64.673149 10.457583 64.932243 10.525093 65.277138 10.920255</ns2:posList>
+                            </ns2:LinearRing>
+                        </ns2:exterior>
+                    </ns2:Polygon>
+                </TariffZone>
+            </tariffZones>
+        </SiteFrame>
+        <FareFrame modification="new" version="1" id="NSR:FareFrame:1042736594">
+            <fareZones>
+                <FareZone created="2021-04-08T09:48:31.929" modification="new" version="1" id="BRA:FareZone:22">
+                    <ValidBetween>
+                        <FromDate>2021-04-08T09:48:31.929</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>assad.riaz</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Drammen</Name>
+                    <PrivateCode>102</PrivateCode>
+                    <ns2:Polygon ns2:id="GEN-PolygonType-8796">
+                        <ns2:exterior>
+                            <ns2:LinearRing>
+                                <ns2:posList>59.6405328 10.0374635 59.6406276 10.0381813 59.6406414 10.0382863 59.6414648 10.0445244</ns2:posList>
+                            </ns2:LinearRing>
+                        </ns2:exterior>
+                    </ns2:Polygon>
+                    <ZoneTopology>tiled</ZoneTopology>
+                    <ScopingMethod>implicitSpatialProjection</ScopingMethod>
+                    <AuthorityRef ref="BRA:Authority:1"/>
+                    <neighbours>
+                        <FareZoneRef ref="BRA:FareZone:20"/>
+                        <FareZoneRef ref="BRA:FareZone:21"/>
+                        <FareZoneRef ref="BRA:FareZone:25"/>
+                    </neighbours>
+                </FareZone>
+            </fareZones>
+        </FareFrame>
+    </dataObjects>
+</PublicationDelivery>
