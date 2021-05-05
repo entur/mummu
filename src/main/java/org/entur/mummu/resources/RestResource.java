@@ -23,7 +23,7 @@ public class RestResource {
         this.netexEntityIndex = netexEntityIndex;
     }
 
-    @GetMapping(value = "/stop-places/{id}")
+    @GetMapping("/stop-places/{id}")
     public @ResponseBody StopPlace getStopPlaceById(@PathVariable String id) {
         return Optional.ofNullable(
                 netexEntityIndex.getStopPlaceById().lookup(id)
