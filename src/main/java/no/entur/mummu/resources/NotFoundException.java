@@ -1,4 +1,4 @@
-package org.entur.mummu.resources;
+package no.entur.mummu.resources;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

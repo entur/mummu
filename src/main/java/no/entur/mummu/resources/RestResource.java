@@ -1,4 +1,4 @@
-package org.entur.mummu.resources;
+package no.entur.mummu.resources;
 
 import org.entur.netex.index.api.NetexEntityIndexReadOnlyView;
 import org.rutebanken.netex.model.FareZone;
@@ -11,7 +11,6 @@ import org.rutebanken.netex.model.TopographicPlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;

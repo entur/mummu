@@ -1,4 +1,4 @@
-package org.entur.mummu;
+package no.entur.mummu;
 
 import org.entur.netex.NetexParser;
 import org.entur.netex.index.api.NetexEntityIndexReadOnlyView;

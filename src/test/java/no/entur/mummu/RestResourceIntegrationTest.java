@@ -1,4 +1,4 @@
-package org.entur.mummu;
+package no.entur.mummu;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class RestResourceIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    public void testGetGroupOfStopPlacesById() throws Exception {
+    void testGetGroupOfStopPlacesById() throws Exception {
         mvc.perform(get("/group-of-stop-places/NSR:GroupOfStopPlaces:1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -32,7 +32,7 @@ public class RestResourceIntegrationTest {
     }
 
     @Test
-    public void testGetStopPlaceById() throws Exception {
+    void testGetStopPlaceById() throws Exception {
         mvc.perform(get("/stop-places/NSR:StopPlace:4004")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -42,7 +42,7 @@ public class RestResourceIntegrationTest {
     }
 
     @Test
-    public void testGetQuayById() throws Exception {
+    void testGetQuayById() throws Exception {
         mvc.perform(get("/quays/NSR:Quay:7209")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -52,7 +52,7 @@ public class RestResourceIntegrationTest {
     }
 
     @Test
-    public void testGetParkingById() throws Exception {
+    void testGetParkingById() throws Exception {
         mvc.perform(get("/parkings/NSR:Parking:1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -62,7 +62,7 @@ public class RestResourceIntegrationTest {
     }
 
     @Test
-    public void testGetTopographicPlaceById() throws Exception {
+    void testGetTopographicPlaceById() throws Exception {
         mvc.perform(get("/topographic-places/KVE:TopographicPlace:0301")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ public class RestResourceIntegrationTest {
     }
 
     @Test
-    public void testGetTariffZoneById() throws Exception {
+    void testGetTariffZoneById() throws Exception {
         mvc.perform(get("/tariff-zones/ATB:TariffZone:13")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -82,7 +82,7 @@ public class RestResourceIntegrationTest {
     }
 
     @Test
-    public void testGetFareZoneById() throws Exception {
+    void testGetFareZoneById() throws Exception {
         mvc.perform(get("/fare-zones/BRA:FareZone:22")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
