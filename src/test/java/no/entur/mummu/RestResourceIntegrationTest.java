@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(classes = MummuApplication.class)
 @AutoConfigureMockMvc
-public class RestResourceIntegrationTest {
+class RestResourceIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
@@ -89,5 +89,12 @@ public class RestResourceIntegrationTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name.value").value("Drammen"));
+    }
+
+    @Test
+    void testGetUnknownStopPlaceReturnsNotFound() throws Exception {
+        mvc.perform(get("/stop-places/FOO:StopPlace:1234")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
