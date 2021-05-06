@@ -7,7 +7,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     external-dns.alpha.kubernetes.io/target: {{ .Values.ingress.loadBalancerIP }}
-  name: stop-places-read-v2
+  name: stop-places-read-v1
   namespace: {{ .Release.Namespace }}
 spec:
   rules:
