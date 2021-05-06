@@ -2,21 +2,21 @@ package no.entur.mummu.config;
 
 import org.entur.netex.NetexParser;
 import org.entur.netex.index.api.NetexEntityIndexReadOnlyView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.io.IOException;
 
 @Configuration
-@Profile("!test")
 public class NetexEntityIndexConfiguration {
     private final NetexEntityIndexReadOnlyView netexEntityIndex;
 
-
-    public NetexEntityIndexConfiguration() throws IOException {
+    @Autowired
+    public NetexEntityIndexConfiguration(@Value("${no.entur.mummu.data-file}") String dataFile) throws IOException {
         var parser = new NetexParser();
-        netexEntityIndex = parser.parseFromZip("src/main/resources/CurrentwithServiceFrame_latest.zip");
+        netexEntityIndex = parser.parseFromZip(dataFile);
     }
 
     @Bean
