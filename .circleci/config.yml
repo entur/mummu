@@ -87,6 +87,7 @@ jobs:
           paths:
             - target
             - Dockerfile
+            - docker-entrypoint.sh
             - .circleci
             - ./version
   deploy-docker:
