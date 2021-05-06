@@ -10,12 +10,8 @@ spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 1
   jobTemplate:
-    metadata:
-      creationTimestamp: null
     spec:
       template:
-        metadata:
-          creationTimestamp: null
         spec:
           containers:
             - command:
