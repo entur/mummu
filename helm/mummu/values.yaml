@@ -14,13 +14,6 @@ resources:
   xss: 1024m
   xmx: 2048m
 
-secretMount:
-  name: mummu-key
-  mountPath: /etc/mummu/credentials.json
-  subPath: credentials.json
-  secretName: ror-mummu-sa-key
-  readOnly: true
-
 configMapMount:
   name: mummu-config
 
