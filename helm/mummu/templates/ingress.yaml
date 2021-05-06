@@ -11,7 +11,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   rules:
-  - host: stop-places-read-v2{{ .Values.ingress.domainName }}
+  - host: stop-places-read-v1{{ .Values.ingress.domainName }}
     http:
       paths:
         - backend:
