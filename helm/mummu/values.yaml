@@ -1,0 +1,40 @@
+env: dev
+
+replicas: 1
+
+rollingUpdate:
+  maxSurge: 1
+  maxUnavailable: 1
+
+resources:
+  cpuLimit: 1
+  memLimit: 3.3Gi
+  cpuRequest: 1
+  memRequest: 3.3Gi
+  xss: 1024m
+  xmx: 2048m
+
+secretMount:
+  name: mummu-key
+  mountPath: /etc/mummu/credentials.json
+  subPath: credentials.json
+  secretName: ror-mummu-sa-key
+  readOnly: true
+
+configMapMount:
+  name: mummu-config
+
+image:
+  identifier: ${artifact.metadata.image}
+  imagePullPolicy: Always
+
+service:
+  http:
+    externalPort: 80
+    internalPort: 8080
+
+ingress:
+  enabled: true
+  devIp: 35.195.223.29
+  stagingIp: 35.195.146.93
+  productionIp: 35.187.15.14

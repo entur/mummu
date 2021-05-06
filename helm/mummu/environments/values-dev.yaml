@@ -1,0 +1,15 @@
+env: dev
+
+configMap:
+  logLevel: DEBUG
+
+netexDataUrl: https://storage.googleapis.com/marduk-dev/tiamat/CurrentwithServiceFrame_latest.zip
+
+ingress:
+  enabled: true
+  loadBalancerIP: 35.205.170.68
+  domainName: .dev.entur.io
+
+cronJob:
+  gcpProject: entur-dev-1287
+  slackUrl: ror-dev-slack-url

@@ -1,0 +1,48 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "app.name" . }}-redeploy-cronjob
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+    app: osrm-cronjob
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - command:
+                - ./redeploy_generic_deployment.sh
+              env:
+                - name: DEPLOYMENT
+                  value: {{ template "app.name" . }}
+                - name: CLOUDSDK_CORE_PROJECT
+                  value: {{ .Values.cronJob.gcpProject }}
+                - name: SLACK_URL
+                  valueFrom:
+                    secretKeyRef:
+                      key: slack-url
+                      name: {{ .Values.cronJob.slackUrl }}
+              image: eu.gcr.io/entur-system-1287/deployment-rollout-restart:0.1.2
+              imagePullPolicy: IfNotPresent
+              name: redeploy-{{ template "app.name" . }}
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Never
+          schedulerName: default-scheduler
+          securityContext: {}
+          serviceAccount: cronjob-redeploy-{{ template "app.name" . }}
+          serviceAccountName: cronjob-redeploy-{{ template "app.name" . }}
+          terminationGracePeriodSeconds: 30
+  schedule: 0 8 * * *
+  successfulJobsHistoryLimit: 3
+  suspend: false

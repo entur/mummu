@@ -1,0 +1,18 @@
+env: production
+
+replicas: 2
+
+configMap:
+  logLevel: INFO
+
+netexDataUrl: https://storage.googleapis.com/marduk-production/tiamat/CurrentwithServiceFrame_latest.zip
+
+ingress:
+  enabled: true
+  loadBalancerIP: 35.205.233.237
+  domainName: .entur.io
+
+
+cronJob:
+  gcpProject: entur-1287
+  slackUrl: ror-prod-slack-url

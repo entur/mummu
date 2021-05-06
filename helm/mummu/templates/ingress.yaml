@@ -1,0 +1,20 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    {{- include "common.labels" . | indent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    external-dns.alpha.kubernetes.io/target: {{ .Values.ingress.loadBalancerIP }}
+  name: stop-places-read-v2
+  namespace: {{ .Release.Namespace }}
+spec:
+  rules:
+  - host: stop-places-read-v2{{ .Values.ingress.domainName }}
+    http:
+      paths:
+        - backend:
+            serviceName: {{ template "app.name" . }}
+            servicePort: {{ .Values.service.http.externalPort }}
+  {{- end }}
