@@ -2,9 +2,9 @@
 
 echo "entrypoint"
 
-: ${DOWNLOAD="https://storage.googleapis.com/marduk-production/tiamat/CurrentwithServiceFrame_latest.zip"}
+: ${NETEX_DATA_URL="https://storage.googleapis.com/marduk-production/tiamat/CurrentwithServiceFrame_latest.zip"}
 
-echo "Downloading $DOWNLOAD"
-wget $DOWNLOAD
+echo "Downloading $NETEX_DATA_URL"
+wget -O netex_data.zip $NETEX_DATA_URL
 
 exec "$@"
