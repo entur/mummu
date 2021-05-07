@@ -10,12 +10,12 @@
         <Policy>spikeArrest</Policy>
     </Policies>
     <ProxyEndpoints>
-        <ProxyEndpoint>stop-places-read-only-v1</ProxyEndpoint>
+        <ProxyEndpoint>stop-places-v1-read</ProxyEndpoint>
     </ProxyEndpoints>
     <Resources/>
     <Spec></Spec>
     <TargetServers/>
     <TargetEndpoints>
-        <TargetEndpoint>stop-places-read-only-v1</TargetEndpoint>
+        <TargetEndpoint>stop-places-v1-read</TargetEndpoint>
     </TargetEndpoints>
 </APIProxy>

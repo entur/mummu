@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ProxyEndpoint name="stop-places-read-only-v1">
+<ProxyEndpoint name="stop-places-v1-read">
     <PreFlow name="PreFlow">
         <Request>
             <Step>
@@ -19,11 +19,11 @@
         <Response/>
     </PostFlow>
     <HTTPProxyConnection>
-        <BasePath>/stop-places-read-only/v1</BasePath>
+        <BasePath>/stop-places/v1/read</BasePath>
         <VirtualHost>entur</VirtualHost>
         <VirtualHost>secure</VirtualHost>
     </HTTPProxyConnection>
     <RouteRule name="stop-places-read-v1">
-        <TargetEndpoint>stop-places-read-only-v1</TargetEndpoint>
+        <TargetEndpoint>stop-places-v1-read</TargetEndpoint>
     </RouteRule>
 </ProxyEndpoint>
