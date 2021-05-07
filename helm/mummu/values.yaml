@@ -1,9 +1,7 @@
-env: dev
-
 replicas: 1
 
 rollingUpdate:
-  maxSurge: 1
+  maxSurge: 2
   maxUnavailable: 1
 
 resources:
