@@ -26,7 +26,7 @@ function deploy {
         apigeetool deployproxy -V -o $ORG -e dev -n $NAME -d api/mummu -u $APIGEEUSER -p $APIGEEPASSWORD
     fi
 
-    APIGEEREVISION=$(apigeetool listdeployments -u $APIGEEUSER -p $APIGEEPASSWORD -o $ORG -n $NAME -j | jq '.deployments[] | select(.environment |contains("dev")) |.revision')
+    APIGEEREVISION=$(apigeetool listdeployments -u $APIGEEUSER -p $APIGEEPASSWORD -o $ORG -n $NAME -j | jq '.deployments[] | select(.environment |contains("dev")) |.revision' | tail -1)
 
     if [[ "$ENV" == "staging" ]]; then
         echo " 📝 Deploying revision $APIGEEREVISION to Apigee stage ..."
