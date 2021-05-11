@@ -24,7 +24,7 @@ public class RestResource {
         this.netexEntityIndex = netexEntityIndex;
     }
 
-    @GetMapping(value = "/group-of-stop-places/{id}", produces = "application/json")
+    @GetMapping(value = "/groups-of-stop-places/{id}", produces = "application/json")
     public GroupOfStopPlaces getGroupOfStopPlacesById(@PathVariable String id) {
         return Optional.ofNullable(
                 netexEntityIndex.getGroupOfStopPlacesById().lookup(id)
