@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 @Configuration
 public class JacksonConfiguration {

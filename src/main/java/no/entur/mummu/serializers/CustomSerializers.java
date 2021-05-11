@@ -6,23 +6,39 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.xml.bind.JAXBElement;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class CustomSerializers extends SimpleSerializers {
+    private final JAXBElementSerializer jaxbElementSerializer = new JAXBElementSerializer();
+    private final LocalDateTimeSerializer localDateTimeSerializer = new LocalDateTimeSerializer(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+    private final Type jaxbelementType = TypeFactory.defaultInstance().constructType(JAXBElement.class).getRawClass();
+    private final Type localDateTimeType = TypeFactory.defaultInstance().constructType(LocalDateTime.class);
 
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type, BeanDescription beanDesc) {
         if (isJaxbelementType(type)) {
-            return new JAXBElementSerializer();
+            return jaxbElementSerializer;
+        }
+
+        if (isLocalDateTimeType(type)) {
+            return localDateTimeSerializer;
         }
 
         return super.findSerializer(config, type, beanDesc);
     }
 
     private boolean isJaxbelementType(JavaType type) {
-        Type jaxbelementListType = TypeFactory.defaultInstance().constructType(JAXBElement.class).getRawClass();
-        return type.getRawClass().equals(jaxbelementListType);
+        return type.getRawClass().equals(jaxbelementType);
+    }
+
+    private boolean isLocalDateTimeType(JavaType type) {
+        return type.equals(localDateTimeType);
     }
 }
