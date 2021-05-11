@@ -27,8 +27,8 @@ data:
     server.http2.enabled=true
 
     spring.jackson.default-property-inclusion=non_empty
-
     springdoc.api-docs.path=/api-docs
+    server.forward-headers-strategy=framework
 
     # NeTEx Data
     no.entur.mummu.data-file=/deployments/netex_data.zip

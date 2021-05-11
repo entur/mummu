@@ -1,5 +1,7 @@
 package no.entur.mummu.resources;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.servers.Server;
 import org.entur.netex.index.api.NetexEntityIndexReadOnlyView;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
