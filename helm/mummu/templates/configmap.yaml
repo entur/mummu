@@ -26,9 +26,7 @@ data:
     server.compression.min-response-size=1024
     server.http2.enabled=true
 
-    spring.jackson.default-property-inclusion=non_empty
     springdoc.api-docs.path=/api-docs
-    server.forward-headers-strategy=native
 
     # NeTEx Data
     no.entur.mummu.data-file=/deployments/netex_data.zip
