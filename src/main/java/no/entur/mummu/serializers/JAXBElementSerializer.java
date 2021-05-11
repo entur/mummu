@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class JAXBElementSerializer extends JsonSerializer<JAXBElement<?>> implements Serializable {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final transient Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void serialize(JAXBElement<?> jaxbElement, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
