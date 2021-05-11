@@ -9,10 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 @Configuration
 public class JacksonConfiguration {
@@ -20,7 +17,7 @@ public class JacksonConfiguration {
     @Bean
     public ObjectMapper jsonObjectMapper() {
         ArrayList<Module> modules = new ArrayList<>();
-        SimpleModule customSerializersModule = new SimpleModule();
+        var customSerializersModule = new SimpleModule();
         customSerializersModule.setSerializers(new CustomSerializers());
         modules.add(customSerializersModule);
         return Jackson2ObjectMapperBuilder.json()

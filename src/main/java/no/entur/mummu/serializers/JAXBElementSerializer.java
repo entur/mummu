@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBElement;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class JAXBElementSerializer extends JsonSerializer<JAXBElement<?>> {
+public class JAXBElementSerializer extends JsonSerializer<JAXBElement<?>> implements Serializable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
