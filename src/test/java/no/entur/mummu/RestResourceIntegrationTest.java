@@ -23,7 +23,7 @@ class RestResourceIntegrationTest {
 
     @Test
     void testGetGroupOfStopPlacesById() throws Exception {
-        mvc.perform(get("/group-of-stop-places/NSR:GroupOfStopPlaces:1")
+        mvc.perform(get("/groups-of-stop-places/NSR:GroupOfStopPlaces:1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
