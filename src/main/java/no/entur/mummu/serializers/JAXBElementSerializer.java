@@ -16,9 +16,10 @@ public class JAXBElementSerializer extends JsonSerializer<JAXBElement<?>> implem
     @Override
     public void serialize(JAXBElement<?> jaxbElement, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
             try {
-                jsonGenerator.writeObject(
-                        jaxbElement.getValue()
-                );
+                jsonGenerator.writeStartObject();
+                jsonGenerator.writeStringField("type", jaxbElement.getName().getLocalPart());
+                jsonGenerator.writeObjectField("value", jaxbElement.getValue());
+                jsonGenerator.writeEndObject();
             } catch (IOException e) {
                 logger.warn("Caught exception while serializing JAXBElement={}", jaxbElement, e);
             }
