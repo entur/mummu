@@ -34,14 +34,14 @@ public class RestResource {
     @GetMapping(value = "/stop-places/{id}", produces = "application/json")
     public StopPlace getStopPlaceById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getStopPlaceById().lookup(id)
+                netexEntityIndex.getStopPlaceById().lookupLastVersionById(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/quays/{id}", produces = "application/json")
     public Quay getQuayById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getQuayById().lookup(id)
+                netexEntityIndex.getQuayById().lookupLastVersionById(id)
         ).orElseThrow(NotFoundException::new);
     }
 

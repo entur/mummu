@@ -16,7 +16,7 @@ public class NetexEntityIndexConfiguration {
     @Autowired
     public NetexEntityIndexConfiguration(@Value("${no.entur.mummu.data-file}") String dataFile) throws IOException {
         var parser = new NetexParser();
-        netexEntityIndex = parser.parseFromZip(dataFile);
+        netexEntityIndex = parser.parse(dataFile);
     }
 
     @Bean
