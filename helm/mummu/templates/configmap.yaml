@@ -27,7 +27,7 @@ data:
     server.http2.enabled=true
 
     springdoc.api-docs.path=/api-docs
-    server.forward-headers-strategy=FRAMEWORK
+    no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
 
     # NeTEx Data
     no.entur.mummu.data-file=/deployments/netex_data.zip
