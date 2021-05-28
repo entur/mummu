@@ -1,6 +1,6 @@
 package no.entur.mummu.resources;
 
-import org.entur.netex.index.api.NetexEntityIndexReadOnlyView;
+import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.Parking;
@@ -17,59 +17,59 @@ import java.util.Optional;
 
 @RestController
 public class RestResource {
-    private final NetexEntityIndexReadOnlyView netexEntityIndex;
+    private final NetexEntitiesIndex netexEntitiesIndex;
 
     @Autowired
-    public RestResource(NetexEntityIndexReadOnlyView netexEntityIndex) {
-        this.netexEntityIndex = netexEntityIndex;
+    public RestResource(NetexEntitiesIndex netexEntitiesIndex) {
+        this.netexEntitiesIndex = netexEntitiesIndex;
     }
 
     @GetMapping(value = "/groups-of-stop-places/{id}", produces = "application/json")
     public GroupOfStopPlaces getGroupOfStopPlacesById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getGroupOfStopPlacesById().lookup(id)
+                netexEntitiesIndex.getGroupOfStopPlacesIndex().get(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/json")
     public StopPlace getStopPlaceById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getStopPlaceById().lookupLastVersionById(id)
+                netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/quays/{id}", produces = "application/json")
     public Quay getQuayById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getQuayById().lookupLastVersionById(id)
+                netexEntitiesIndex.getQuayIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/parkings/{id}", produces = "application/json")
     public Parking getParkingById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getParkingById().lookup(id)
+                netexEntitiesIndex.getParkingIndex().get(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/topographic-places/{id}", produces = "application/json")
     public TopographicPlace getTopographicPlaceById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getTopographicPlaceById().lookup(id)
+                netexEntitiesIndex.getTopographicPlaceIndex().get(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/tariff-zones/{id}", produces = "application/json")
     public TariffZone getTariffZoneById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getTariffZonesById().lookup(id)
+                netexEntitiesIndex.getTariffZoneIndex().get(id)
         ).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping(value = "/fare-zones/{id}", produces = "application/json")
     public FareZone getFareZoneById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntityIndex.getFareZoneById().lookup(id)
+                netexEntitiesIndex.getFareZoneIndex().get(id)
         ).orElseThrow(NotFoundException::new);
     }
 }
