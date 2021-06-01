@@ -45,6 +45,15 @@ public class RestResource {
         ).orElseThrow(NotFoundException::new);
     }
 
+    @GetMapping(value = "quays/{id}/stop-place", produces = "application/json")
+    public StopPlace getStopPlaceByQuayId(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getStopPlaceIdByQuayIdIndex().get(id)
+        ).map(
+                stopPlaceId -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
+        ).orElseThrow(NotFoundException::new);
+    }
+
     @GetMapping(value = "/parkings/{id}", produces = "application/json")
     public Parking getParkingById(@PathVariable String id) {
         return Optional.ofNullable(
