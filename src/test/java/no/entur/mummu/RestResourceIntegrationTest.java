@@ -52,6 +52,16 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetStopPlaceByQuayId() throws Exception {
+        mvc.perform(get("/quays/NSR:Quay:7209/stop-place")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value("NSR:StopPlace:4004"));
+    }
+
+    @Test
     void testGetParkingById() throws Exception {
         mvc.perform(get("/parkings/NSR:Parking:1")
                 .contentType(MediaType.APPLICATION_JSON))
