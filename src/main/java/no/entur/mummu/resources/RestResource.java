@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +37,13 @@ public class RestResource {
         return Optional.ofNullable(
                 netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value="/stop-places/{id}/parkings", produces = "application/json")
+    public Collection<Parking> getParkingByStopPlaceId(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getParkingsByParentSiteRefIndex().get(id)
+        ).orElseThrow();
     }
 
     @GetMapping(value = "/quays/{id}", produces = "application/json")
