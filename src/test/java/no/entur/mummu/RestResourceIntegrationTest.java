@@ -43,7 +43,7 @@ class RestResourceIntegrationTest {
 
     @Test
     void testGetParkingsByStopPlaceId() throws Exception {
-        mvc.perform(get("/stop-places/NSR:StopPlace:11/parkings")
+        mvc.perform(get("/stop-places/NSR:StopPlace:5543/parkings")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
@@ -56,6 +56,16 @@ class RestResourceIntegrationTest {
         mvc.perform(get("/stop-places/NSR:StopPlace:2/parkings")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testGetParkingsWithStopPlaceWithoutParkingsGivesEmptyList() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:4004/parkings")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                    .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isEmpty());
     }
 
     @Test

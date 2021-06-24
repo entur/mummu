@@ -41,12 +41,10 @@ public class RestResource {
 
     @GetMapping(value="/stop-places/{id}/parkings", produces = "application/json")
     public Collection<Parking> getParkingByStopPlaceId(@PathVariable String id) {
-        var index = netexEntitiesIndex.getParkingsByParentSiteRefIndex();
-        if (index.containsKey(id)) {
-            return index.get(id);
-        } else {
+        if (netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id) == null) {
             throw new NotFoundException();
         }
+        return netexEntitiesIndex.getParkingsByParentSiteRefIndex().get(id);
     }
 
     @GetMapping(value = "/quays/{id}", produces = "application/json")
