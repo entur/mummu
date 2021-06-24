@@ -52,6 +52,13 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetParkingsWithUnknownStopPlaceIdGivesNotFound() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:2/parkings")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testGetQuayById() throws Exception {
         mvc.perform(get("/quays/NSR:Quay:7209")
                 .contentType(MediaType.APPLICATION_JSON))
