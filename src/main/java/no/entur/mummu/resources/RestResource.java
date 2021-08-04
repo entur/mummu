@@ -8,13 +8,17 @@ import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TopographicPlace;
+import org.rutebanken.netex.model.VehicleModeEnumeration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class RestResource {
@@ -30,6 +34,19 @@ public class RestResource {
         return Optional.ofNullable(
                 netexEntitiesIndex.getGroupOfStopPlacesIndex().get(id)
         ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/stop-places", produces = "application/json")
+    public Collection<StopPlace> getStopPlaces(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<VehicleModeEnumeration> transportModes) {
+        return netexEntitiesIndex.getStopPlaceIndex().getAllVersions().keySet().stream()
+                .map(key -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(key))
+                .filter(stopPlace -> transportModes == null || transportModes.contains(stopPlace.getTransportMode()))
+                .skip(skip)
+                .limit(count)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/json")
