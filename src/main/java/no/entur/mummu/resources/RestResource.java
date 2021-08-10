@@ -42,6 +42,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<VehicleModeEnumeration> transportModes) {
         return netexEntitiesIndex.getStopPlaceIndex().getAllVersions().keySet().stream()
+                .sorted()
                 .map(key -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(key))
                 .filter(stopPlace -> transportModes == null || transportModes.contains(stopPlace.getTransportMode()))
                 .skip(skip)
