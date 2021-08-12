@@ -1,5 +1,6 @@
 package no.entur.mummu.resources;
 
+import no.entur.mummu.util.NetexIdComparator;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
@@ -42,7 +43,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<VehicleModeEnumeration> transportModes) {
         return netexEntitiesIndex.getStopPlaceIndex().getAllVersions().keySet().stream()
-                .sorted()
+                .sorted(new NetexIdComparator())
                 .map(key -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(key))
                 .filter(stopPlace -> transportModes == null || transportModes.contains(stopPlace.getTransportMode()))
                 .skip(skip)
