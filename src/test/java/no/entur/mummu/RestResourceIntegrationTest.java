@@ -32,6 +32,16 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetStopPlaces() throws Exception {
+        mvc.perform(get("/stop-places")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
     void testGetStopPlaceById() throws Exception {
         mvc.perform(get("/stop-places/NSR:StopPlace:4004")
                 .contentType(MediaType.APPLICATION_JSON))
