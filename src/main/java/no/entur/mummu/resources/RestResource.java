@@ -42,7 +42,7 @@ public class RestResource {
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +66,7 @@ public class RestResource {
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
@@ -96,7 +96,7 @@ public class RestResource {
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
@@ -126,7 +126,7 @@ public class RestResource {
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
@@ -147,7 +147,7 @@ public class RestResource {
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
@@ -168,7 +168,7 @@ public class RestResource {
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
@@ -189,7 +189,7 @@ public class RestResource {
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
-                .limit(count)
+                .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
     }
 
