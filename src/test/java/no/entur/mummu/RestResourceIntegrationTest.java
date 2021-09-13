@@ -89,6 +89,16 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetQuays() throws Exception {
+        mvc.perform(get("/quays")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
     void testGetQuayById() throws Exception {
         mvc.perform(get("/quays/NSR:Quay:7209")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -109,6 +119,16 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetParkings() throws Exception {
+        mvc.perform(get("/parkings")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
     void testGetParkingById() throws Exception {
         mvc.perform(get("/parkings/NSR:Parking:1")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -116,6 +136,16 @@ class RestResourceIntegrationTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name.value").value("Drammen"));
+    }
+
+    @Test
+    void testGetTopographicPlaces() throws Exception {
+        mvc.perform(get("/topographic-places")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
     }
 
     @Test
@@ -146,6 +176,16 @@ class RestResourceIntegrationTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name.value").value("E2"));
+    }
+
+    @Test
+    void testGetFareZones() throws Exception {
+        mvc.perform(get("/fare-zones")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
     }
 
     @Test
