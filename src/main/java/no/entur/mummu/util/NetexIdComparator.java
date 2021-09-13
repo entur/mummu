@@ -4,7 +4,7 @@ import org.rutebanken.netex.model.EntityStructure;
 
 import java.util.Comparator;
 
-public class NetexEntityComparator implements Comparator<EntityStructure> {
+public class NetexIdComparator implements Comparator<EntityStructure> {
     @Override
     public int compare(EntityStructure o1, EntityStructure o2) {
         return Integer.compare(
