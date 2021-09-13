@@ -22,6 +22,16 @@ class RestResourceIntegrationTest {
     private MockMvc mvc;
 
     @Test
+    void testGetGroupsOfStopPlaces() throws Exception {
+        mvc.perform(get("/groups-of-stop-places")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
     void testGetGroupOfStopPlacesById() throws Exception {
         mvc.perform(get("/groups-of-stop-places/NSR:GroupOfStopPlaces:1")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -116,6 +126,16 @@ class RestResourceIntegrationTest {
                 .andExpect(content()
                 .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.countryRef.ref").value("NO"));
+    }
+
+    @Test
+    void getTariffZonesByIds() throws Exception {
+        mvc.perform(get("/tariff-zones?ids=ATB:TariffZone:13")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
     }
 
     @Test
