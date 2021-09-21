@@ -3,8 +3,11 @@ package no.entur.mummu.util;
 import org.entur.netex.index.api.NetexEntityIndex;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TopographicPlace;
+import org.rutebanken.netex.model.TopographicPlace_VersionStructure;
+import org.rutebanken.netex.model.VersionOfObjectRefStructure;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class TopographicPlacesFilter implements Predicate<StopPlace> {
@@ -22,20 +25,18 @@ public class TopographicPlacesFilter implements Predicate<StopPlace> {
 
         if (stopPlace.getTopographicPlaceRef() == null) { return false; }
 
-        boolean match = topographicPlaceIds.stream().anyMatch(id -> stopPlace.getTopographicPlaceRef().getRef().equalsIgnoreCase(id));
+        return topographicPlaceIds.stream()
+                    .anyMatch(id -> this.matchTopographicPlaceId(id, stopPlace, entityIndex));
+    }
 
-        if (!match) {
-            match = topographicPlaceIds.stream()
-                    .anyMatch(id -> {
-                        var topoPlace = entityIndex.get(stopPlace.getTopographicPlaceRef().getRef());
-                        if (topoPlace == null || topoPlace.getParentTopographicPlaceRef() == null) {
-                            return false;
-                        } else {
-                            return topoPlace.getParentTopographicPlaceRef().getRef().equalsIgnoreCase(id);
-                        }
-                    });
+    private boolean matchTopographicPlaceId(String id, StopPlace stopPlace, NetexEntityIndex<TopographicPlace> entityIndex) {
+        if (stopPlace.getTopographicPlaceRef().getRef().equalsIgnoreCase(id)) {
+            return true;
         }
 
-        return match;
+        return Optional.ofNullable(
+                entityIndex.get(stopPlace.getTopographicPlaceRef().getRef())
+        ).stream().map(TopographicPlace_VersionStructure::getParentTopographicPlaceRef)
+                .anyMatch(topographicPlaceRefStructure -> topographicPlaceRefStructure.getRef().equalsIgnoreCase(id));
     }
 }
