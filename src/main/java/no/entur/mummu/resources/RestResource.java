@@ -2,6 +2,8 @@ package no.entur.mummu.resources;
 
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
+import no.entur.mummu.util.StopPlaceTypesFilter;
+import no.entur.mummu.util.TopographicPlacesFilter;
 import no.entur.mummu.util.TransportModesFilter;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
@@ -9,6 +11,7 @@ import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
+import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.VehicleModeEnumeration;
@@ -58,11 +61,15 @@ public class RestResource {
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids,
-            @RequestParam(required = false) List<VehicleModeEnumeration> transportModes
+            @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
+            @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
+            @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
         return netexEntitiesIndex.getStopPlaceIndex().getAllVersions().keySet().stream()
                 .map(key -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(key))
                 .filter(new TransportModesFilter(transportModes))
+                .filter(new StopPlaceTypesFilter(stopPlaceTypes))
+                .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
                 .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
                 .skip(skip)
