@@ -3,7 +3,6 @@ package no.entur.mummu.util;
 import org.entur.netex.index.api.NetexEntityIndex;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TopographicPlace;
-import org.rutebanken.netex.model.TopographicPlace_VersionStructure;
 import org.rutebanken.netex.model.VersionOfObjectRefStructure;
 
 import java.util.List;
