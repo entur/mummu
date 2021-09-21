@@ -1,5 +1,6 @@
 package no.entur.mummu;
 
+import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,6 +51,16 @@ class RestResourceIntegrationTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
+    void testGetFilterStopPlaces() throws Exception {
+        mvc.perform(get("/stop-places?stopPlaceTypes=ONSTREET_TRAM&topographicPlaceIds=KVE:TopographicPlace:03")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[0].topographicPlaceRef.ref").value(startsWith("KVE:TopographicPlace:03")));
     }
 
     @Test

@@ -1,6 +1,5 @@
 package no.entur.mummu.util;
 
-import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.index.api.NetexEntityIndex;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TopographicPlace;
