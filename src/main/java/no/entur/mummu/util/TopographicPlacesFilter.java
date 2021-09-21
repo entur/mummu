@@ -4,6 +4,7 @@ import org.entur.netex.index.api.NetexEntityIndex;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.TopographicPlace_VersionStructure;
+import org.rutebanken.netex.model.VersionOfObjectRefStructure;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,17 +26,18 @@ public class TopographicPlacesFilter implements Predicate<StopPlace> {
         if (stopPlace.getTopographicPlaceRef() == null) { return false; }
 
         return topographicPlaceIds.stream()
-                    .anyMatch(id -> this.matchTopographicPlaceId(id, stopPlace, entityIndex));
+                    .anyMatch(id ->
+                        this.matchTopographicPlaceId(id, entityIndex.get(stopPlace.getTopographicPlaceRef().getRef())));
     }
 
-    private boolean matchTopographicPlaceId(String id, StopPlace stopPlace, NetexEntityIndex<TopographicPlace> entityIndex) {
-        if (stopPlace.getTopographicPlaceRef().getRef().equalsIgnoreCase(id)) {
+    private boolean matchTopographicPlaceId(String id, TopographicPlace topographicPlace) {
+        if (id.equalsIgnoreCase(topographicPlace.getId())) {
             return true;
         }
 
         return Optional.ofNullable(
-                entityIndex.get(stopPlace.getTopographicPlaceRef().getRef())
-        ).stream().map(TopographicPlace_VersionStructure::getParentTopographicPlaceRef)
-                .anyMatch(topographicPlaceRefStructure -> topographicPlaceRefStructure.getRef().equalsIgnoreCase(id));
+                topographicPlace.getParentTopographicPlaceRef()
+        ).stream().map(VersionOfObjectRefStructure::getRef)
+                .anyMatch(ref -> ref.equalsIgnoreCase(id));
     }
 }
