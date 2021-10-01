@@ -190,6 +190,26 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetGroupsOfTariffZones() throws Exception {
+        mvc.perform(get("/groups-of-tariff-zones")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
+    void testGetGroupOfTariffZoneById() throws Exception {
+        mvc.perform(get("/groups-of-tariff-zones/NOR:GroupOfTariffZones:1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.members.tariffZoneRef[0].ref").value("NOR:FareZone:77"));
+    }
+
+    @Test
     void testGetFareZones() throws Exception {
         mvc.perform(get("/fare-zones")
                 .contentType(MediaType.APPLICATION_JSON))

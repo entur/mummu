@@ -424,6 +424,15 @@
                     </ns2:Polygon>
                 </TariffZone>
             </tariffZones>
+            <groupsOfTariffZones>
+                <GroupOfTariffZones version="1" id="NOR:GroupOfTariffZones:1">
+                    <PurposeOfGroupingRef ref="transportMode"/>
+                    <PrivateCode>4020</PrivateCode>
+                    <members>
+                        <TariffZoneRef ref="NOR:FareZone:77" version="1"/>
+                    </members>
+                </GroupOfTariffZones>
+            </groupsOfTariffZones>
         </SiteFrame>
         <FareFrame modification="new" version="1" id="NSR:FareFrame:1042736594">
             <fareZones>
