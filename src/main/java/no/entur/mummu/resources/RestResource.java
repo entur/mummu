@@ -8,6 +8,7 @@ import no.entur.mummu.util.TransportModesFilter;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
+import org.rutebanken.netex.model.GroupOfTariffZones;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
@@ -183,6 +184,27 @@ public class RestResource {
     public TariffZone getTariffZoneById(@PathVariable String id) {
         return Optional.ofNullable(
                 netexEntitiesIndex.getTariffZoneIndex().get(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/groups-of-tariff-zones", produces = "application/json")
+    public List<GroupOfTariffZones> getGroupsOfTariffZones(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        return netexEntitiesIndex.getGroupOfTariffZonesIndex().getAll().stream()
+                .sorted(new NetexIdComparator())
+                .filter(new NetexIdFilter(ids))
+                .skip(skip)
+                .limit(ids == null ? count : ids.size())
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/groups-of-tariff-zones/{id}", produces = "application/json")
+    public GroupOfTariffZones getGroupOfTariffZonesById(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getGroupOfTariffZonesIndex().get(id)
         ).orElseThrow(NotFoundException::new);
     }
 
