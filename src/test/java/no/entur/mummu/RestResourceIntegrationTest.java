@@ -73,6 +73,26 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetStopPlaceByIdAllVersions() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:4004/versions")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
+    void testGetStopPlaceByIdAndVersion() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:4004/versions/71")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.version").value("71"));
+    }
+
+    @Test
     void testGetParkingsByStopPlaceId() throws Exception {
         mvc.perform(get("/stop-places/NSR:StopPlace:5543/parkings")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -127,6 +147,26 @@ class RestResourceIntegrationTest {
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value("NSR:StopPlace:4004"));
+    }
+
+    @Test
+    void testGetQuayByIdAllVersions() throws Exception {
+        mvc.perform(get("/quays/NSR:Quay:7209/versions")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
+    void testGetQuayByIdAndVersion() throws Exception {
+        mvc.perform(get("/quays/NSR:Quay:7209/versions/71")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.version").value("71"));
     }
 
     @Test
