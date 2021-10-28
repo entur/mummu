@@ -31,7 +31,7 @@ spec:
           imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           env:
             - name: JAVA_OPTIONS
-              value: -server -Xss{{ .Values.resources.xss }} -Xmx{{ .Values.resources.xmx }} -Dspring.config.location=/etc/application-config/application.properties
+              value: -server -Xss{{ .Values.resources.xss }} -Xms{{ .Values.resources.xms }} -Xmx{{ .Values.resources.xmx }} -Dspring.config.location=/etc/application-config/application.properties
                 -Dfile.encoding=UTF-8 -Drutebanken.kubernetes.enabled=true -Drutebanken.kubernetes.namespace={{ .Release.Namespace }}
             - name: TZ
               value: Europe/Oslo

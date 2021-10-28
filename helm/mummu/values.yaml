@@ -6,11 +6,12 @@ rollingUpdate:
 
 resources:
   cpuLimit: 1
-  memLimit: 3.3Gi
+  memLimit: 5Gi
   cpuRequest: 1
-  memRequest: 3.3Gi
+  memRequest: 5Gi
   xss: 1024m
-  xmx: 2048m
+  xms: 4096m
+  xmx: 4096m
 
 configMapMount:
   name: mummu-config
