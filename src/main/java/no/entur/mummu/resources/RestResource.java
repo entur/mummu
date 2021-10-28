@@ -85,6 +85,20 @@ public class RestResource {
         ).orElseThrow(NotFoundException::new);
     }
 
+    @GetMapping(value = "/stop-places/{id}/versions", produces = "application/json")
+    public Collection<StopPlace> getStopPlaceVersions(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getStopPlaceIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/stop-places/{id}/versions/{version}", produces = "application/json")
+    public StopPlace getStopPlaceVersion(@PathVariable String id, @PathVariable String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getStopPlaceIndex().getVersion(id, version)
+        ).orElseThrow(NotFoundException::new);
+    }
+
     @GetMapping(value="/stop-places/{id}/parkings", produces = "application/json")
     public Collection<Parking> getParkingByStopPlaceId(@PathVariable String id) {
         if (netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id) == null) {
@@ -112,6 +126,20 @@ public class RestResource {
     public Quay getQuayById(@PathVariable String id) {
         return Optional.ofNullable(
                 netexEntitiesIndex.getQuayIndex().getLatestVersion(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/quays/{id}/versions", produces = "application/json")
+    public Collection<Quay> getQuayVersions(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getQuayIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/quays/{id}/versions/{version}", produces = "application/json")
+    public Quay getQuayVersion(@PathVariable String id, @PathVariable String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getQuayIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
     }
 

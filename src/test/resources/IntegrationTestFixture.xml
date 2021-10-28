@@ -144,6 +144,122 @@
                 </GroupOfStopPlaces>
             </groupsOfStopPlaces>
             <stopPlaces>
+                <StopPlace created="2017-06-19T19:17:49.097" changed="2021-04-22T18:14:46.467" modification="new" version="71" id="NSR:StopPlace:4004">
+                    <keyList>
+                        <KeyValue>
+                            <Key>merged-id</Key>
+                            <Value>NSR:StopPlace:3986</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>HED:StopPlace:3010013,OPP:StopPlace:3010013,RUT:StopPlace:03010013</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Jernbanetorget</Name>
+                    <Description lang="nor">foran Oslo S</Description>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.750063</Longitude>
+                            <Latitude>59.911560</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="76" id="NSR:AccessibilityAssessment:4004">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="70" id="142129">
+                                <WheelchairAccess>unknown</WheelchairAccess>
+                                <StepFreeAccess>unknown</StepFreeAccess>
+                                <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                <LiftFreeAccess>unknown</LiftFreeAccess>
+                                <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2021-05-04T05:01:42.752" version="11"/>
+                    <ParentSiteRef ref="NSR:StopPlace:58366" version="65"/>
+                    <adjacentSites>
+                        <SiteRef ref="NSR:StopPlace:4000"/>
+                    </adjacentSites>
+                    <TransportMode>tram</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <tariffZones>
+                        <TariffZoneRef ref="BRA:FareZone:31" version="1"/>
+                        <TariffZoneRef ref="OPP:TariffZone:2100" version="1"/>
+                        <TariffZoneRef ref="HED:TariffZone:2100" version="1"/>
+                        <TariffZoneRef ref="BRA:TariffZone:311" version="1"/>
+                        <TariffZoneRef ref="INN:TariffZone:2100" version="2"/>
+                        <TariffZoneRef ref="RUT:FareZone:4" version="2"/>
+                        <TariffZoneRef ref="INN:FareZone:207" version="1"/>
+                        <TariffZoneRef ref="RUT:TariffZone:1" version="1"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetTram</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2018-12-11T15:59:12.027" modification="new" version="71" id="NSR:Quay:7209">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>RUT:Quay:0301001311,RUT:Quay:301001311</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>11</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>10.750296</Longitude>
+                                    <Latitude>59.911733</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="27" id="NSR:AccessibilityAssessment:60420">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="27" id="142130">
+                                        <WheelchairAccess>unknown</WheelchairAccess>
+                                        <StepFreeAccess>unknown</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode>C</PublicCode>
+                            <CompassBearing>59.0</CompassBearing>
+                        </Quay>
+                        <Quay changed="2018-12-11T15:59:12.026" modification="new" version="72" id="NSR:Quay:7210">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>RUT:Quay:0301001312,RUT:Quay:301001312</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>12</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>10.749827</Longitude>
+                                    <Latitude>59.911401</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="54" id="NSR:AccessibilityAssessment:59780">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="54" id="142131">
+                                        <WheelchairAccess>unknown</WheelchairAccess>
+                                        <StepFreeAccess>unknown</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode>B</PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
                 <StopPlace created="2017-06-19T19:17:49.097" changed="2021-04-22T18:14:46.467" modification="new" version="72" id="NSR:StopPlace:4004">
                     <keyList>
                         <KeyValue>
