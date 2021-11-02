@@ -4,7 +4,7 @@ configMap:
   logLevel: INFO
   hostUrl: https://api.staging.entur.io/stop-places/v1/read
 
-netexDataUrl: https://storage.googleapis.com/marduk-test/tiamat/CurrentwithServiceFrame_latest.zip
+netexDataUrl: https://storage.googleapis.com/marduk-test/tiamat/Full_latest.zip
 
 ingress:
   enabled: true
