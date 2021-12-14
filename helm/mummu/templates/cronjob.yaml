@@ -84,6 +84,6 @@ spec:
           serviceAccount: cronjob-redeploy-{{ template "app.name" . }}
           serviceAccountName: cronjob-redeploy-{{ template "app.name" . }}
           terminationGracePeriodSeconds: 30
-  schedule: 0 14 * * *
+  schedule: 0 13 * * *
   successfulJobsHistoryLimit: 3
   suspend: false
