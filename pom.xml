@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.rutebanken.superpom</groupId>
         <artifactId>superpom</artifactId>
-        <version>1.0.23</version>
+        <version>1.0.31</version>
     </parent>
     <groupId>org.entur</groupId>
     <artifactId>mummu</artifactId>
@@ -13,7 +13,7 @@
     <name>mummu</name>
     <description>Read-only API for stop place related NeTEx entities</description>
     <properties>
-        <entur.helpers.version>1.0.36</entur.helpers.version>
+        <entur.helpers.version>1.0.62</entur.helpers.version>
         <netex-parser-java.version>1.0.18</netex-parser-java.version>
         <spring.security.version>5.3.5.RELEASE</spring.security.version>
     </properties>
