@@ -8,7 +8,6 @@ netexDataUrl: https://storage.googleapis.com/marduk-dev/tiamat/Full_latest.zip
 
 ingress:
   enabled: true
-  loadBalancerIP: 35.205.170.68
   domainName: .dev.entur.io
 
 cronJob:

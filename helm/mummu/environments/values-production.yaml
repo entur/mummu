@@ -10,7 +10,6 @@ netexDataUrl: https://storage.googleapis.com/marduk-production/tiamat/Currentwit
 
 ingress:
   enabled: true
-  loadBalancerIP: 35.205.233.237
   domainName: .entur.io
 
 cronJob:
