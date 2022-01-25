@@ -1,4 +1,7 @@
 FROM adoptopenjdk/openjdk11:alpine-jre
+
+RUN apk add --no-cache tini
+
 WORKDIR /deployments
 COPY target/mummu-*-SNAPSHOT.jar /deployments/mummu.jar
 
@@ -10,4 +13,4 @@ RUN addgroup appuser && adduser --disabled-password appuser --ingroup appuser
 RUN chown -R appuser:appuser /deployments
 USER appuser
 
-CMD java $JAVA_OPTIONS -jar /deployments/mummu.jar
+CMD [ "/sbin/tini", "--", "java", "-jar", "/deployments/mummu.jar" ]
