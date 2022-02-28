@@ -2,6 +2,7 @@ package no.entur.mummu.resources;
 
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
+import no.entur.mummu.util.NetexTechnicalIdComparator;
 import no.entur.mummu.util.StopPlaceTypesFilter;
 import no.entur.mummu.util.TopographicPlacesFilter;
 import no.entur.mummu.util.TransportModesFilter;
@@ -44,7 +45,7 @@ public class RestResource {
     ) {
         return netexEntitiesIndex.getGroupOfStopPlacesIndex().getAll().stream()
                 .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -66,13 +67,12 @@ public class RestResource {
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
             @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
-        return netexEntitiesIndex.getStopPlaceIndex().getAllVersions().keySet().stream()
-                .filter(key -> ids == null || ids.contains(key))
-                .map(key -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(key))
+        return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
+                .filter(new NetexIdFilter(ids))
                 .filter(new TransportModesFilter(transportModes))
                 .filter(new StopPlaceTypesFilter(stopPlaceTypes))
                 .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
-                .sorted(new NetexIdComparator())
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -114,9 +114,9 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesIndex.getQuayIndex().getAllVersions().keySet().stream()
-                .filter(key -> ids == null || ids.contains(key))
                 .map(key -> netexEntitiesIndex.getQuayIndex().getLatestVersion(key))
-                .sorted(new NetexIdComparator())
+                .filter(new NetexIdFilter(ids))
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -181,7 +181,7 @@ public class RestResource {
     ) {
         return netexEntitiesIndex.getTopographicPlaceIndex().getAll().stream()
                 .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
