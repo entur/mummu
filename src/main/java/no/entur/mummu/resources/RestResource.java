@@ -2,6 +2,7 @@ package no.entur.mummu.resources;
 
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
+import no.entur.mummu.util.NetexTechnicalIdComparator;
 import no.entur.mummu.util.StopPlaceTypesFilter;
 import no.entur.mummu.util.TopographicPlacesFilter;
 import no.entur.mummu.util.TransportModesFilter;
@@ -44,7 +45,7 @@ public class RestResource {
     ) {
         return netexEntitiesIndex.getGroupOfStopPlacesIndex().getAll().stream()
                 .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -66,13 +67,12 @@ public class RestResource {
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
             @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
-        return netexEntitiesIndex.getStopPlaceIndex().getAllVersions().keySet().stream()
-                .map(key -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(key))
+        return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
+                .filter(new NetexIdFilter(ids))
                 .filter(new TransportModesFilter(transportModes))
                 .filter(new StopPlaceTypesFilter(stopPlaceTypes))
                 .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
-                .sorted(new NetexIdComparator())
-                .filter(new NetexIdFilter(ids))
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -113,10 +113,9 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getQuayIndex().getAllVersions().keySet().stream()
-                .map(key -> netexEntitiesIndex.getQuayIndex().getLatestVersion(key))
-                .sorted(new NetexIdComparator())
+        return netexEntitiesIndex.getQuayIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -159,8 +158,8 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesIndex.getParkingIndex().getAll().stream()
-                .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
+                .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -180,8 +179,8 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesIndex.getTopographicPlaceIndex().getAll().stream()
-                .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
+                .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -201,8 +200,8 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesIndex.getTariffZoneIndex().getAll().stream()
-                .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
+                .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -222,8 +221,8 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesIndex.getGroupOfTariffZonesIndex().getAll().stream()
-                .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
+                .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
@@ -243,8 +242,8 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesIndex.getFareZoneIndex().getAll().stream()
-                .sorted(new NetexIdComparator())
                 .filter(new NetexIdFilter(ids))
+                .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
                 .collect(Collectors.toList());
