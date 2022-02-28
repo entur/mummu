@@ -113,8 +113,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getQuayIndex().getAllVersions().keySet().stream()
-                .map(key -> netexEntitiesIndex.getQuayIndex().getLatestVersion(key))
+        return netexEntitiesIndex.getQuayIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
