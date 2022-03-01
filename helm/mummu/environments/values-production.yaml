@@ -2,15 +2,6 @@ env: production
 
 replicas: 2
 
-resources:
-  cpuLimit: 3
-  memLimit: 10Gi
-  cpuRequest: 1
-  memRequest: 5Gi
-  xss: 1024m
-  xms: 4096m
-  xmx: 8096m
-
 configMap:
   logLevel: INFO
   hostUrl: https://api.entur.io/stop-places/v1/read
