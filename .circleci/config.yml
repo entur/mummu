@@ -66,9 +66,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dep-cache-{{ checksum "pom.xml" }}
+            - dep-cache-v2-{{ checksum "pom.xml" }}
             # fallback to the most recent cache if there is no exact match for this pom.xml
-            - dep-cache-
+            - dep-cache-v2-
       - run:
           name: Download Maven settings
           command: wget https://raw.githubusercontent.com/entur/circleci-toolbox-image-java11/master/tools/m2/settings.xml -O .circleci/settings.xml
