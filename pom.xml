@@ -13,7 +13,7 @@
     <name>mummu</name>
     <description>Read-only API for stop place related NeTEx entities</description>
     <properties>
-        <entur.helpers.version>1.0.69</entur.helpers.version>
+        <entur.helpers.version>1.0.70</entur.helpers.version>
         <netex-parser-java.version>1.0.19</netex-parser-java.version>
         <spring.security.version>5.6.2</spring.security.version>
     </properties>
