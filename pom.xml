@@ -15,7 +15,7 @@
     <properties>
         <entur.helpers.version>1.0.77</entur.helpers.version>
         <netex-parser-java.version>1.0.20</netex-parser-java.version>
-        <spring.security.version>5.7.1</spring.security.version>
+        <spring.security.version>5.7.2</spring.security.version>
     </properties>
     <dependencies>
         <dependency>
