@@ -14,7 +14,10 @@ spec:
   - host: stop-places-v1-read{{ .Values.ingress.domainName }}
     http:
       paths:
-        - backend:
-            serviceName: {{ template "app.name" . }}
-            servicePort: {{ .Values.service.http.externalPort }}
+        - pathType: ImplementationSpecific
+          backend:
+            service:
+              name: {{ template "app.name" . }}
+              port:
+                number: 80
   {{- end }}
