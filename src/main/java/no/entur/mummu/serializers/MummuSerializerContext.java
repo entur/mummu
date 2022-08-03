@@ -2,10 +2,11 @@ package no.entur.mummu.serializers;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.ZoneId;
 
 @Component
-public class MummuSerializerContext {
+public class MummuSerializerContext implements Serializable {
     private ZoneId zoneId;
 
     public ZoneId getZoneId() {

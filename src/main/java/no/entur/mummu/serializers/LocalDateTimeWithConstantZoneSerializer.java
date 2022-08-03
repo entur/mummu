@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class LocalDateTimeWithConstantZoneSerializer extends JsonSerializer<LocalDateTime> {
-    private final ZonedDateTimeSerializer zonedDateTimeSerializer = ZonedDateTimeSerializer.INSTANCE;
-    private final LocalDateTimeSerializer localDateTimeSerializer = LocalDateTimeSerializer.INSTANCE;
+    private static final ZonedDateTimeSerializer zonedDateTimeSerializer = ZonedDateTimeSerializer.INSTANCE;
+    private static final LocalDateTimeSerializer localDateTimeSerializer = LocalDateTimeSerializer.INSTANCE;
     private final MummuSerializerContext mummuSerializerContext;
 
     public LocalDateTimeWithConstantZoneSerializer(
