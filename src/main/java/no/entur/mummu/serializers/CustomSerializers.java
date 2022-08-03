@@ -6,20 +6,25 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBElement;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-
+@Component
 public class CustomSerializers extends SimpleSerializers {
+    private final MummuSerializerContext mummuSerializerContext;
     private final JAXBElementSerializer jaxbElementSerializer = new JAXBElementSerializer();
-    private final LocalDateTimeSerializer localDateTimeSerializer = new LocalDateTimeSerializer(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
     private final Type jaxbelementType = TypeFactory.defaultInstance().constructType(JAXBElement.class).getRawClass();
     private final Type localDateTimeType = TypeFactory.defaultInstance().constructType(LocalDateTime.class);
+
+    @Autowired
+    public CustomSerializers(MummuSerializerContext mummuSerializerContext) {
+        this.mummuSerializerContext = mummuSerializerContext;
+    }
 
     @Override
     public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type, BeanDescription beanDesc) {
@@ -28,7 +33,7 @@ public class CustomSerializers extends SimpleSerializers {
         }
 
         if (isLocalDateTimeType(type)) {
-            return localDateTimeSerializer;
+            return new LocalDateTimeWithConstantZoneSerializer(mummuSerializerContext);
         }
 
         return super.findSerializer(config, type, beanDesc);
