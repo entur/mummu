@@ -157,7 +157,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getParkingIndex().getAll().stream()
+        return netexEntitiesIndex.getParkingIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
@@ -168,7 +168,7 @@ public class RestResource {
     @GetMapping(value = "/parkings/{id}", produces = "application/json")
     public Parking getParkingById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntitiesIndex.getParkingIndex().get(id)
+                netexEntitiesIndex.getParkingIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 
@@ -178,7 +178,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getTopographicPlaceIndex().getAll().stream()
+        return netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
@@ -189,7 +189,7 @@ public class RestResource {
     @GetMapping(value = "/topographic-places/{id}", produces = "application/json")
     public TopographicPlace getTopographicPlaceById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntitiesIndex.getTopographicPlaceIndex().get(id)
+                netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 
@@ -199,7 +199,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getTariffZoneIndex().getAll().stream()
+        return netexEntitiesIndex.getTariffZoneIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
@@ -210,7 +210,7 @@ public class RestResource {
     @GetMapping(value = "/tariff-zones/{id}", produces = "application/json")
     public TariffZone getTariffZoneById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntitiesIndex.getTariffZoneIndex().get(id)
+                netexEntitiesIndex.getTariffZoneIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 
@@ -220,7 +220,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getGroupOfTariffZonesIndex().getAll().stream()
+        return netexEntitiesIndex.getGroupOfTariffZonesIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
@@ -231,7 +231,7 @@ public class RestResource {
     @GetMapping(value = "/groups-of-tariff-zones/{id}", produces = "application/json")
     public GroupOfTariffZones getGroupOfTariffZonesById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntitiesIndex.getGroupOfTariffZonesIndex().get(id)
+                netexEntitiesIndex.getGroupOfTariffZonesIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 
@@ -241,7 +241,7 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getFareZoneIndex().getAll().stream()
+        return netexEntitiesIndex.getFareZoneIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
@@ -252,7 +252,7 @@ public class RestResource {
     @GetMapping(value = "/fare-zones/{id}", produces = "application/json")
     public FareZone getFareZoneById(@PathVariable String id) {
         return Optional.ofNullable(
-                netexEntitiesIndex.getFareZoneIndex().get(id)
+                netexEntitiesIndex.getFareZoneIndex().getLatestVersion(id)
         ).orElseThrow(NotFoundException::new);
     }
 }

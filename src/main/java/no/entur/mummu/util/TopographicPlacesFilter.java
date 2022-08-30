@@ -1,6 +1,7 @@
 package no.entur.mummu.util;
 
 import org.entur.netex.index.api.NetexEntityIndex;
+import org.entur.netex.index.api.VersionedNetexEntityIndex;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.VersionOfObjectRefStructure;
@@ -11,9 +12,9 @@ import java.util.function.Predicate;
 
 public class TopographicPlacesFilter implements Predicate<StopPlace> {
     private final List<String> topographicPlaceIds;
-    private final NetexEntityIndex<TopographicPlace> entityIndex;
+    private final VersionedNetexEntityIndex<TopographicPlace> entityIndex;
 
-    public TopographicPlacesFilter(List<String> topographicPlaceIds, NetexEntityIndex<TopographicPlace> entityIndex) {
+    public TopographicPlacesFilter(List<String> topographicPlaceIds, VersionedNetexEntityIndex<TopographicPlace> entityIndex) {
         this.topographicPlaceIds = topographicPlaceIds;
         this.entityIndex = entityIndex;
     }
@@ -26,7 +27,7 @@ public class TopographicPlacesFilter implements Predicate<StopPlace> {
 
         return topographicPlaceIds.stream()
                     .anyMatch(id ->
-                        this.matchTopographicPlaceId(id, entityIndex.get(stopPlace.getTopographicPlaceRef().getRef())));
+                        this.matchTopographicPlaceId(id, entityIndex.getLatestVersion(stopPlace.getTopographicPlaceRef().getRef())));
     }
 
     private boolean matchTopographicPlaceId(String id, TopographicPlace topographicPlace) {
