@@ -172,6 +172,20 @@ public class RestResource {
         ).orElseThrow(NotFoundException::new);
     }
 
+    @GetMapping(value = "/parkings/{id}/versions", produces = "application/json")
+    public Collection<Parking> getParkingVersions(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getParkingIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/parkings/{id}/versions/{version}", produces = "application/json")
+    public Parking getParkingVersion(@PathVariable String id, @PathVariable String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getParkingIndex().getVersion(id, version)
+        ).orElseThrow(NotFoundException::new);
+    }
+
     @GetMapping(value = "/topographic-places", produces ="application/json")
     public List<TopographicPlace> getTopographicPlaces(
             @RequestParam(defaultValue = "10") Integer count,
@@ -193,6 +207,20 @@ public class RestResource {
         ).orElseThrow(NotFoundException::new);
     }
 
+    @GetMapping(value = "/topographic-places/{id}/versions", produces = "application/json")
+    public Collection<TopographicPlace> getTopographicPlaceVersions(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTopographicPlaceIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/topographic-places/{id}/versions/{version}", produces = "application/json")
+    public TopographicPlace getTopographicPlaceVersion(@PathVariable String id, @PathVariable String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTopographicPlaceIndex().getVersion(id, version)
+        ).orElseThrow(NotFoundException::new);
+    }
+
     @GetMapping(value = "/tariff-zones", produces = "application/json")
     public List<TariffZone> getTariffZones(
             @RequestParam(defaultValue = "10") Integer count,
@@ -211,6 +239,20 @@ public class RestResource {
     public TariffZone getTariffZoneById(@PathVariable String id) {
         return Optional.ofNullable(
                 netexEntitiesIndex.getTariffZoneIndex().getLatestVersion(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/tariff-zones/{id}/versions", produces = "application/json")
+    public Collection<TariffZone> getTariffZoneVersions(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTariffZoneIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/tariff-zones/{id}/versions/{version}", produces = "application/json")
+    public TariffZone getTariffZoneVersion(@PathVariable String id, @PathVariable String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTariffZoneIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
     }
 
@@ -253,6 +295,20 @@ public class RestResource {
     public FareZone getFareZoneById(@PathVariable String id) {
         return Optional.ofNullable(
                 netexEntitiesIndex.getFareZoneIndex().getLatestVersion(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/fare-zones/{id}/versions", produces = "application/json")
+    public Collection<FareZone> getFareZoneVersions(@PathVariable String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getFareZoneIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    @GetMapping(value = "/fare-zones/{id}/versions/{version}", produces = "application/json")
+    public FareZone getFareZoneVersion(@PathVariable String id, @PathVariable String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getFareZoneIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
     }
 }
