@@ -10,15 +10,18 @@ import io.swagger.v3.oas.models.media.Schema;
 import javax.xml.bind.JAXBElement;
 import java.util.Iterator;
 
-public class JAXBElementConverter implements ModelConverter {
+public class CustomConverters implements ModelConverter {
     @Override
     public Schema resolve(AnnotatedType annotatedType, ModelConverterContext modelConverterContext, Iterator<ModelConverter> iterator) {
         if (annotatedType.isSchemaProperty()) {
-            JavaType _type = Json.mapper().constructType(annotatedType.getType());
-            if (_type != null) {
-                Class<?> cls = _type.getRawClass();
+            JavaType type = Json.mapper().constructType(annotatedType.getType());
+            if (type != null) {
+                Class<?> cls = type.getRawClass();
                 if (JAXBElement.class.isAssignableFrom(cls)) {
                     return new JAXBElementSchema();
+                }
+                if (cls.isEnum()) {
+                    return new EnumSchema((Class<? extends Enum>) cls);
                 }
             }
         }

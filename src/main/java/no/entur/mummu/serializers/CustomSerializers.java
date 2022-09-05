@@ -36,6 +36,10 @@ public class CustomSerializers extends SimpleSerializers {
             return new LocalDateTimeWithConstantZoneSerializer(mummuSerializerContext);
         }
 
+        if (type.isEnumType()) {
+            return new LowerCaseEnumValueSerializer();
+        }
+
         return super.findSerializer(config, type, beanDesc);
     }
 
