@@ -7,22 +7,44 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import no.entur.mummu.serializers.CustomSerializers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 @Configuration
-public class JacksonConfiguration {
+@EnableWebMvc
+public class WebConfig implements WebMvcConfigurer {
+
     private final CustomSerializers customSerializers;
 
     @Autowired
-    public JacksonConfiguration(CustomSerializers customSerializers) {
+    public WebConfig(CustomSerializers customSerializers) {
         this.customSerializers = customSerializers;
     }
 
-    @Bean
+    @Override
+    public void configureContentNegotiation(final ContentNegotiationConfigurer configurer) {
+        configurer.ignoreAcceptHeader(false)
+                .defaultContentType(MediaType.APPLICATION_JSON);
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new StringHttpMessageConverter());
+        converters.add(new MappingJackson2HttpMessageConverter(jsonObjectMapper()));
+        converters.add(new NetexHttpMessageConverter());
+    }
+
     public ObjectMapper jsonObjectMapper() {
         ArrayList<Module> modules = new ArrayList<>();
         var customSerializersModule = new SimpleModule();

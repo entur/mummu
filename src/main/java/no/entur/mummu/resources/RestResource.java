@@ -1,5 +1,6 @@
 package no.entur.mummu.resources;
 
+import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
@@ -10,6 +11,7 @@ import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.GroupOfTariffZones;
+import org.rutebanken.netex.model.ObjectFactory;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.bind.JAXBElement;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +35,16 @@ import java.util.stream.Collectors;
 @RestController
 public class RestResource {
     private final NetexEntitiesIndex netexEntitiesIndex;
+    private final NetexEntitiesService netexEntitiesService;
+    private static final ObjectFactory netexObjectFactory = new ObjectFactory();
 
     @Autowired
-    public RestResource(NetexEntitiesIndex netexEntitiesIndex) {
+    public RestResource(
+            NetexEntitiesIndex netexEntitiesIndex,
+            NetexEntitiesService netexEntitiesService
+    ) {
         this.netexEntitiesIndex = netexEntitiesIndex;
+        this.netexEntitiesService = netexEntitiesService;
     }
 
     @GetMapping(value = "/groups-of-stop-places", produces = "application/json")
@@ -80,9 +90,12 @@ public class RestResource {
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/json")
     public StopPlace getStopPlaceById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getStopPlace(id);
+    }
+
+    @GetMapping(value = "/stop-places/{id}", produces = "application/xml")
+    public JAXBElement<StopPlace> getPublicationDeliveryStopPlaceById(@PathVariable String id) {
+        return netexObjectFactory.createStopPlace(netexEntitiesService.getStopPlace(id));
     }
 
     @GetMapping(value = "/stop-places/{id}/versions", produces = "application/json")
@@ -311,4 +324,20 @@ public class RestResource {
                 netexEntitiesIndex.getFareZoneIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
     }
+
+    /**
+     * Set field value with reflection.
+     * Used for setting list values in netex model.
+     */
+    private void setField(Class clazz, String fieldName, Object instance, Object fieldValue) {
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(instance, fieldValue);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new RuntimeException("Cannot set field " + fieldName + " of " + instance, e);
+        }
+    }
+
+
 }
