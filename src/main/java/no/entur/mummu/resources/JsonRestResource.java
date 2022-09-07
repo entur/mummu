@@ -1,5 +1,6 @@
 package no.entur.mummu.resources;
 
+import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
@@ -23,18 +24,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-public class RestResource {
+public class JsonRestResource {
     private final NetexEntitiesIndex netexEntitiesIndex;
+    private final NetexEntitiesService netexEntitiesService;
 
     @Autowired
-    public RestResource(NetexEntitiesIndex netexEntitiesIndex) {
+    public JsonRestResource(
+            NetexEntitiesIndex netexEntitiesIndex,
+            NetexEntitiesService netexEntitiesService
+    ) {
         this.netexEntitiesIndex = netexEntitiesIndex;
+        this.netexEntitiesService = netexEntitiesService;
     }
 
     @GetMapping(value = "/groups-of-stop-places", produces = "application/json")
@@ -80,10 +87,10 @@ public class RestResource {
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/json")
     public StopPlace getStopPlaceById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getStopPlace(id);
     }
+
+
 
     @GetMapping(value = "/stop-places/{id}/versions", produces = "application/json")
     public Collection<StopPlace> getStopPlaceVersions(@PathVariable String id) {
@@ -311,4 +318,20 @@ public class RestResource {
                 netexEntitiesIndex.getFareZoneIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
     }
+
+    /**
+     * Set field value with reflection.
+     * Used for setting list values in netex model.
+     */
+    private void setField(Class clazz, String fieldName, Object instance, Object fieldValue) {
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(instance, fieldValue);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new RuntimeException("Cannot set field " + fieldName + " of " + instance, e);
+        }
+    }
+
+
 }

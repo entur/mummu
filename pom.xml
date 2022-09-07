@@ -16,6 +16,7 @@
         <entur.helpers.version>1.0.77</entur.helpers.version>
         <netex-parser-java.version>2.0.0</netex-parser-java.version>
         <spring.security.version>5.7.3</spring.security.version>
+        <jaxb-version>2.3.0.1</jaxb-version>
     </properties>
     <dependencies>
         <dependency>
@@ -85,8 +86,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jaxb-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>${jaxb-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>${jaxb-version}</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
