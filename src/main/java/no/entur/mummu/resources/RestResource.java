@@ -4,9 +4,6 @@ import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
-import no.entur.mummu.util.StopPlaceTypesFilter;
-import no.entur.mummu.util.TopographicPlacesFilter;
-import no.entur.mummu.util.TransportModesFilter;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
@@ -15,6 +12,7 @@ import org.rutebanken.netex.model.ObjectFactory;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
+import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TopographicPlace;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
@@ -37,6 +36,8 @@ public class RestResource {
     private final NetexEntitiesIndex netexEntitiesIndex;
     private final NetexEntitiesService netexEntitiesService;
     private static final ObjectFactory netexObjectFactory = new ObjectFactory();
+
+    private final static QName _stopPlaces_QNAME = new QName("http://www.netex.org.uk/netex", "stopPlaces");
 
     @Autowired
     public RestResource(
@@ -77,16 +78,25 @@ public class RestResource {
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
             @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
-        return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .filter(new TransportModesFilter(transportModes))
-                .filter(new StopPlaceTypesFilter(stopPlaceTypes))
-                .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
-                .sorted(new NetexTechnicalIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getStopPlaces(count, skip, ids, transportModes, stopPlaceTypes, topographicPlaceIds);
     }
+
+    @GetMapping(value = "/stop-places", produces = "application/xml")
+    public JAXBElement<StopPlacesInFrame_RelStructure> getPublicationDeliveryStopPlaces(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
+            @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
+            @RequestParam(required = false) List<String> topographicPlaceIds
+    ) {
+        var stopPlaces = netexObjectFactory.createStopPlacesInFrame_RelStructure().withStopPlace(
+                netexEntitiesService.getStopPlaces(count, skip, ids, transportModes, stopPlaceTypes, topographicPlaceIds)
+        );
+
+        return new JAXBElement<>(_stopPlaces_QNAME, StopPlacesInFrame_RelStructure.class, stopPlaces);
+    }
+
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/json")
     public StopPlace getStopPlaceById(@PathVariable String id) {
@@ -95,21 +105,33 @@ public class RestResource {
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/xml")
     public JAXBElement<StopPlace> getPublicationDeliveryStopPlaceById(@PathVariable String id) {
-        return netexObjectFactory.createStopPlace(netexEntitiesService.getStopPlace(id));
+        var stopPlace = netexEntitiesService.getStopPlace(id);
+        return netexObjectFactory.createStopPlace(stopPlace);
     }
 
     @GetMapping(value = "/stop-places/{id}/versions", produces = "application/json")
     public Collection<StopPlace> getStopPlaceVersions(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getStopPlaceIndex().getAllVersions(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getStopPlaceVersions(id);
+    }
+
+    @GetMapping(value = "/stop-places/{id}/versions", produces = "application/xml")
+    public JAXBElement<StopPlacesInFrame_RelStructure> getPublicationDeliveryStopPlaceVersions(@PathVariable String id) {
+        var stopPlaces = netexObjectFactory.createStopPlacesInFrame_RelStructure().withStopPlace(
+                netexEntitiesService.getStopPlaceVersions(id)
+        );
+
+        return new JAXBElement<>(_stopPlaces_QNAME, StopPlacesInFrame_RelStructure.class, stopPlaces);
     }
 
     @GetMapping(value = "/stop-places/{id}/versions/{version}", produces = "application/json")
     public StopPlace getStopPlaceVersion(@PathVariable String id, @PathVariable String version) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getStopPlaceIndex().getVersion(id, version)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getStopPlaceVersion(id, version);
+    }
+
+    @GetMapping(value = "/stop-places/{id}/versions/{version}", produces = "application/xml")
+    public JAXBElement<StopPlace> getPublicationDeliveryStopPlaceVersion(@PathVariable String id, @PathVariable String version) {
+        var stopPlace = netexEntitiesService.getStopPlaceVersion(id, version);
+        return netexObjectFactory.createStopPlace(stopPlace);
     }
 
     @GetMapping(value="/stop-places/{id}/parkings", produces = "application/json")
