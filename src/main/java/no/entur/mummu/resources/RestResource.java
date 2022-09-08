@@ -6,15 +6,18 @@ import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
+import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.GroupOfTariffZones;
-import org.rutebanken.netex.model.ObjectFactory;
+import org.rutebanken.netex.model.GroupsOfStopPlacesInFrame_RelStructure;
+import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
+import org.rutebanken.netex.model.TariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.VehicleModeEnumeration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +27,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @RestController
 public class RestResource {
     private final NetexEntitiesIndex netexEntitiesIndex;
     private final NetexEntitiesService netexEntitiesService;
-    private static final ObjectFactory netexObjectFactory = new ObjectFactory();
+    private static final NetexObjectFactory netexObjectFactory = new NetexObjectFactory();
 
-    private final static QName _stopPlaces_QNAME = new QName("http://www.netex.org.uk/netex", "stopPlaces");
 
     @Autowired
     public RestResource(
@@ -54,19 +55,22 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getGroupOfStopPlacesIndex().getAll().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexTechnicalIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getGroupsOfStopPlaces(count, skip, ids);
     }
 
-    @GetMapping(value = "/groups-of-stop-places/{id}", produces = "application/json")
+    @GetMapping(value = "/groups-of-stop-places", produces = "application/xml")
+    public JAXBElement<GroupsOfStopPlacesInFrame_RelStructure> getJAXBElementGroupOfStopPlaces(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var groupsOfStopPlaces = netexEntitiesService.getGroupsOfStopPlaces(count, skip, ids);
+        return netexObjectFactory.createGroupsOfStopPlaces(groupsOfStopPlaces);
+    }
+
+    @GetMapping(value = "/groups-of-stop-places/{id}", produces = {"application/json", "application/xml"})
     public GroupOfStopPlaces getGroupOfStopPlacesById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getGroupOfStopPlacesIndex().get(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getGroupOfStopPlaces(id);
     }
 
     @GetMapping(value = "/stop-places", produces = "application/json")
@@ -82,7 +86,7 @@ public class RestResource {
     }
 
     @GetMapping(value = "/stop-places", produces = "application/xml")
-    public JAXBElement<StopPlacesInFrame_RelStructure> getPublicationDeliveryStopPlaces(
+    public JAXBElement<StopPlacesInFrame_RelStructure> getJAXBElementStopPlaces(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids,
@@ -90,11 +94,8 @@ public class RestResource {
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
             @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
-        var stopPlaces = netexObjectFactory.createStopPlacesInFrame_RelStructure().withStopPlace(
-                netexEntitiesService.getStopPlaces(count, skip, ids, transportModes, stopPlaceTypes, topographicPlaceIds)
-        );
-
-        return new JAXBElement<>(_stopPlaces_QNAME, StopPlacesInFrame_RelStructure.class, stopPlaces);
+        var stopPlaces = netexEntitiesService.getStopPlaces(count, skip, ids, transportModes, stopPlaceTypes, topographicPlaceIds);
+        return netexObjectFactory.createStopPlaces(stopPlaces);
     }
 
 
@@ -104,7 +105,7 @@ public class RestResource {
     }
 
     @GetMapping(value = "/stop-places/{id}", produces = "application/xml")
-    public JAXBElement<StopPlace> getPublicationDeliveryStopPlaceById(@PathVariable String id) {
+    public JAXBElement<StopPlace> getJAXBElementStopPlaceById(@PathVariable String id) {
         var stopPlace = netexEntitiesService.getStopPlace(id);
         return netexObjectFactory.createStopPlace(stopPlace);
     }
@@ -115,12 +116,9 @@ public class RestResource {
     }
 
     @GetMapping(value = "/stop-places/{id}/versions", produces = "application/xml")
-    public JAXBElement<StopPlacesInFrame_RelStructure> getPublicationDeliveryStopPlaceVersions(@PathVariable String id) {
-        var stopPlaces = netexObjectFactory.createStopPlacesInFrame_RelStructure().withStopPlace(
-                netexEntitiesService.getStopPlaceVersions(id)
-        );
-
-        return new JAXBElement<>(_stopPlaces_QNAME, StopPlacesInFrame_RelStructure.class, stopPlaces);
+    public JAXBElement<StopPlacesInFrame_RelStructure> getJAXBElementStopPlaceVersions(@PathVariable String id) {
+        var stopPlaces = netexEntitiesService.getStopPlaceVersions(id);
+        return netexObjectFactory.createStopPlaces(stopPlaces);
     }
 
     @GetMapping(value = "/stop-places/{id}/versions/{version}", produces = "application/json")
@@ -129,7 +127,7 @@ public class RestResource {
     }
 
     @GetMapping(value = "/stop-places/{id}/versions/{version}", produces = "application/xml")
-    public JAXBElement<StopPlace> getPublicationDeliveryStopPlaceVersion(@PathVariable String id, @PathVariable String version) {
+    public JAXBElement<StopPlace> getJAXBElementStopPlaceVersion(@PathVariable String id, @PathVariable String version) {
         var stopPlace = netexEntitiesService.getStopPlaceVersion(id, version);
         return netexObjectFactory.createStopPlace(stopPlace);
     }
@@ -262,33 +260,50 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getTariffZoneIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getTariffZones(count, skip, ids);
+    }
+
+    @GetMapping(value = "/tariff-zones", produces = "application/xml")
+    public JAXBElement<TariffZonesInFrame_RelStructure> getJAXBElementTariffZones(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var tariffZones = netexEntitiesService.getTariffZones(count, skip, ids);
+        return netexObjectFactory.createTariffZones(tariffZones);
     }
 
     @GetMapping(value = "/tariff-zones/{id}", produces = "application/json")
     public TariffZone getTariffZoneById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getTariffZoneIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getTariffZone(id);
+    }
+
+    @GetMapping(value = "/tariff-zones/{id}", produces = "application/xml")
+    public JAXBElement<TariffZone> getJAXBElementTariffZoneById(@PathVariable String id) {
+        var tariffZone = netexEntitiesService.getTariffZone(id);
+        return netexObjectFactory.createTariffZone(tariffZone);
     }
 
     @GetMapping(value = "/tariff-zones/{id}/versions", produces = "application/json")
     public Collection<TariffZone> getTariffZoneVersions(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getTariffZoneIndex().getAllVersions(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getTariffZoneVersions(id);
+    }
+
+    @GetMapping(value = "/tariff-zones/{id}/versions", produces = "application/xml")
+    public JAXBElement<TariffZonesInFrame_RelStructure> getJAXBElementTariffZoneVersions(@PathVariable String id) {
+        var tariffZones = netexEntitiesService.getTariffZoneVersions(id);
+        return netexObjectFactory.createTariffZones(tariffZones);
     }
 
     @GetMapping(value = "/tariff-zones/{id}/versions/{version}", produces = "application/json")
     public TariffZone getTariffZoneVersion(@PathVariable String id, @PathVariable String version) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getTariffZoneIndex().getVersion(id, version)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getTariffZoneVersion(id, version);
+    }
+
+    @GetMapping(value = "/tariff-zones/{id}/versions/{version}", produces = "application/xml")
+    public JAXBElement<TariffZone> getJAXBElementTariffZoneVersion(@PathVariable String id, @PathVariable String version) {
+        var tariffZone = netexEntitiesService.getTariffZoneVersion(id, version);
+        return netexObjectFactory.createTariffZone(tariffZone);
     }
 
     @GetMapping(value = "/groups-of-tariff-zones", produces = "application/json")
@@ -297,19 +312,28 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getGroupOfTariffZonesIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getGroupsOfTariffZones(count, skip, ids);
+    }
+
+    @GetMapping(value = "/groups-of-tariff-zones", produces = "application/xml")
+    public JAXBElement<GroupsOfTariffZonesInFrame_RelStructure> getJAXBElementGroupsOfTariffZones(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var groupsOfTariffZones = netexEntitiesService.getGroupsOfTariffZones(count, skip, ids);
+        return netexObjectFactory.createGroupsOfTariffZones(groupsOfTariffZones);
     }
 
     @GetMapping(value = "/groups-of-tariff-zones/{id}", produces = "application/json")
     public GroupOfTariffZones getGroupOfTariffZonesById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getGroupOfTariffZonesIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getGroupOfTariffZonesById(id);
+    }
+
+    @GetMapping(value = "/groups-of-tariff-zones/{id}", produces = "application/xml")
+    public JAXBElement<GroupOfTariffZones> getJAXBElementGroupOfTariffZonesById(@PathVariable String id) {
+        var groupOfTariffZones = netexEntitiesService.getGroupOfTariffZonesById(id);
+        return netexObjectFactory.createGroupOfTariffZones(groupOfTariffZones);
     }
 
     @GetMapping(value = "/fare-zones", produces = "application/json")
@@ -318,48 +342,48 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getFareZoneIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getFareZones(count, skip, ids);
+    }
+
+    @GetMapping(value = "/fare-zones", produces = "application/xml")
+    public JAXBElement<FareZonesInFrame_RelStructure> getJAXBElementFareZones(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var fareZones = netexEntitiesService.getFareZones(count, skip, ids);
+        return netexObjectFactory.createFareZones(fareZones);
     }
 
     @GetMapping(value = "/fare-zones/{id}", produces = "application/json")
     public FareZone getFareZoneById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getFareZoneIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getFareZone(id);
+    }
+
+    @GetMapping(value = "/fare-zones/{id}", produces = "application/xml")
+    public JAXBElement<FareZone> getJAXBElementFareZoneById(@PathVariable String id) {
+        return netexObjectFactory.createFareZone(netexEntitiesService.getFareZone(id));
     }
 
     @GetMapping(value = "/fare-zones/{id}/versions", produces = "application/json")
     public Collection<FareZone> getFareZoneVersions(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getFareZoneIndex().getAllVersions(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getFareZoneVersions(id);
+    }
+
+    @GetMapping(value = "/fare-zones/{id}/versions", produces = "application/xml")
+    public JAXBElement<FareZonesInFrame_RelStructure> getJAXBElementFareZoneVersions(@PathVariable String id) {
+        var fareZones = netexEntitiesService.getFareZoneVersions(id);
+        return netexObjectFactory.createFareZones(fareZones);
     }
 
     @GetMapping(value = "/fare-zones/{id}/versions/{version}", produces = "application/json")
     public FareZone getFareZoneVersion(@PathVariable String id, @PathVariable String version) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getFareZoneIndex().getVersion(id, version)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getFareZoneVersion(id, version);
     }
 
-    /**
-     * Set field value with reflection.
-     * Used for setting list values in netex model.
-     */
-    private void setField(Class clazz, String fieldName, Object instance, Object fieldValue) {
-        try {
-            Field field = clazz.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(instance, fieldValue);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            throw new RuntimeException("Cannot set field " + fieldName + " of " + instance, e);
-        }
+    @GetMapping(value = "/fare-zones/{id}/versions/{version}", produces = "application/xml")
+    public JAXBElement<FareZone> getJAXBElementFareZoneVersion(@PathVariable String id, @PathVariable String version) {
+        var fareZone = netexEntitiesService.getFareZoneVersion(id, version);
+        return netexObjectFactory.createFareZone(fareZone);
     }
-
-
 }
