@@ -25,14 +25,14 @@ import java.util.stream.Collectors;
 
 public class NetexObjectFactory extends ObjectFactory {
 
-    private final static QName _stopPlaces_QNAME = new QName("http://www.netex.org.uk/netex", "stopPlaces");
-    private final static QName _groupsOfStopPlaces_QNAME = new QName("http://www.netex.org.uk/netex", "groupsOfStopPlaces");
-    private final static QName _fareZones_QNAME = new QName("http://www.netex.org.uk/netex", "fareZones");
-    private final static QName _tariffZones_QNAME = new QName("http://www.netex.org.uk/netex", "tariffZones");
-    private final static QName _groupsOfTariffZones_QNAME = new QName("http://www.netex.org.uk/netex", "groupsOfTariffZones");
-    private final static QName _parkings_QNAME = new QName("http://www.netex.org.uk/netex", "parkings");
-    private final static QName _quays_QNAME = new QName("http://www.netex.org.uk/netex", "quays");
-    private final static QName _topographicPlaces_QNAME = new QName("http://www.netex.org.uk/netex", "topographicPlaces");
+    public static final String NAMESPACE_URI = "http://www.netex.org.uk/netex";
+    private static final QName _stopPlaces_QNAME = new QName(NAMESPACE_URI, "stopPlaces");
+    private static final QName _groupsOfStopPlaces_QNAME = new QName(NAMESPACE_URI, "groupsOfStopPlaces");
+    private static final QName _fareZones_QNAME = new QName(NAMESPACE_URI, "fareZones");
+    private static final QName _tariffZones_QNAME = new QName(NAMESPACE_URI, "tariffZones");
+    private static final QName _groupsOfTariffZones_QNAME = new QName(NAMESPACE_URI, "groupsOfTariffZones");
+    private static final QName _parkings_QNAME = new QName(NAMESPACE_URI, "parkings");
+    private static final QName _topographicPlaces_QNAME = new QName(NAMESPACE_URI, "topographicPlaces");
 
     public JAXBElement<GroupsOfStopPlacesInFrame_RelStructure> createGroupsOfStopPlaces(List<GroupOfStopPlaces> groupsOfStopPlaces) {
         var groupsOfStopPlacesInFrame = createGroupsOfStopPlacesInFrame_RelStructure().withGroupOfStopPlaces(groupsOfStopPlaces);

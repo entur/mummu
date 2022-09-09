@@ -1,6 +1,8 @@
 package no.entur.mummu.config;
 
 import org.rutebanken.netex.model.PublicationDeliveryStructure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.xml.AbstractXmlHttpMessageConverter;
@@ -17,11 +19,13 @@ import java.util.List;
 import static javax.xml.bind.JAXBContext.newInstance;
 
 public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<Object> {
+
+    private static final Logger logger = LoggerFactory.getLogger(NetexHttpMessageConverter.class);
     private static final JAXBContext publicationDeliveryContext = createContext(PublicationDeliveryStructure.class);
     private Marshaller marshaller;
 
     @Override
-    protected Object readFromSource(Class<?> clazz, HttpHeaders headers, Source source) throws Exception {
+    protected Object readFromSource(Class<?> clazz, HttpHeaders headers, Source source) {
         return null;
     }
 
@@ -48,23 +52,21 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
         return marshaller;
     }
 
-    private Marshaller createMarshaller() throws JAXBException, IOException, SAXException {
-        Marshaller marshaller = publicationDeliveryContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "");
-
-
-        return marshaller;
+    private Marshaller createMarshaller() throws JAXBException {
+        Marshaller marshallerInstance = publicationDeliveryContext.createMarshaller();
+        marshallerInstance.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshallerInstance.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "");
+        return marshallerInstance;
     }
 
     private static JAXBContext createContext(Class... clazz) {
         try {
             JAXBContext jaxbContext = newInstance(clazz);
-            //logger.info("Created context {}", jaxbContext.getClass());
+            logger.info("Created context {}", jaxbContext.getClass());
             return jaxbContext;
         } catch (JAXBException e) {
             String message = "Could not create instance of jaxb context for class " + clazz;
-            //logger.warn(message, e);
+            logger.warn(message, e);
             throw new RuntimeException("Could not create instance of jaxb context for class " + clazz, e);
         }
     }
