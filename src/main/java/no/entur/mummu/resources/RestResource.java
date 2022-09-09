@@ -1,10 +1,7 @@
 package no.entur.mummu.resources;
 
 import no.entur.mummu.services.NetexEntitiesService;
-import no.entur.mummu.util.NetexIdComparator;
-import no.entur.mummu.util.NetexIdFilter;
-import no.entur.mummu.util.NetexTechnicalIdComparator;
-import org.entur.netex.index.api.NetexEntitiesIndex;
+import no.entur.mummu.services.NetexObjectFactory;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
@@ -12,6 +9,7 @@ import org.rutebanken.netex.model.GroupOfTariffZones;
 import org.rutebanken.netex.model.GroupsOfStopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.Parking;
+import org.rutebanken.netex.model.ParkingsInFrame_RelStructure;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
@@ -19,6 +17,7 @@ import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.TopographicPlace;
+import org.rutebanken.netex.model.TopographicPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.VehicleModeEnumeration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,23 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.xml.bind.JAXBElement;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @RestController
 public class RestResource {
-    private final NetexEntitiesIndex netexEntitiesIndex;
     private final NetexEntitiesService netexEntitiesService;
     private static final NetexObjectFactory netexObjectFactory = new NetexObjectFactory();
 
 
     @Autowired
     public RestResource(
-            NetexEntitiesIndex netexEntitiesIndex,
             NetexEntitiesService netexEntitiesService
     ) {
-        this.netexEntitiesIndex = netexEntitiesIndex;
         this.netexEntitiesService = netexEntitiesService;
     }
 
@@ -134,10 +128,13 @@ public class RestResource {
 
     @GetMapping(value="/stop-places/{id}/parkings", produces = "application/json")
     public Collection<Parking> getParkingByStopPlaceId(@PathVariable String id) {
-        if (netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id) == null) {
-            throw new NotFoundException();
-        }
-        return netexEntitiesIndex.getParkingsByParentSiteRefIndex().get(id);
+        return netexEntitiesService.getParkingByStopPlaceId(id);
+    }
+
+    @GetMapping(value="/stop-places/{id}/parkings", produces = "application/xml")
+    public JAXBElement<ParkingsInFrame_RelStructure> getJAXBElementParkingByStopPlaceId(@PathVariable String id) {
+        var parkings = netexEntitiesService.getParkingByStopPlaceId(id);
+        return netexObjectFactory.createParkings(parkings);
     }
 
     @GetMapping(value = "/quays", produces = "application/json")
@@ -146,42 +143,42 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getQuayIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexTechnicalIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getQuays(count, skip, ids);
     }
 
     @GetMapping(value = "/quays/{id}", produces = "application/json")
     public Quay getQuayById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getQuayIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getQuayById(id);
+    }
+
+    @GetMapping(value = "/quays/{id}", produces = "application/xml")
+    public JAXBElement<Quay> getJAXBElementQuayById(@PathVariable String id) {
+        return netexObjectFactory.createQuay(netexEntitiesService.getQuayById(id));
     }
 
     @GetMapping(value = "/quays/{id}/versions", produces = "application/json")
     public Collection<Quay> getQuayVersions(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getQuayIndex().getAllVersions(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getQuayVersions(id);
     }
 
     @GetMapping(value = "/quays/{id}/versions/{version}", produces = "application/json")
     public Quay getQuayVersion(@PathVariable String id, @PathVariable String version) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getQuayIndex().getVersion(id, version)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getQuayVersion(id, version);
+    }
+
+    @GetMapping(value = "/quays/{id}/versions/{version}", produces = "application/xml")
+    public JAXBElement<Quay> getJAXBElementQuayVersion(@PathVariable String id, @PathVariable String version) {
+        return netexObjectFactory.createQuay(netexEntitiesService.getQuayVersion(id, version));
     }
 
     @GetMapping(value = "quays/{id}/stop-place", produces = "application/json")
     public StopPlace getStopPlaceByQuayId(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getStopPlaceIdByQuayIdIndex().get(id)
-        ).map(
-                stopPlaceId -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getStopPlaceByQuayId(id);
+    }
+
+    @GetMapping(value = "quays/{id}/stop-place", produces = "application/xml")
+    public JAXBElement<StopPlace> getJAXBElementStopPlaceByQuayId(@PathVariable String id) {
+        return netexObjectFactory.createStopPlace(netexEntitiesService.getStopPlaceByQuayId(id));
     }
 
     @GetMapping(value = "/parkings", produces = "application/json")
@@ -190,33 +187,48 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getParkingIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getParkings(count, skip, ids);
+    }
+
+    @GetMapping(value = "/parkings", produces = "application/xml")
+    public JAXBElement<ParkingsInFrame_RelStructure> getJAXBElementParkings(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var parkings = netexEntitiesService.getParkings(count, skip, ids);
+        return netexObjectFactory.createParkings(parkings);
     }
 
     @GetMapping(value = "/parkings/{id}", produces = "application/json")
     public Parking getParkingById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getParkingIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getParkingById(id);
+    }
+
+    @GetMapping(value = "/parkings/{id}", produces = "application/xml")
+    public JAXBElement<Parking> getJAXBElementParkingById(@PathVariable String id) {
+        return netexObjectFactory.createParking(netexEntitiesService.getParkingById(id));
     }
 
     @GetMapping(value = "/parkings/{id}/versions", produces = "application/json")
     public Collection<Parking> getParkingVersions(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getParkingIndex().getAllVersions(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getParkingVersions(id);
+    }
+
+    @GetMapping(value = "/parkings/{id}/versions", produces = "application/xml")
+    public JAXBElement<ParkingsInFrame_RelStructure> getJAXBElementParkingVersions(@PathVariable String id) {
+        var parkings = netexEntitiesService.getParkingVersions(id);
+        return netexObjectFactory.createParkings(parkings);
     }
 
     @GetMapping(value = "/parkings/{id}/versions/{version}", produces = "application/json")
     public Parking getParkingVersion(@PathVariable String id, @PathVariable String version) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getParkingIndex().getVersion(id, version)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getParkingVersion(id, version);
+    }
+
+    @GetMapping(value = "/parkings/{id}/versions/{version}", produces = "application/xml")
+    public JAXBElement<Parking> getJAXBElementParkingVersion(@PathVariable String id, @PathVariable String version) {
+        return netexObjectFactory.createParking(netexEntitiesService.getParkingVersion(id, version));
     }
 
     @GetMapping(value = "/topographic-places", produces ="application/json")
@@ -225,33 +237,50 @@ public class RestResource {
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids
     ) {
-        return netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .sorted(new NetexTechnicalIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
-                .collect(Collectors.toList());
+        return netexEntitiesService.getTopographicPlaces(count, skip, ids);
+    }
+
+    @GetMapping(value = "/topographic-places", produces ="application/xml")
+    public JAXBElement<TopographicPlacesInFrame_RelStructure> getJAXBElementTopographicPlaces(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var topographicPlaces = netexEntitiesService.getTopographicPlaces(count, skip, ids);
+        return netexObjectFactory.createTopographicPlaces(topographicPlaces);
     }
 
     @GetMapping(value = "/topographic-places/{id}", produces = "application/json")
     public TopographicPlace getTopographicPlaceById(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersion(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getTopographicPlaceById(id);
+    }
+
+    @GetMapping(value = "/topographic-places/{id}", produces = "application/xml")
+    public JAXBElement<TopographicPlace> getJAXBElementTopographicPlaceById(@PathVariable String id) {
+        var topographicPlace = netexEntitiesService.getTopographicPlaceById(id);
+        return netexObjectFactory.createTopographicPlace(topographicPlace);
     }
 
     @GetMapping(value = "/topographic-places/{id}/versions", produces = "application/json")
     public Collection<TopographicPlace> getTopographicPlaceVersions(@PathVariable String id) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getTopographicPlaceIndex().getAllVersions(id)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getTopographicPlaceVersions(id);
+    }
+
+    @GetMapping(value = "/topographic-places/{id}/versions", produces = "application/xml")
+    public JAXBElement<TopographicPlacesInFrame_RelStructure> getJAXBElementTopographicPlaceVersions(@PathVariable String id) {
+        var topographicPlaces = netexEntitiesService.getTopographicPlaceVersions(id);
+        return netexObjectFactory.createTopographicPlaces(topographicPlaces);
     }
 
     @GetMapping(value = "/topographic-places/{id}/versions/{version}", produces = "application/json")
     public TopographicPlace getTopographicPlaceVersion(@PathVariable String id, @PathVariable String version) {
-        return Optional.ofNullable(
-                netexEntitiesIndex.getTopographicPlaceIndex().getVersion(id, version)
-        ).orElseThrow(NotFoundException::new);
+        return netexEntitiesService.getTopographicPlaceVersion(id, version);
+    }
+
+    @GetMapping(value = "/topographic-places/{id}/versions/{version}", produces = "application/xml")
+    public JAXBElement<TopographicPlace> getJAXBElementTopographicPlaceVersion(@PathVariable String id, @PathVariable String version) {
+        var topographicPlace = netexEntitiesService.getTopographicPlaceVersion(id, version);
+        return netexObjectFactory.createTopographicPlace(topographicPlace);
     }
 
     @GetMapping(value = "/tariff-zones", produces = "application/json")

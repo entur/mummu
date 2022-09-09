@@ -1,4 +1,4 @@
-package no.entur.mummu.resources;
+package no.entur.mummu.services;
 
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
@@ -7,10 +7,14 @@ import org.rutebanken.netex.model.GroupOfTariffZones;
 import org.rutebanken.netex.model.GroupsOfStopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.ObjectFactory;
+import org.rutebanken.netex.model.Parking;
+import org.rutebanken.netex.model.ParkingsInFrame_RelStructure;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TariffZonesInFrame_RelStructure;
+import org.rutebanken.netex.model.TopographicPlace;
+import org.rutebanken.netex.model.TopographicPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.Zone_VersionStructure;
 
 import javax.xml.bind.JAXBElement;
@@ -26,6 +30,9 @@ public class NetexObjectFactory extends ObjectFactory {
     private final static QName _fareZones_QNAME = new QName("http://www.netex.org.uk/netex", "fareZones");
     private final static QName _tariffZones_QNAME = new QName("http://www.netex.org.uk/netex", "tariffZones");
     private final static QName _groupsOfTariffZones_QNAME = new QName("http://www.netex.org.uk/netex", "groupsOfTariffZones");
+    private final static QName _parkings_QNAME = new QName("http://www.netex.org.uk/netex", "parkings");
+    private final static QName _quays_QNAME = new QName("http://www.netex.org.uk/netex", "quays");
+    private final static QName _topographicPlaces_QNAME = new QName("http://www.netex.org.uk/netex", "topographicPlaces");
 
     public JAXBElement<GroupsOfStopPlacesInFrame_RelStructure> createGroupsOfStopPlaces(List<GroupOfStopPlaces> groupsOfStopPlaces) {
         var groupsOfStopPlacesInFrame = createGroupsOfStopPlacesInFrame_RelStructure().withGroupOfStopPlaces(groupsOfStopPlaces);
@@ -54,5 +61,15 @@ public class NetexObjectFactory extends ObjectFactory {
     public JAXBElement<FareZonesInFrame_RelStructure> createFareZones(List<FareZone> fareZones) {
         var fareZonesInFrame = createFareZonesInFrame_RelStructure().withFareZone(fareZones);
         return new JAXBElement<>(_fareZones_QNAME, FareZonesInFrame_RelStructure.class, fareZonesInFrame);
+    }
+
+    public JAXBElement<ParkingsInFrame_RelStructure> createParkings(Collection<Parking> parkings) {
+        var parkingsInFrame = createParkingsInFrame_RelStructure().withParking(parkings);
+        return new JAXBElement<>(_parkings_QNAME, ParkingsInFrame_RelStructure.class, parkingsInFrame);
+    }
+
+    public JAXBElement<TopographicPlacesInFrame_RelStructure> createTopographicPlaces(Collection<TopographicPlace> topographicPlaces) {
+        var topographicPlacesInFrame = createTopographicPlacesInFrame_RelStructure().withTopographicPlace(topographicPlaces);
+        return new JAXBElement<>(_topographicPlaces_QNAME, TopographicPlacesInFrame_RelStructure.class, topographicPlacesInFrame);
     }
 }

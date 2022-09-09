@@ -11,14 +11,18 @@ import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.GroupOfTariffZones;
+import org.rutebanken.netex.model.Parking;
+import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
+import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.VehicleModeEnumeration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,6 +91,114 @@ public class NetexEntitiesService {
     public StopPlace getStopPlaceVersion(String id, String version) {
         return Optional.ofNullable(
                 netexEntitiesIndex.getStopPlaceIndex().getVersion(id, version)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public Collection<Parking> getParkingByStopPlaceId(String id) {
+        if (netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id) == null) {
+            throw new NotFoundException();
+        }
+        return netexEntitiesIndex.getParkingsByParentSiteRefIndex().get(id);
+    }
+
+    public List<Quay> getQuays(
+            Integer count,
+            Integer skip,
+            List<String> ids
+    ) {
+        return netexEntitiesIndex.getQuayIndex().getLatestVersions().stream()
+                .filter(new NetexIdFilter(ids))
+                .sorted(new NetexTechnicalIdComparator())
+                .skip(skip)
+                .limit(ids == null ? count : ids.size())
+                .collect(Collectors.toList());
+    }
+
+    public Quay getQuayById(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getQuayIndex().getLatestVersion(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public Collection<Quay> getQuayVersions(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getQuayIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public Quay getQuayVersion(String id, String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getQuayIndex().getVersion(id, version)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public StopPlace getStopPlaceByQuayId(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getStopPlaceIdByQuayIdIndex().get(id)
+        ).map(
+                stopPlaceId -> netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public List<Parking> getParkings(
+            Integer count,
+            Integer skip,
+            List<String> ids
+    ) {
+        return netexEntitiesIndex.getParkingIndex().getLatestVersions().stream()
+                .filter(new NetexIdFilter(ids))
+                .sorted(new NetexIdComparator())
+                .skip(skip)
+                .limit(ids == null ? count : ids.size())
+                .collect(Collectors.toList());
+    }
+
+    public Parking getParkingById(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getParkingIndex().getLatestVersion(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public Collection<Parking> getParkingVersions(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getParkingIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public Parking getParkingVersion(String id, String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getParkingIndex().getVersion(id, version)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public List<TopographicPlace> getTopographicPlaces(
+            Integer count,
+            Integer skip,
+            List<String> ids
+    ) {
+        return netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersions().stream()
+                .filter(new NetexIdFilter(ids))
+                .sorted(new NetexTechnicalIdComparator())
+                .skip(skip)
+                .limit(ids == null ? count : ids.size())
+                .collect(Collectors.toList());
+    }
+
+    public TopographicPlace getTopographicPlaceById(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersion(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public Collection<TopographicPlace> getTopographicPlaceVersions(String id) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTopographicPlaceIndex().getAllVersions(id)
+        ).orElseThrow(NotFoundException::new);
+    }
+
+    public TopographicPlace getTopographicPlaceVersion(String id, String version) {
+        return Optional.ofNullable(
+                netexEntitiesIndex.getTopographicPlaceIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
     }
 

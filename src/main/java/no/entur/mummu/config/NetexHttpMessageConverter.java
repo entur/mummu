@@ -9,7 +9,6 @@ import org.xml.sax.SAXException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import java.io.IOException;
@@ -54,10 +53,11 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "");
 
+
         return marshaller;
     }
 
-    private static JAXBContext createContext(Class clazz) {
+    private static JAXBContext createContext(Class... clazz) {
         try {
             JAXBContext jaxbContext = newInstance(clazz);
             //logger.info("Created context {}", jaxbContext.getClass());
