@@ -6,21 +6,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.xml.AbstractXmlHttpMessageConverter;
-import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
-import java.io.IOException;
 import java.util.List;
 
 import static javax.xml.bind.JAXBContext.newInstance;
 
 public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<Object> {
 
-    private static final Logger logger = LoggerFactory.getLogger(NetexHttpMessageConverter.class);
+    private static final Logger log = LoggerFactory.getLogger(NetexHttpMessageConverter.class);
     private static final JAXBContext publicationDeliveryContext = createContext(PublicationDeliveryStructure.class);
     private Marshaller marshaller;
 
@@ -44,7 +42,7 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
         return List.of(MediaType.APPLICATION_XML);
     }
 
-    private Marshaller getMarshaller() throws JAXBException, IOException, SAXException {
+    private Marshaller getMarshaller() throws JAXBException {
         if (marshaller == null) {
             marshaller = createMarshaller();
         }
@@ -62,11 +60,11 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
     private static JAXBContext createContext(Class... clazz) {
         try {
             JAXBContext jaxbContext = newInstance(clazz);
-            logger.info("Created context {}", jaxbContext.getClass());
+            log.info("Created context {}", jaxbContext.getClass());
             return jaxbContext;
         } catch (JAXBException e) {
             String message = "Could not create instance of jaxb context for class " + clazz;
-            logger.warn(message, e);
+            log.warn(message, e);
             throw new RuntimeException("Could not create instance of jaxb context for class " + clazz, e);
         }
     }
