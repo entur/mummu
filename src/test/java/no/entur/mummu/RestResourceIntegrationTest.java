@@ -24,6 +24,7 @@ class RestResourceIntegrationTest {
 
     @Test
     void testGetGroupsOfStopPlaces() throws Exception {
+
         mvc.perform(get("/groups-of-stop-places")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

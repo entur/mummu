@@ -1,4 +1,4 @@
-package no.entur.mummu.services;
+package no.entur.mummu.updater;
 
 import no.entur.mummu.repositories.StopPlaceRepository;
 import org.entur.netex.index.api.NetexEntitiesIndex;
@@ -33,7 +33,7 @@ public class StopPlacesUpdater {
         } else {
             // All other event types means replacing the entry in the index:
             // - get all versions of stop place from tiamat
-            var versions = repository.getStopPlaceVersions(stopPlaceId);
+            var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
             // - then replace entry in index
         }
     }

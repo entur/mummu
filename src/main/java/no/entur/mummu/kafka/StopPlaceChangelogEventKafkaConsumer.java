@@ -1,6 +1,6 @@
 package no.entur.mummu.kafka;
 
-import no.entur.mummu.services.StopPlacesUpdater;
+import no.entur.mummu.updater.StopPlacesUpdater;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
 import org.springframework.beans.factory.annotation.Autowired;

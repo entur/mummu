@@ -6,13 +6,12 @@ import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
 import org.springframework.kafka.listener.adapter.RecordFilterStrategy;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class StopPlaceChangelogEventRecordFilterStrategy implements RecordFilterStrategy<String, StopPlaceChangelogEvent> {
 
-    private final static String DEFAULT_TIME_ZONE = "Europe/Oslo";
+    private static final String DEFAULT_TIME_ZONE = "Europe/Oslo";
 
     private final NetexEntitiesIndex netexEntitiesIndex;
 
