@@ -19,7 +19,7 @@ public class StopPlaceRepository {
 
     private final RestTemplate tiamatClient;
 
-    private final String stopPlaceUrl = UriComponentsBuilder.fromHttpUrl("/netex")
+    private final String stopPlaceUrl = UriComponentsBuilder.fromPath("/netex")
             .queryParam("idList", "{idList}")
             .queryParam("topographicPlaceExportMode", "{topographicPlaceExportMode}")
             .queryParam("tariffZoneExportMode", "{tariffZoneExportMode}")
