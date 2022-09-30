@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 public class StopPlaceChangelogEventRecordFilterStrategy implements RecordFilterStrategy<String, StopPlaceChangelogEvent> {
 
-    private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
+    private static final Logger log = LoggerFactory.getLogger(StopPlaceChangelogEventRecordFilterStrategy.class);
 
     private final NetexEntitiesIndex netexEntitiesIndex;
 
