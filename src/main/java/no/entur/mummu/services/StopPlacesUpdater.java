@@ -1,5 +1,6 @@
 package no.entur.mummu.services;
 
+import no.entur.mummu.repositories.StopPlaceRepository;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.irkalla.avro.EnumType;
 import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
@@ -13,9 +14,12 @@ public class StopPlacesUpdater {
     private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
     private final NetexEntitiesIndex netexEntitiesIndex;
 
+    private final StopPlaceRepository repository;
+
     @Autowired
-    public StopPlacesUpdater(NetexEntitiesIndex netexEntitiesIndex) {
+    public StopPlacesUpdater(NetexEntitiesIndex netexEntitiesIndex, StopPlaceRepository repository) {
         this.netexEntitiesIndex = netexEntitiesIndex;
+        this.repository = repository;
     }
 
     public void receiveStopPlaceUpdate(StopPlaceChangelogEvent event) {
@@ -29,7 +33,7 @@ public class StopPlacesUpdater {
         } else {
             // All other event types means replacing the entry in the index:
             // - get all versions of stop place from tiamat
-            // - https://api.dev.entur.io/stop-places/v1/netex?idList=NSR:StopPlace:2531&topographicPlaceExportMode=NONE&tariffZoneExportMode=NONE&versionValidity=ALL
+            var versions = repository.getStopPlaceVersions(stopPlaceId);
             // - then replace entry in index
         }
     }
