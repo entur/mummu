@@ -30,15 +30,12 @@ public class StopPlacesUpdater {
             netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
                     .getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
             netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
-//            netexEntitiesIndex.getParkingsByParentSiteRefIndex().get(stopPlaceId)
-//                    .forEach(parking -> netexEntitiesIndex.getParkingIndex().remove(parking.getId()));
-//            netexEntitiesIndex.getParkingsByParentSiteRefIndex().removeAll(stopPlaceId);
         } else {
             log.debug("updating stopPlace id={}", stopPlaceId);
             var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
             netexEntitiesIndex.getStopPlaceIndex().put(stopPlaceId, stopPlaceUpdate.getVersions());
             stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
-//            stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
+            stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
         }
     }
 }
