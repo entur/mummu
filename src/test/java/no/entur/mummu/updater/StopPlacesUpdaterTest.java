@@ -1,18 +1,8 @@
 package no.entur.mummu.updater;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import no.entur.mummu.repositories.StopPlaceRepository;
-import no.entur.mummu.serializers.CustomSerializers;
-import no.entur.mummu.serializers.MummuSerializerContext;
 import no.entur.mummu.services.NetexObjectFactory;
-import org.apache.commons.lang3.SerializationUtils;
 import org.entur.netex.NetexParser;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.junit.jupiter.api.Assertions;
@@ -32,31 +22,19 @@ import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.Quays_RelStructure;
 import org.rutebanken.netex.model.SiteRefStructure;
 import org.rutebanken.netex.model.StopPlace;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
-import javax.xml.transform.Result;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static no.entur.mummu.services.NetexObjectFactory.NAMESPACE_URI;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -106,7 +84,7 @@ class StopPlacesUpdaterTest {
     }
 
     @Test
-    void testUpdate() throws JsonProcessingException {
+    void testUpdate() {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.UPDATE);
         event.setStopPlaceId("NSR:StopPlace:4004");
@@ -126,8 +104,6 @@ class StopPlacesUpdaterTest {
         update.setVersions(newVersions);
         update.setParkingVersions(Map.of());
         update.setQuayVersions(Map.of());
-        //var quays = stopPlace.getQuays().getQuayRefOrQuay().stream().map(q -> netexEntitiesIndex.getQuayIndex().getAllVersions(((Quay)q).getId()));
-        //update.setQuayVersions(quays.collect(Collectors.toMap(e -> e.stream().findFirst().get().getId(), e -> e)));
 
         Mockito.when(stopPlaceRepository.getStopPlaceUpdate("NSR:StopPlace:4004")).thenReturn(update);
 
