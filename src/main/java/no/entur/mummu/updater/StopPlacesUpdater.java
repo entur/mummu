@@ -33,9 +33,12 @@ public class StopPlacesUpdater {
         } else {
             log.debug("updating stopPlace id={}", stopPlaceId);
             var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
-            netexEntitiesIndex.getStopPlaceIndex().put(stopPlaceId, stopPlaceUpdate.getVersions());
-            stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
-            stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
+
+            if (stopPlaceUpdate != null) {
+                netexEntitiesIndex.getStopPlaceIndex().put(stopPlaceId, stopPlaceUpdate.getVersions());
+                stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
+                stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
+            }
         }
     }
 }

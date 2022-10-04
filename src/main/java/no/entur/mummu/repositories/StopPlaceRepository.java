@@ -5,6 +5,7 @@ import org.entur.netex.NetexParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -21,15 +22,8 @@ public class StopPlaceRepository {
     private static final Logger logger = LoggerFactory.getLogger(StopPlaceRepository.class);
     private final RestTemplate tiamatClient;
 
-    private final String stopPlaceUrl = UriComponentsBuilder.fromPath("/netex")
-            .queryParam("idList", "{idList}")
-            .queryParam("topographicPlaceExportMode", "{topographicPlaceExportMode}")
-            .queryParam("tariffZoneExportMode", "{tariffZoneExportMode}")
-            .queryParam("fareZoneExportMode", "{fareZoneExportMode}")
-            .queryParam("allVersions", "{allVersions}")
-            .queryParam("size", "{size}")
-            .encode()
-            .toUriString();
+    @Value("${no.entur.mummu.tiamat.url=https://api.dev.entur.io/stop-places/v1}")
+    private String tiamatUrl;
 
     @Autowired
     public StopPlaceRepository(RestTemplate tiamatClient) {
@@ -37,6 +31,16 @@ public class StopPlaceRepository {
     }
 
     public StopPlaceUpdate getStopPlaceUpdate(String stopPlaceId) {
+        String stopPlaceUrl = UriComponentsBuilder.fromHttpUrl(tiamatUrl + "/netex")
+                .queryParam("idList", "{idList}")
+                .queryParam("topographicPlaceExportMode", "{topographicPlaceExportMode}")
+                .queryParam("tariffZoneExportMode", "{tariffZoneExportMode}")
+                .queryParam("fareZoneExportMode", "{fareZoneExportMode}")
+                .queryParam("allVersions", "{allVersions}")
+                .queryParam("size", "{size}")
+                .encode()
+                .toUriString();
+
         try {
             var response = tiamatClient.exchange(
                     stopPlaceUrl,
@@ -64,7 +68,7 @@ public class StopPlaceRepository {
 
             return stopPlaceUpdate;
         } catch (IOException | NullPointerException exception) {
-            logger.warn("Failed to get update from stop place repository. Skipping...");
+            logger.warn("Failed to get update from stop place repository. Skipping...", exception);
             return null;
         }
     }
