@@ -4,6 +4,7 @@ import no.entur.mummu.updater.StopPlacesUpdater;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.PartitionOffset;
@@ -19,7 +20,7 @@ public class StopPlaceChangelogEventKafkaConsumer {
     StopPlacesUpdater stopPlacesUpdater;
 
     @KafkaListener(
-            topicPartitions = @TopicPartition(topic = "ror-stop-place-changelog-dev",
+            topicPartitions = @TopicPartition(topic = "${no.entur.mummu.changelog.topic:ror-stop-place-changelog-dev}",
                     partitionOffsets = {
                             @PartitionOffset(partition = "0", initialOffset = "0"),
                             @PartitionOffset(partition = "1", initialOffset = "0"),

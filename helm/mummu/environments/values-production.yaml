@@ -5,6 +5,8 @@ replicas: 2
 configMap:
   logLevel: INFO
   hostUrl: https://api.entur.io/stop-places/v1/read
+  tiamatUrl: https://api.entur.io/stop-places/v1
+  changelogTopic: ror-stop-place-changelog-production
 
 netexDataUrl: https://storage.googleapis.com/marduk-production/tiamat/Full_latest.zip
 

@@ -3,6 +3,8 @@ env: dev
 configMap:
   logLevel: DEBUG
   hostUrl: https://api.dev.entur.io/stop-places/v1/read
+  tiamatUrl: https://api.dev.entur.io/stop-places/v1
+  changelogTopic: ror-stop-place-changelog-dev
 
 netexDataUrl: https://storage.googleapis.com/marduk-dev/tiamat/Full_latest.zip
 

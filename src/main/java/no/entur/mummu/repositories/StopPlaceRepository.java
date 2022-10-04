@@ -2,6 +2,8 @@ package no.entur.mummu.repositories;
 
 import no.entur.mummu.updater.StopPlaceUpdate;
 import org.entur.netex.NetexParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
@@ -16,7 +18,7 @@ import java.util.Objects;
 
 @Component
 public class StopPlaceRepository {
-
+    private static final Logger logger = LoggerFactory.getLogger(StopPlaceRepository.class);
     private final RestTemplate tiamatClient;
 
     private final String stopPlaceUrl = UriComponentsBuilder.fromPath("/netex")
@@ -62,8 +64,7 @@ public class StopPlaceRepository {
 
             return stopPlaceUpdate;
         } catch (IOException | NullPointerException exception) {
-            // log warning?
-
+            logger.warn("Failed to get update from stop place repository. Skipping...");
             return null;
         }
     }
