@@ -21,6 +21,10 @@ public class StopPlaceChangelogEventRecordFilterStrategy implements RecordFilter
 
     @Override
     public boolean filter(ConsumerRecord<String, StopPlaceChangelogEvent> consumerRecord) {
+        if (consumerRecord.value().getStopPlaceChanged() == null) {
+            return true;
+        }
+
         var changedTime = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(consumerRecord.value().getStopPlaceChanged()));
         var localPublicationTimestamp = netexEntitiesIndex.getPublicationTimestamp();
         var timeZone = netexEntitiesIndex.getSiteFrames().stream()

@@ -44,6 +44,13 @@ class StopPlaceChangelogEventRecordFilterStrategyTest {
         );
     }
 
+    @Test
+    void testEventDiscardedIfChangedNull() {
+        Assertions.assertTrue(
+                filterStrategy.filter(createTestSubject(null))
+        );
+    }
+
     @NotNull
     private static ConsumerRecord<String, StopPlaceChangelogEvent> createTestSubject(String changed) {
         var event = new StopPlaceChangelogEvent();
