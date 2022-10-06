@@ -31,11 +31,13 @@ data:
     no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
 
     # Kafka
-    spring.kafka.consumer.enable-auto-commit=false
     entur.kafka.kafkaCluster={{ .Values.configMap.kafka.kafkaCluster }}
     entur.kafka.avroSerializableClasses=org.rutebanken.irkalla.avro.StopPlaceChangelogEvent
-    #consumer group should be null or not set
-    #entur.kafka.consumer.group=mummu
+    entur.kafka.consumer.enabled=true
+    entur.kafka.consumer.offsetReset=earliest
+    entur.kafka.consumer.enableAutoCommit=false
+    entur.kafka.producer.enabled=false
+    spring.kafka.listener.ack-mode=manual
     entur.kafka.sasl.username=${KAFKAUSERNAME}
     entur.kafka.sasl.password=${KAFKAPASSWORD}
 
