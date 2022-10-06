@@ -51,7 +51,7 @@ public class StopPlacesUpdater {
         }
     }
 
-    public boolean filter(StopPlaceChangelogEvent event) {
+    protected boolean filter(StopPlaceChangelogEvent event) {
         if (event.getStopPlaceChanged() == null) {
             return true;
         }

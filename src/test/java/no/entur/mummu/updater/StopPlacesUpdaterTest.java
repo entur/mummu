@@ -170,4 +170,35 @@ class StopPlacesUpdaterTest {
             throw new RuntimeException(e);
         }
     }
+
+
+    @Test
+    void testEventDiscardedIfChangedBeforePublicationTime() {
+        Assertions.assertTrue(
+                stopPlacesUpdater.filter(createTestSubject("2004-12-31T20:00:00Z"))
+        );
+    }
+
+    @Test
+    void testEventNotDiscardedIfChangedAfterPublicationTime() {
+        Assertions.assertFalse(
+                stopPlacesUpdater.filter(createTestSubject("2005-01-01T03:00:00Z"))
+        );
+    }
+
+    @Test
+    void testEventDiscardedIfChangedNull() {
+        Assertions.assertTrue(
+                stopPlacesUpdater.filter(createTestSubject(null))
+        );
+    }
+    
+    private static StopPlaceChangelogEvent createTestSubject(String changed) {
+        var event = new StopPlaceChangelogEvent();
+        event.setEventType(EnumType.UPDATE);
+        event.setStopPlaceId("NSR:StopPlace:9999");
+        event.setStopPlaceChanged(changed);
+        event.setStopPlaceVersion(1);
+        return event;
+    }
 }
