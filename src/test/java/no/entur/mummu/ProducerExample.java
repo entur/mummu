@@ -51,9 +51,9 @@ public class ProducerExample {
         try (KafkaProducer<String, StopPlaceChangelogEvent> producer = new KafkaProducer<>(props)) {
             StopPlaceChangelogEvent testEvent = StopPlaceChangelogEvent.newBuilder()
                     .setEventType(EnumType.UPDATE)
-                    .setStopPlaceId("NSR:StopPlace:8922")
+                    .setStopPlaceId("NSR:StopPlace:22976")
                     .setStopPlaceVersion(3)
-                    .setStopPlaceChanged("2022-09-30T20:06:56Z")
+                    .setStopPlaceChanged("2022-10-04T11:06:56Z")
                     .build();
 
             final ProducerRecord<String, StopPlaceChangelogEvent> record = new ProducerRecord<>(TOPIC, testEvent);

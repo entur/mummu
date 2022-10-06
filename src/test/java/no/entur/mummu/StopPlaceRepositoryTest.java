@@ -13,14 +13,10 @@ class StopPlaceRepositoryTest {
     @Disabled
     void testGetStopPlaces() {
         RestTemplate client = new RestTemplateBuilder()
-                .rootUri("https://api.dev.entur.io/stop-places/v1")
                 .build();
 
-        StopPlaceRepository repository = new StopPlaceRepository(client);
-
+        StopPlaceRepository repository = new StopPlaceRepository(client, "https://api.dev.entur.io/stop-places/v1");
         var update = repository.getStopPlaceUpdate("NSR:StopPlace:337");
-
-
         Assertions.assertEquals(43, update.getVersions().size());
     }
 }

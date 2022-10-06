@@ -21,13 +21,12 @@ import java.util.Objects;
 public class StopPlaceRepository {
     private static final Logger logger = LoggerFactory.getLogger(StopPlaceRepository.class);
     private final RestTemplate tiamatClient;
-
-    @Value("${no.entur.mummu.tiamat.url=https://api.dev.entur.io/stop-places/v1}")
-    private String tiamatUrl;
+    private final String tiamatUrl;
 
     @Autowired
-    public StopPlaceRepository(RestTemplate tiamatClient) {
+    public StopPlaceRepository(RestTemplate tiamatClient, @Value("${no.entur.mummu.tiamat.url:https://api.dev.entur.io/stop-places/v1}") String tiamatUrl) {
         this.tiamatClient = tiamatClient;
+        this.tiamatUrl = tiamatUrl;
     }
 
     public StopPlaceUpdate getStopPlaceUpdate(String stopPlaceId) {
