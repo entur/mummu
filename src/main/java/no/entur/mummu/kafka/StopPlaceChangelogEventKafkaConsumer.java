@@ -23,8 +23,7 @@ public class StopPlaceChangelogEventKafkaConsumer {
                             topic = "${no.entur.mummu.changelog.topic:ror-stop-place-changelog-dev}",
                             partitions = {"#{@partitionFinder.allPartitions(\"${no.entur.mummu.changelog.topic:ror-stop-place-changelog-dev}\")}"}
                     )
-            },
-            containerFactory = "filterKafkaListenerContainerFactory")
+            })
     public void consume(@Payload ConsumerRecord<String, StopPlaceChangelogEvent> message) {
         stopPlacesUpdater.receiveStopPlaceUpdate(message.value());
     }

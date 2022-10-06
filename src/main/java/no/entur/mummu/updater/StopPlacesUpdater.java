@@ -10,11 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 @Service
 public class StopPlacesUpdater {
     private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
     private final NetexEntitiesIndex netexEntitiesIndex;
     private final StopPlaceRepository repository;
+    private static final String DEFAULT_TIME_ZONE = "Europe/Oslo";
 
     @Autowired
     public StopPlacesUpdater(NetexEntitiesIndex netexEntitiesIndex, StopPlaceRepository repository) {
@@ -23,15 +28,19 @@ public class StopPlacesUpdater {
     }
 
     public void receiveStopPlaceUpdate(StopPlaceChangelogEvent event) {
+        if (filter(event)) {
+            log.info("Discarded event {}", event);
+        }
+
         String stopPlaceId = event.getStopPlaceId().toString();
 
         if (event.getEventType().equals(EnumType.DELETE)) {
-            log.debug("deleting stopPlace id={}", stopPlaceId);
+            log.info("deleting stopPlace id={}", stopPlaceId);
             netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
                     .getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
             netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
         } else {
-            log.debug("updating stopPlace id={}", stopPlaceId);
+            log.info("updating stopPlace id={}", stopPlaceId);
             var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
 
             if (stopPlaceUpdate != null) {
@@ -40,5 +49,20 @@ public class StopPlacesUpdater {
                 stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
             }
         }
+    }
+
+    public boolean filter(StopPlaceChangelogEvent event) {
+        if (event.getStopPlaceChanged() == null) {
+            return true;
+        }
+
+        var changedTime = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(event.getStopPlaceChanged()));
+        var localPublicationTimestamp = netexEntitiesIndex.getPublicationTimestamp();
+        var timeZone = netexEntitiesIndex.getSiteFrames().stream()
+                .findFirst()
+                .map(frame -> frame.getFrameDefaults().getDefaultLocale().getTimeZone())
+                .orElse(DEFAULT_TIME_ZONE);
+        var publicationTime = localPublicationTimestamp.atZone(ZoneId.of(timeZone)).toInstant();
+        return changedTime.isBefore(publicationTime);
     }
 }
