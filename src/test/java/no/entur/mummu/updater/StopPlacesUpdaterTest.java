@@ -182,7 +182,7 @@ class StopPlacesUpdaterTest {
     @Test
     void testEventNotDiscardedIfChangedAfterPublicationTime() {
         Assertions.assertFalse(
-                stopPlacesUpdater.filter(createTestSubject("2005-01-01T03:00:00Z"))
+                stopPlacesUpdater.filter(createTestSubject("2021-05-05T03:00:00Z"))
         );
     }
 
@@ -192,7 +192,7 @@ class StopPlacesUpdaterTest {
                 stopPlacesUpdater.filter(createTestSubject(null))
         );
     }
-    
+
     private static StopPlaceChangelogEvent createTestSubject(String changed) {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.UPDATE);
