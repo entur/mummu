@@ -39,6 +39,11 @@ public class StopPlacesUpdater {
             netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
                     .getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
             netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
+            netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
+                if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
+                    netexEntitiesIndex.getStopPlaceIndex().remove(stop.getId());
+                }
+            });
         } else {
             log.info("updating stopPlace id={}", stopPlaceId);
             var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
