@@ -87,6 +87,29 @@ class StopPlacesUpdaterTest {
     }
 
     @Test
+    void testDeleteMultimodal() {
+        var event = new StopPlaceChangelogEvent();
+        event.setEventType(EnumType.DELETE);
+        event.setStopPlaceId("NSR:StopPlace:59687");
+        event.setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2005-01-01T03:00:00Z")));
+        event.setStopPlaceVersion(72);
+
+        Assertions.assertEquals(1, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:59687").size());
+        Assertions.assertEquals(1, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:44550").size());
+
+        Assertions.assertNotNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:59687"));
+        Assertions.assertNotNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:44550"));
+
+        stopPlacesUpdater.receiveStopPlaceUpdate(event);
+
+        Assertions.assertEquals(0, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:59687").size());
+        Assertions.assertNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:59687"));
+
+        Assertions.assertEquals(0, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:44550").size());
+        Assertions.assertNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:44550"));
+    }
+
+    @Test
     void testUpdate() {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.UPDATE);

@@ -36,14 +36,16 @@ public class StopPlacesUpdater {
 
         if (event.getEventType().equals(EnumType.DELETE)) {
             log.info("deleting stopPlace id={}", stopPlaceId);
-            netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId)
-                    .getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
-            netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
+            var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId);
+            if (stopPlace.getQuays() != null) {
+                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
+            }
             netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
                 if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
                     netexEntitiesIndex.getStopPlaceIndex().remove(stop.getId());
                 }
             });
+            netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
         } else {
             log.info("updating stopPlace id={}", stopPlaceId);
             var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
