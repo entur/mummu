@@ -60,8 +60,7 @@ public class StopPlaceRepository {
             var index = parser.parse(Objects.requireNonNull(response.getBody()).getInputStream());
 
             StopPlaceUpdate stopPlaceUpdate = new StopPlaceUpdate();
-            stopPlaceUpdate.setStopPlaceId(stopPlaceId);
-            stopPlaceUpdate.setVersions(index.getStopPlaceIndex().getAllVersions(stopPlaceId));
+            stopPlaceUpdate.setVersions(index.getStopPlaceIndex().getAllVersions());
             stopPlaceUpdate.setQuayVersions(index.getQuayIndex().getAllVersions());
             stopPlaceUpdate.setParkingVersions(index.getParkingIndex().getAllVersions());
 

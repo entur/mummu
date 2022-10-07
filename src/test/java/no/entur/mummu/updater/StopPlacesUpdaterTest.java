@@ -30,10 +30,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -61,7 +64,7 @@ class StopPlacesUpdaterTest {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.DELETE);
         event.setStopPlaceId("NSR:StopPlace:4004");
-        event.setStopPlaceChanged("2005-01-01T03:00:00Z");
+        event.setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2005-01-01T03:00:00Z")));
         event.setStopPlaceVersion(72);
 
         Assertions.assertTrue(netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:4004").size() > 0);
@@ -88,7 +91,7 @@ class StopPlacesUpdaterTest {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.UPDATE);
         event.setStopPlaceId("NSR:StopPlace:4004");
-        event.setStopPlaceChanged("2006-01-01T03:00:00Z");
+        event.setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2006-01-01T03:00:00Z")));
         event.setStopPlaceVersion(73);
 
         var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:4004");
@@ -101,7 +104,7 @@ class StopPlacesUpdaterTest {
         var update = new StopPlaceUpdate();
         var newVersions = new ArrayList<>(List.of(subject));
         newVersions.addAll(allVersions);
-        update.setVersions(newVersions);
+        update.setVersions(Map.of("NSR:StopPlace:4004", newVersions));
         update.setParkingVersions(Map.of());
         update.setQuayVersions(Map.of());
 
@@ -120,7 +123,7 @@ class StopPlacesUpdaterTest {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.CREATE);
         event.setStopPlaceId("NSR:StopPlace:4005");
-        event.setStopPlaceChanged("2005-01-01T03:00:00Z");
+        event.setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2005-01-01T03:00:00Z")));
         event.setStopPlaceVersion(1);
 
         var quay = new Quay()
@@ -138,7 +141,7 @@ class StopPlacesUpdaterTest {
                 .withParentSiteRef(new SiteRefStructure().withRef(stopPlace.getId()).withVersion(stopPlace.getVersion()));
 
         var update = new StopPlaceUpdate();
-        update.setVersions(List.of(stopPlace));
+        update.setVersions(Map.of("NSR:StopPlace:4005", List.of(stopPlace)));
         update.setQuayVersions(Map.of(quay.getId(), List.of(quay)));
         update.setParkingVersions(Map.of(parking.getId(), List.of(parking)));
 
@@ -197,7 +200,7 @@ class StopPlacesUpdaterTest {
         var event = new StopPlaceChangelogEvent();
         event.setEventType(EnumType.UPDATE);
         event.setStopPlaceId("NSR:StopPlace:9999");
-        event.setStopPlaceChanged(changed);
+        event.setStopPlaceChanged(Optional.ofNullable(changed).map(v -> Instant.from(DateTimeFormatter.ISO_INSTANT.parse(v))).orElse(null));
         event.setStopPlaceVersion(1);
         return event;
     }

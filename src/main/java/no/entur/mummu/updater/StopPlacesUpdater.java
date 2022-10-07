@@ -44,7 +44,7 @@ public class StopPlacesUpdater {
             var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
 
             if (stopPlaceUpdate != null) {
-                netexEntitiesIndex.getStopPlaceIndex().put(stopPlaceId, stopPlaceUpdate.getVersions());
+                stopPlaceUpdate.getVersions().forEach((s, versions) -> netexEntitiesIndex.getStopPlaceIndex().put(s, versions));
                 stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
                 stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
             }
@@ -56,7 +56,7 @@ public class StopPlacesUpdater {
             return true;
         }
 
-        var changedTime = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(event.getStopPlaceChanged()));
+        var changedTime = event.getStopPlaceChanged();
         var localPublicationTimestamp = netexEntitiesIndex.getPublicationTimestamp();
         var timeZone = netexEntitiesIndex.getSiteFrames().stream()
                 .findFirst()

@@ -8,24 +8,15 @@ import java.util.Collection;
 import java.util.Map;
 
 public class StopPlaceUpdate {
-    private String stopPlaceId;
-    private Collection<StopPlace> versions;
+    private Map<String, Collection<StopPlace>> versions;
     private Map<String, Collection<Quay>> quayVersions;
     private Map<String, Collection<Parking>> parkingVersions;
 
-    public String getStopPlaceId() {
-        return stopPlaceId;
-    }
-
-    public void setStopPlaceId(String stopPlaceId) {
-        this.stopPlaceId = stopPlaceId;
-    }
-
-    public Collection<StopPlace> getVersions() {
+    public Map<String, Collection<StopPlace>> getVersions() {
         return versions;
     }
 
-    public void setVersions(Collection<StopPlace> versions) {
+    public void setVersions(Map<String, Collection<StopPlace>> versions) {
         this.versions = versions;
     }
 

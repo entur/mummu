@@ -9,6 +9,8 @@ import org.apache.kafka.common.errors.SerializationException;
 import org.rutebanken.irkalla.avro.EnumType;
 import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -53,7 +55,7 @@ public class ProducerExample {
                     .setEventType(EnumType.UPDATE)
                     .setStopPlaceId("NSR:StopPlace:22976")
                     .setStopPlaceVersion(3)
-                    .setStopPlaceChanged("2022-10-04T11:06:56Z")
+                    .setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2022-10-04T11:06:56Z")))
                     .build();
 
             final ProducerRecord<String, StopPlaceChangelogEvent> record = new ProducerRecord<>(TOPIC, testEvent);

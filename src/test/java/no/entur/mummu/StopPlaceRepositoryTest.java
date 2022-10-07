@@ -17,6 +17,6 @@ class StopPlaceRepositoryTest {
 
         StopPlaceRepository repository = new StopPlaceRepository(client, "https://api.dev.entur.io/stop-places/v1");
         var update = repository.getStopPlaceUpdate("NSR:StopPlace:337");
-        Assertions.assertEquals(43, update.getVersions().size());
+        Assertions.assertEquals(43, update.getVersions().get("NSR:StopPlace:337").size());
     }
 }
