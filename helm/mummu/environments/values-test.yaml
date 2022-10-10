@@ -5,6 +5,7 @@ configMap:
   hostUrl: https://api.staging.entur.io/stop-places/v1/read
   tiamatUrl: https://api.staging.entur.io/stop-places/v1
   changelogTopic: ror-stop-place-changelog-staging
+  kafkaCluster: TEST_EXT
 
 netexDataUrl: https://storage.googleapis.com/marduk-test/tiamat/Full_latest.zip
 

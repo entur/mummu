@@ -31,7 +31,7 @@ data:
     no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
 
     # Kafka
-    entur.kafka.kafkaCluster={{ .Values.configMap.kafka.kafkaCluster }}
+    entur.kafka.kafkaCluster={{ .Values.configMap.kafkaCluster }}
     entur.kafka.avroSerializableClasses=org.rutebanken.irkalla.avro.StopPlaceChangelogEvent
     entur.kafka.consumer.enabled=true
     entur.kafka.consumer.offsetReset=earliest
