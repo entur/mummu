@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -65,8 +66,11 @@ public class StopPlaceRepository {
             stopPlaceUpdate.setParkingVersions(index.getParkingIndex().getAllVersions());
 
             return stopPlaceUpdate;
-        } catch (IOException | NullPointerException exception) {
-            logger.warn("Failed to get update from stop place repository. Skipping...", exception);
+        } catch (RestClientException | IOException exception) {
+            logger.warn("Failed to get update for id {} from stop place repository. Trying again due to {}", stopPlaceId, exception.toString());
+            throw new RuntimeException(exception);
+        } catch (RuntimeException exception) {
+            logger.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
             return null;
         }
     }
