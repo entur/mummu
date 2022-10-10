@@ -33,26 +33,9 @@ public class StopPlacesUpdater {
         String stopPlaceId = event.getStopPlaceId().toString();
 
         if (event.getEventType().equals(EnumType.DELETE)) {
-            log.info("deleting stopPlace id={}", stopPlaceId);
-            var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId);
-            if (stopPlace.getQuays() != null) {
-                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
-            }
-            netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
-                if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
-                    netexEntitiesIndex.getStopPlaceIndex().remove(stop.getId());
-                }
-            });
-            netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
+            delete(stopPlaceId);
         } else {
-            log.info("updating stopPlace id={}", stopPlaceId);
-            var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
-
-            if (stopPlaceUpdate != null) {
-                stopPlaceUpdate.getVersions().forEach((s, versions) -> netexEntitiesIndex.getStopPlaceIndex().put(s, versions));
-                stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
-                stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
-            }
+            update(event, stopPlaceId);
         }
     }
 
@@ -69,5 +52,34 @@ public class StopPlacesUpdater {
                 .orElse(DEFAULT_TIME_ZONE);
         var publicationTime = localPublicationTimestamp.atZone(ZoneId.of(timeZone)).toInstant();
         return changedTime.isBefore(publicationTime);
+    }
+
+    private void delete(String stopPlaceId) {
+        log.info("deleting stopPlace id={}", stopPlaceId);
+        var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId);
+        if (stopPlace == null) {
+            log.info("couldn't find stop place in index {}", stopPlaceId);
+        } else {
+            if (stopPlace.getQuays() != null) {
+                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
+            }
+            netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
+                if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
+                    netexEntitiesIndex.getStopPlaceIndex().remove(stop.getId());
+                }
+            });
+            netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
+        }
+    }
+
+    private void update(StopPlaceChangelogEvent event, String stopPlaceId) {
+        log.info("event type {} stopPlace id={}", event.getEventType(), stopPlaceId);
+        var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
+
+        if (stopPlaceUpdate != null) {
+            stopPlaceUpdate.getVersions().forEach((s, versions) -> netexEntitiesIndex.getStopPlaceIndex().put(s, versions));
+            stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
+            stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
+        }
     }
 }
