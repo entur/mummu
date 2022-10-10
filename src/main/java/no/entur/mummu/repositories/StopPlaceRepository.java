@@ -68,7 +68,7 @@ public class StopPlaceRepository {
             return stopPlaceUpdate;
         } catch (RestClientException | IOException exception) {
             logger.warn("Failed to get update for id {} from stop place repository. Trying again due to {}", stopPlaceId, exception.toString());
-            throw new RuntimeException(exception);
+            throw new StopPlaceFetchException(exception);
         } catch (RuntimeException exception) {
             logger.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
             return null;
