@@ -2,16 +2,14 @@ package no.entur.mummu;
 
 import no.entur.mummu.repositories.StopPlaceRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+
 class StopPlaceRepositoryTest {
 
-    @Test
-    @Disabled
-    void testGetStopPlaces() {
+    public static void main(final String[] args) throws IOException {
         RestTemplate client = new RestTemplateBuilder()
                 .build();
 
