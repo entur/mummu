@@ -92,7 +92,7 @@ class StopPlacesUpdaterTest {
         event.setEventType(EnumType.DELETE);
         event.setStopPlaceId("NSR:StopPlace:59687");
         event.setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2005-01-01T03:00:00Z")));
-        event.setStopPlaceVersion(72);
+        event.setStopPlaceVersion(21);
 
         Assertions.assertEquals(1, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:59687").size());
         Assertions.assertEquals(1, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:44550").size());
@@ -139,6 +139,48 @@ class StopPlacesUpdaterTest {
 
         Assertions.assertEquals(3, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:4004").size());
         Assertions.assertEquals("Changed!", netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:4004").getDescription().getValue());
+    }
+
+    @Test
+    void testUpdateMultiModal() {
+        var event = new StopPlaceChangelogEvent();
+        event.setEventType(EnumType.UPDATE);
+        event.setStopPlaceId("NSR:StopPlace:59687");
+        event.setStopPlaceChanged(Instant.from(DateTimeFormatter.ISO_INSTANT.parse("2006-01-01T03:00:00Z")));
+        event.setStopPlaceVersion(22);
+
+
+        var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:59687");
+        var allVersions = netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:59687");
+
+        var childStopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:44550");
+        var childAllVersions = netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:44550");
+
+        var subject = cloneStopPlace(stopPlace)
+                .withVersion("22");
+
+        var childSubject = cloneStopPlace(childStopPlace)
+                .withVersion("31")
+                .withDescription(new MultilingualString().withValue("Changed!").withLang("en"));
+
+        var update = new StopPlaceUpdate();
+
+        var newVersions = new ArrayList<>(List.of(subject));
+        newVersions.addAll(allVersions);
+
+        var newChildVersions = new ArrayList<>(List.of(childSubject));
+        newChildVersions.addAll(childAllVersions);
+
+        update.setVersions(Map.of("NSR:StopPlace:59687", newVersions, "NSR:StopPlace:44550", newChildVersions));
+        update.setParkingVersions(Map.of());
+        update.setQuayVersions(Map.of());
+
+        Mockito.when(stopPlaceRepository.getStopPlaceUpdate("NSR:StopPlace:59687")).thenReturn(update);
+
+        stopPlacesUpdater.receiveStopPlaceUpdate(event);
+
+        Assertions.assertEquals("22", netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:59687").getVersion());
+        Assertions.assertEquals("Changed!", netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:44550").getDescription().getValue());
     }
 
     @Test
