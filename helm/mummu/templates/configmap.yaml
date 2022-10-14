@@ -36,7 +36,7 @@ data:
     entur.kafka.consumer.enabled=true
     entur.kafka.consumer.offsetReset=earliest
     entur.kafka.consumer.enableAutoCommit=false
-    entur.kafka.producer.enabled=false
+    entur.kafka.producer.enabled=true
     spring.kafka.listener.ack-mode=manual
     entur.kafka.sasl.username="${KAFKAUSERNAME}"
     entur.kafka.sasl.password="${KAFKAPASSWORD}"
