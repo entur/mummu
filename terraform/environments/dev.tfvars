@@ -1,1 +1,1 @@
-kube_namespace=dev
+kube_namespace = "dev"
