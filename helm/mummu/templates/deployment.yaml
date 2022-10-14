@@ -37,6 +37,9 @@ spec:
               value: Europe/Oslo
             - name: NETEX_DATA_URL
               value: {{ .Values.netexDataUrl }}
+          envFrom:
+            - secretRef:
+              name: ror-mummu-secrets
           resources:
             limits:
               cpu: {{ .Values.resources.cpuLimit }}
