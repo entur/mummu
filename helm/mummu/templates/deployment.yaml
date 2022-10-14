@@ -39,7 +39,7 @@ spec:
               value: {{ .Values.netexDataUrl }}
           envFrom:
             - secretRef:
-              name: ror-mummu-secrets
+                name: ror-mummu-secrets
           resources:
             limits:
               cpu: {{ .Values.resources.cpuLimit }}
