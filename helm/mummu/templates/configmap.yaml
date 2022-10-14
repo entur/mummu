@@ -38,8 +38,8 @@ data:
     entur.kafka.consumer.enableAutoCommit=false
     entur.kafka.producer.enabled=false
     spring.kafka.listener.ack-mode=manual
-    entur.kafka.sasl.username=${KAFKAUSERNAME}
-    entur.kafka.sasl.password=${KAFKAPASSWORD}
+    entur.kafka.sasl.username="${KAFKAUSERNAME}"
+    entur.kafka.sasl.password="${KAFKAPASSWORD}"
 
     # mummu
     no.entur.mummu.data-file=/deployments/netex_data.zip
