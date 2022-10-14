@@ -487,6 +487,464 @@
                         </Quay>
                     </quays>
                 </StopPlace>
+                <StopPlace created="2017-06-19T19:57:48.128" changed="2021-04-22T18:18:16.619" modification="new" version="30" id="NSR:StopPlace:44550">
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>NOR:StopPlace:17428000,NTR:StopPlace:17428000</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-0-idReference</Key>
+                            <Value>NSR:StopPlace:44550</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-0-name</Key>
+                            <Value>adm_koordinat</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-0-createdBy</Key>
+                            <Value>johan</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-0-created</Key>
+                            <Value>1506412045864</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-0-removedBy</Key>
+                            <Value>johan</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-0-removed</Key>
+                            <Value>1577966360207</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-1-idReference</Key>
+                            <Value>NSR:StopPlace:44550</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-1-name</Key>
+                            <Value>adm_gruppering</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-1-createdBy</Key>
+                            <Value>johan</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-1-created</Key>
+                            <Value>1507630658279</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-1-removedBy</Key>
+                            <Value>johan</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>TAG-1-removed</Key>
+                            <Value>1577966373906</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Grong stasjon</Name>
+                    <Description lang="nor">i Medjåvegen</Description>
+                    <PrivateCode/>
+                    <Centroid>
+                        <Location>
+                            <Longitude>12.337177</Longitude>
+                            <Latitude>64.456829</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="30" id="NSR:AccessibilityAssessment:44702">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="22" id="134575">
+                                <WheelchairAccess>unknown</WheelchairAccess>
+                                <StepFreeAccess>unknown</StepFreeAccess>
+                                <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                <LiftFreeAccess>unknown</LiftFreeAccess>
+                                <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:5045" created="2022-10-07T14:42:01.12"/>
+                    <ParentSiteRef ref="NSR:StopPlace:59687" version="21"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes/>
+                    <tariffZones>
+                        <TariffZoneRef ref="NOR:TariffZone:5045"/>
+                        <TariffZoneRef ref="ATB:TariffZone:11"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay created="2017-06-19T20:29:01.258" changed="2020-11-17T09:21:07.598" modification="new" version="30" id="NSR:Quay:76623">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>merged-id</Key>
+                                    <Value>NSR:Quay:98869</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>NOR:Quay:17428000,NTR:Quay:1742800003,NTR:Quay:17428000</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>03</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>12.337201</Longitude>
+                                    <Latitude>64.456889</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="20" id="NSR:AccessibilityAssessment:60039">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="20" id="134576">
+                                        <WheelchairAccess>unknown</WheelchairAccess>
+                                        <StepFreeAccess>unknown</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes/>
+                            <PublicCode/>
+                            <CompassBearing>270.0</CompassBearing>
+                        </Quay>
+                        <Quay changed="2020-11-17T09:21:07.598" modification="new" version="30" id="NSR:Quay:76621">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>ATB:Quay:17420000,NTR:Quay:1742800001,NOR:Quay:17428000,NTR:Quay:17428000</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>01</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>12.336965</Longitude>
+                                    <Latitude>64.456806</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="20" id="NSR:AccessibilityAssessment:60041">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="20" id="134577">
+                                        <WheelchairAccess>unknown</WheelchairAccess>
+                                        <StepFreeAccess>unknown</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes/>
+                            <PublicCode/>
+                            <CompassBearing>110.0</CompassBearing>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+                <StopPlace created="2018-09-21T12:10:38.16" changed="2021-08-15T17:39:50.877" modification="new" version="21" id="NSR:StopPlace:59687">
+                    <ValidBetween>
+                        <FromDate>2020-11-17T09:20:56</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value/>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>erling.arild.bjerkvik</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>VERSION_COMMENT</Key>
+                            <Value>Endret koordnater</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>true</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Grong stasjon</Name>
+                    <Description lang="no"/>
+                    <Centroid>
+                        <Location>
+                            <Longitude>12.337174</Longitude>
+                            <Latitude>64.458085</Latitude>
+                        </Location>
+                    </Centroid>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:5045" created="2022-10-07T14:42:01.167"/>
+                    <OtherTransportModes/>
+                    <tariffZones>
+                        <TariffZoneRef ref="NOR:TariffZone:5045"/>
+                        <TariffZoneRef ref="ATB:TariffZone:11"/>
+                    </tariffZones>
+                    <Weighting>interchangeAllowed</Weighting>
+                </StopPlace>
+                <StopPlace created="2017-06-19T19:12:48.098" changed="2021-04-22T18:12:01.734" modification="new" version="22" id="NSR:StopPlace:355">
+                    <keyList>
+                        <KeyValue>
+                            <Key>jbvCode</Key>
+                            <Value>GRG</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>uicCode</Key>
+                            <Value>7601325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>iffCode</Key>
+                            <Value>7601325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>lisaId</Key>
+                            <Value>1325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>NSB:StopPlace:760132530</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Grong stasjon</Name>
+                    <Description lang="nor"/>
+                    <PrivateCode/>
+                    <Centroid>
+                        <Location>
+                            <Longitude>12.337177</Longitude>
+                            <Latitude>64.457897</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="22" id="NSR:AccessibilityAssessment:355">
+                        <MobilityImpairedAccess>partial</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="22" id="134578">
+                                <WheelchairAccess>true</WheelchairAccess>
+                                <StepFreeAccess>true</StepFreeAccess>
+                                <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                <LiftFreeAccess>unknown</LiftFreeAccess>
+                                <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:5045" created="2022-10-07T14:42:01.186"/>
+                    <ParentSiteRef ref="NSR:StopPlace:59687" version="21"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes/>
+                    <tariffZones>
+                        <TariffZoneRef ref="NOR:TariffZone:5045"/>
+                        <TariffZoneRef ref="ATB:TariffZone:11"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay created="2017-06-19T20:28:35.308" changed="2020-11-17T09:20:27.975" modification="new" version="22" id="NSR:Quay:597">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>uicCode</Key>
+                                    <Value>7601325</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>merged-id</Key>
+                                    <Value>NSR:Quay:99555,NSR:Quay:98860,NSR:Quay:76624</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>NSB:Quay:760132530,NOR:Quay:17428109,NTR:Quay:1742800002,ATB:Quay:17422000</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>02</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>12.337288</Longitude>
+                                    <Latitude>64.457925</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="20" id="NSR:AccessibilityAssessment:60046">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="20" id="134579">
+                                        <WheelchairAccess>true</WheelchairAccess>
+                                        <StepFreeAccess>true</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes/>
+                            <PublicCode/>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+                <StopPlace created="2017-06-19T19:12:47.99" changed="2021-04-22T18:11:50.465" modification="new" version="36" id="NSR:StopPlace:351">
+                    <keyList>
+                        <KeyValue>
+                            <Key>jbvCode</Key>
+                            <Value>GRG</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>uicCode</Key>
+                            <Value>7601325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>grailsId</Key>
+                            <Value>204</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>iffCode</Key>
+                            <Value>7601325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>lisaId</Key>
+                            <Value>1325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>RUT:StopPlace:17423250,NSB:StopPlace:007601325,NOR:StopPlace:17428000,NTR:StopPlace:17428000,NSB:StopPlace:07601325,NOR:StopPlace:17428109,FLT:StopPlace:7601325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>tpsiId</Key>
+                            <Value>007601325</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Grong stasjon</Name>
+                    <Description lang="nor"/>
+                    <Centroid>
+                        <Location>
+                            <Longitude>12.337443</Longitude>
+                            <Latitude>64.458309</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="36" id="NSR:AccessibilityAssessment:351">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="22" id="134580">
+                                <WheelchairAccess>true</WheelchairAccess>
+                                <StepFreeAccess>true</StepFreeAccess>
+                                <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                <LiftFreeAccess>unknown</LiftFreeAccess>
+                                <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:5045" created="2022-10-07T14:42:01.233"/>
+                    <ParentSiteRef ref="NSR:StopPlace:59687" version="21"/>
+                    <placeEquipments id="NSR:PlaceEquipment:56553">
+                        <SanitaryEquipment modification="new" version="1" id="95163">
+                            <Gender>both</Gender>
+                            <SanitaryFacilityList/>
+                            <NumberOfToilets>1</NumberOfToilets>
+                            <PaymentMethods/>
+                        </SanitaryEquipment>
+                        <WaitingRoomEquipment modification="new" version="1" id="95164">
+                            <Sanitary/>
+                        </WaitingRoomEquipment>
+                    </placeEquipments>
+                    <TransportMode>rail</TransportMode>
+                    <OtherTransportModes/>
+                    <tariffZones>
+                        <TariffZoneRef ref="NOR:TariffZone:5045"/>
+                        <TariffZoneRef ref="ATB:TariffZone:11"/>
+                    </tariffZones>
+                    <StopPlaceType>railStation</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay created="2017-06-19T21:32:30.23" changed="2018-09-21T13:00:39.764" modification="new" version="36" id="NSR:Quay:592">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>uicCode</Key>
+                                    <Value>7601325</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>grails-platformId</Key>
+                                    <Value>6505</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>merged-id</Key>
+                                    <Value>NSR:Quay:99556</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>NSB:Quay:076013251,NSB:Quay:007601325,FLT:Quay:7601325,NSB:Quay:0076013251</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>tpsiId</Key>
+                                    <Value>760132501</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>1</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>12.337215</Longitude>
+                                    <Latitude>64.458428</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="20" id="NSR:AccessibilityAssessment:60044">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="20" id="134581">
+                                        <WheelchairAccess>true</WheelchairAccess>
+                                        <StepFreeAccess>true</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes/>
+                            <PublicCode>1</PublicCode>
+                        </Quay>
+                        <Quay changed="2018-09-21T13:00:39.765" modification="new" version="36" id="NSR:Quay:591">
+                            <keyList>
+                                <KeyValue>
+                                    <Key>grails-platformId</Key>
+                                    <Value>6506</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>uicCode</Key>
+                                    <Value>7601325</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>imported-id</Key>
+                                    <Value>NSB:Quay:0076013252</Value>
+                                </KeyValue>
+                                <KeyValue>
+                                    <Key>tpsiId</Key>
+                                    <Value>760132502</Value>
+                                </KeyValue>
+                            </keyList>
+                            <PrivateCode>2</PrivateCode>
+                            <Centroid>
+                                <Location>
+                                    <Longitude>12.337091</Longitude>
+                                    <Latitude>64.458445</Latitude>
+                                </Location>
+                            </Centroid>
+                            <AccessibilityAssessment modification="new" version="20" id="NSR:AccessibilityAssessment:60045">
+                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                <limitations>
+                                    <AccessibilityLimitation modification="new" version="20" id="134582">
+                                        <WheelchairAccess>true</WheelchairAccess>
+                                        <StepFreeAccess>true</StepFreeAccess>
+                                        <EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+                                        <LiftFreeAccess>unknown</LiftFreeAccess>
+                                        <AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                                    </AccessibilityLimitation>
+                                </limitations>
+                            </AccessibilityAssessment>
+                            <OtherTransportModes/>
+                            <PublicCode>2</PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
             </stopPlaces>
             <parkings>
                 <Parking created="2017-06-19T19:13:11.803" changed="2018-05-14T14:52:33.573" modification="new" version="5" id="NSR:Parking:1">

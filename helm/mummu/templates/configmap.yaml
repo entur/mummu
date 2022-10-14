@@ -26,8 +26,23 @@ data:
     server.compression.min-response-size=1024
     server.http2.enabled=true
 
+    # swagger
     springdoc.api-docs.path=/api-docs
     no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
 
-    # NeTEx Data
+    # Kafka
+    entur.kafka.kafkaCluster={{ .Values.configMap.kafkaCluster }}
+    entur.kafka.avroSerializableClasses=org.rutebanken.irkalla.avro.StopPlaceChangelogEvent
+    entur.kafka.consumer.enabled=true
+    entur.kafka.consumer.offsetReset=earliest
+    entur.kafka.consumer.enableAutoCommit=false
+    entur.kafka.producer.enabled=false
+    spring.kafka.listener.ack-mode=manual
+    entur.kafka.sasl.username=${KAFKAUSERNAME}
+    entur.kafka.sasl.password=${KAFKAPASSWORD}
+
+    # mummu
     no.entur.mummu.data-file=/deployments/netex_data.zip
+    no.entur.mummu.tiamat.url={{ .Values.configMap.tiamatUrl }}
+    no.entur.mummu.changelog.topic={{ .Values.configMap.changelogTopic }}
+    
