@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.12:NO-NeTEx-stops:1.4" xsi:schemaLocation="">
+    <PublicationTimestamp>2022-10-16T20:14:05.738</PublicationTimestamp>
+    <ParticipantRef>NSR</ParticipantRef>
+    <dataObjects>
+        <SiteFrame modification="new" version="1" id="NSR:SiteFrame:197540867">
+            <Description>Site frame ExportParams{topographicPlaceExportMode=NONE, municipalityReferences=[], countyReferences=[], countryReferences=[], stopPlaceSearch=StopPlaceSearch{stopPlaceType=[], netexIdList=[NSR:StopPlace:4055], allVersions=false, versionValidity=ALL, withoutLocationOnly=false, withoutQuaysOnly=false, withDuplicatedQuayImportedIds=false, withTags=[], tags=[], page=0, size=20}, tariffZoneExportMode=NONE, fareZoneExportMode=RELEVANT, serviceFrameExportMode=NONE}</Description>
+            <FrameDefaults>
+                <DefaultLocale>
+                    <TimeZone>Europe/Oslo</TimeZone>
+                    <DefaultLanguage>nor</DefaultLanguage>
+                </DefaultLocale>
+            </FrameDefaults>
+            <stopPlaces>
+                <StopPlace created="2017-06-19T19:17:51.323" changed="2018-05-14T14:02:27.499" modification="new" version="1" id="NSR:StopPlace:4055">
+                    <ValidBetween>
+                        <FromDate>2017-06-19T19:17:51.323</FromDate>
+                        <ToDate>2018-10-15T12:57:04.999</ToDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>RUT:StopPlace:03010027,RUT:StopPlace:03010027-2,RUT:StopPlace:3010027-2</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Wessels plass</Name>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.739060</Longitude>
+                            <Latitude>59.912853</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="1" id="NSR:AccessibilityAssessment:4055">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="1" id="6111">
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>unknown</StepFreeAccess>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2022-10-16T20:14:05.75"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay modification="new" version="1" id="NSR:Quay:7311">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:0301002701,RUT:Quay:301002701</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode type="StopPoint">1</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.739060</Longitude>
+    <Latitude>59.912853</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode></PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+                <StopPlace created="2017-06-19T19:17:51.323" changed="2018-10-15T12:57:20.057" modification="new" version="2" id="NSR:StopPlace:4055">
+                    <ValidBetween>
+                        <FromDate>2018-10-15T12:57:05</FromDate>
+                        <ToDate>2018-10-15T13:17:57.999</ToDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>RUT:StopPlace:03010027,RUT:StopPlace:03010027-2,RUT:StopPlace:3010027-2</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>audun.andersen</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>VERSION_COMMENT</Key>
+                            <Value>endret pos, ny stolpe</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Wessels plass</Name>
+                    <Description lang="no"/>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.738943</Longitude>
+                            <Latitude>59.912088</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="2" id="NSR:AccessibilityAssessment:4055">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="1" id="100353">
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>unknown</StepFreeAccess>
+<EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+<LiftFreeAccess>unknown</LiftFreeAccess>
+<AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2022-10-16T20:14:05.777"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2018-10-15T12:57:20.049" modification="new" version="2" id="NSR:Quay:7311">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:0301002701,RUT:Quay:301002701</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>1</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.738758</Longitude>
+    <Latitude>59.911966</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode></PublicCode>
+                        </Quay>
+                        <Quay changed="2018-10-15T12:57:20.05" modification="new" version="1" id="NSR:Quay:101777">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:301002702</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>2</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.739141</Longitude>
+    <Latitude>59.912182</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+                <StopPlace created="2017-06-19T19:17:51.323" changed="2021-05-03T08:48:13.367" modification="new" version="3" id="NSR:StopPlace:4055">
+                    <ValidBetween>
+                        <FromDate>2018-10-15T13:17:58</FromDate>
+                        <ToDate>2021-09-02T11:21:09.999</ToDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>RUT:StopPlace:03010027,RUT:StopPlace:3010027</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>audun.andersen</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>VERSION_COMMENT</Key>
+                            <Value>korr ref.</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Wessels plass</Name>
+                    <Description lang="no"/>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.738943</Longitude>
+                            <Latitude>59.912088</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="3" id="NSR:AccessibilityAssessment:4055">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="1" id="100366">
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>unknown</StepFreeAccess>
+<EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+<LiftFreeAccess>unknown</LiftFreeAccess>
+<AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2022-10-16T20:14:05.809"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <tariffZones>
+                        <TariffZoneRef ref="BRA:TariffZone:311"/>
+                        <TariffZoneRef ref="OPP:TariffZone:2100"/>
+                        <TariffZoneRef ref="HED:TariffZone:2100"/>
+                        <TariffZoneRef ref="INN:TariffZone:2100"/>
+                        <TariffZoneRef ref="RUT:TariffZone:1"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2018-10-15T13:18:03.348" modification="new" version="2" id="NSR:Quay:101777">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:301002702,RUT:Quay:0301002702</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>2</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.739141</Longitude>
+    <Latitude>59.912182</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                        </Quay>
+                        <Quay changed="2018-10-15T13:18:03.348" modification="new" version="3" id="NSR:Quay:7311">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:0301002701,RUT:Quay:301002701</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>1</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.738758</Longitude>
+    <Latitude>59.911966</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode></PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+                <StopPlace created="2017-06-19T19:17:51.323" changed="2021-09-02T11:21:10.123" modification="new" version="4" id="NSR:StopPlace:4055">
+                    <ValidBetween>
+                        <FromDate>2021-09-02T11:21:10</FromDate>
+                        <ToDate>2022-10-16T20:13:20.251</ToDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>RUT:StopPlace:03010027,RUT:StopPlace:3010027</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>audun.andersen</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>VERSION_COMMENT</Key>
+                            <Value>pos</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Wessels plass</Name>
+                    <Description lang="no"/>
+                    <PrivateCode></PrivateCode>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.739130</Longitude>
+                            <Latitude>59.912233</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="4" id="NSR:AccessibilityAssessment:4055">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="1" id="156074">
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>unknown</StepFreeAccess>
+<EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+<LiftFreeAccess>unknown</LiftFreeAccess>
+<AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2022-10-16T20:14:05.844"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <tariffZones>
+                        <TariffZoneRef ref="BRA:TariffZone:311"/>
+                        <TariffZoneRef ref="RUT:TariffZone:1"/>
+                        <TariffZoneRef ref="INN:TariffZone:2100"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2021-09-02T11:21:10.112" modification="new" version="3" id="NSR:Quay:101777">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:301002702,RUT:Quay:0301002702</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>2</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.739278</Longitude>
+    <Latitude>59.912290</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                        </Quay>
+                        <Quay changed="2021-09-02T11:21:10.112" modification="new" version="4" id="NSR:Quay:7311">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:0301002701,RUT:Quay:301002701</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>1</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.738983</Longitude>
+    <Latitude>59.912175</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode></PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+                <StopPlace created="2017-06-19T19:17:51.323" changed="2022-10-16T20:13:20.27" modification="new" version="5" id="NSR:StopPlace:4055">
+                    <ValidBetween>
+                        <FromDate>2022-10-16T20:13:20.252</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>imported-id</Key>
+                            <Value>RUT:StopPlace:03010027,RUT:StopPlace:3010027</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>tom.erik.stower-dev</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>VERSION_COMMENT</Key>
+                            <Value></Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Wessels plass</Name>
+                    <Description lang="nor">test</Description>
+                    <PrivateCode></PrivateCode>
+                    <Centroid>
+                        <Location>
+                            <Longitude>10.739130</Longitude>
+                            <Latitude>59.912233</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="5" id="NSR:AccessibilityAssessment:4055">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="1" id="173912">
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>unknown</StepFreeAccess>
+<EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+<LiftFreeAccess>unknown</LiftFreeAccess>
+<AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:0301" created="2022-10-16T20:14:05.877"/>
+                    <TransportMode>bus</TransportMode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <tariffZones>
+                        <TariffZoneRef ref="BRA:TariffZone:311"/>
+                        <TariffZoneRef ref="RUT:TariffZone:1"/>
+                        <TariffZoneRef ref="INN:TariffZone:2100"/>
+                    </tariffZones>
+                    <StopPlaceType>onstreetBus</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2022-10-16T20:13:20.201" modification="new" version="4" id="NSR:Quay:101777">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:301002702,RUT:Quay:0301002702</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>2</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.739278</Longitude>
+    <Latitude>59.912290</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                        </Quay>
+                        <Quay changed="2022-10-16T20:13:20.202" modification="new" version="5" id="NSR:Quay:7311">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value>RUT:Quay:0301002701,RUT:Quay:301002701</Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode>1</PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>10.738983</Longitude>
+    <Latitude>59.912175</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                            <PublicCode></PublicCode>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+            </stopPlaces>
+        </SiteFrame>
+    </dataObjects>
+</PublicationDelivery>
