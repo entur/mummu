@@ -33,9 +33,9 @@ public class NetexEntitiesService {
 
     @Autowired
     public NetexEntitiesService(
-            NetexEntitiesIndex netexEntitiesIndex
+            NetexEntitiesIndexLoader loader
     ) {
-        this.netexEntitiesIndex = netexEntitiesIndex;
+        this.netexEntitiesIndex = loader.getNetexEntitiesIndex();
     }
 
     public List<GroupOfStopPlaces> getGroupsOfStopPlaces(

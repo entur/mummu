@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.12:NO-NeTEx-stops:1.4" xsi:schemaLocation="">
+    <PublicationTimestamp>2022-10-16T20:23:13.875</PublicationTimestamp>
+    <ParticipantRef>NSR</ParticipantRef>
+    <dataObjects>
+        <SiteFrame modification="new" version="1" id="NSR:SiteFrame:1789604633">
+            <Description>Site frame ExportParams{topographicPlaceExportMode=NONE, municipalityReferences=[], countyReferences=[], countryReferences=[], stopPlaceSearch=StopPlaceSearch{stopPlaceType=[], netexIdList=[NSR:StopPlace:62302], allVersions=false, versionValidity=ALL, withoutLocationOnly=false, withoutQuaysOnly=false, withDuplicatedQuayImportedIds=false, withTags=[], tags=[], page=0, size=20}, tariffZoneExportMode=NONE, fareZoneExportMode=RELEVANT, serviceFrameExportMode=NONE}</Description>
+            <FrameDefaults>
+                <DefaultLocale>
+                    <TimeZone>Europe/Oslo</TimeZone>
+                    <DefaultLanguage>nor</DefaultLanguage>
+                </DefaultLocale>
+            </FrameDefaults>
+            <stopPlaces>
+                <StopPlace created="2022-10-16T20:22:59.287" changed="2022-10-16T20:22:59.287" modification="new" version="1" id="NSR:StopPlace:62302">
+                    <ValidBetween>
+                        <FromDate>2022-10-16T20:22:59.287</FromDate>
+                    </ValidBetween>
+                    <keyList>
+                        <KeyValue>
+                            <Key>CHANGED_BY</Key>
+                            <Value>tom.erik.stower-dev</Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>VERSION_COMMENT</Key>
+                            <Value></Value>
+                        </KeyValue>
+                        <KeyValue>
+                            <Key>IS_PARENT_STOP_PLACE</Key>
+                            <Value>false</Value>
+                        </KeyValue>
+                    </keyList>
+                    <Name lang="nor">Møvik brygge</Name>
+                    <PrivateCode></PrivateCode>
+                    <Centroid>
+                        <Location>
+                            <Longitude>7.976871</Longitude>
+                            <Latitude>58.099587</Latitude>
+                        </Location>
+                    </Centroid>
+                    <AccessibilityAssessment modification="new" version="1" id="NSR:AccessibilityAssessment:64750">
+                        <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                        <limitations>
+                            <AccessibilityLimitation modification="new" version="1" id="173951">
+<WheelchairAccess>unknown</WheelchairAccess>
+<StepFreeAccess>unknown</StepFreeAccess>
+<EscalatorFreeAccess>unknown</EscalatorFreeAccess>
+<LiftFreeAccess>unknown</LiftFreeAccess>
+<AudibleSignalsAvailable>unknown</AudibleSignalsAvailable>
+                            </AccessibilityLimitation>
+                        </limitations>
+                    </AccessibilityAssessment>
+                    <TopographicPlaceRef ref="KVE:TopographicPlace:4204" created="2022-10-16T20:23:13.884"/>
+                    <TransportMode>water</TransportMode>
+                    <WaterSubmode>sightseeingService</WaterSubmode>
+                    <OtherTransportModes></OtherTransportModes>
+                    <tariffZones>
+                        <TariffZoneRef ref="AKT:TariffZone:900"/>
+                    </tariffZones>
+                    <StopPlaceType>ferryStop</StopPlaceType>
+                    <Weighting>interchangeAllowed</Weighting>
+                    <quays>
+                        <Quay changed="2022-10-16T20:22:59.287" modification="new" version="1" id="NSR:Quay:107475">
+                            <keyList>
+<KeyValue>
+    <Key>imported-id</Key>
+    <Value></Value>
+</KeyValue>
+                            </keyList>
+                            <PrivateCode></PrivateCode>
+                            <Centroid>
+<Location>
+    <Longitude>7.976933</Longitude>
+    <Latitude>58.099517</Latitude>
+</Location>
+                            </Centroid>
+                            <OtherTransportModes></OtherTransportModes>
+                        </Quay>
+                    </quays>
+                </StopPlace>
+            </stopPlaces>
+        </SiteFrame>
+    </dataObjects>
+</PublicationDelivery>

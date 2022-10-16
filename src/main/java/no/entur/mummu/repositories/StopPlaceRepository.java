@@ -1,7 +1,5 @@
 package no.entur.mummu.repositories;
 
-import no.entur.mummu.updater.StopPlaceUpdate;
-import org.entur.netex.NetexParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
 
@@ -30,7 +29,7 @@ public class StopPlaceRepository {
         this.tiamatUrl = tiamatUrl;
     }
 
-    public StopPlaceUpdate getStopPlaceUpdate(String stopPlaceId) {
+    public InputStream getStopPlaceUpdate(String stopPlaceId) {
         String stopPlaceUrl = UriComponentsBuilder.fromHttpUrl(tiamatUrl + "/netex")
                 .queryParam("idList", "{idList}")
                 .queryParam("topographicPlaceExportMode", "{topographicPlaceExportMode}")
@@ -56,21 +55,9 @@ public class StopPlaceRepository {
                             "size", Integer.MAX_VALUE
                     )
             );
-
-            NetexParser parser = new NetexParser();
-            var index = parser.parse(Objects.requireNonNull(response.getBody()).getInputStream());
-
-            StopPlaceUpdate stopPlaceUpdate = new StopPlaceUpdate();
-            stopPlaceUpdate.setVersions(index.getStopPlaceIndex().getAllVersions());
-            stopPlaceUpdate.setQuayVersions(index.getQuayIndex().getAllVersions());
-            stopPlaceUpdate.setParkingVersions(index.getParkingIndex().getAllVersions());
-
-            return stopPlaceUpdate;
+            return Objects.requireNonNull(response.getBody()).getInputStream();
         } catch (RestClientException | IOException exception) {
             throw new StopPlaceFetchException(stopPlaceId, exception);
-        } catch (RuntimeException exception) {
-            logger.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
-            return null;
         }
     }
 }

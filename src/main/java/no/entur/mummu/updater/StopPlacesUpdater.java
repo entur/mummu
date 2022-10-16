@@ -1,6 +1,7 @@
 package no.entur.mummu.updater;
 
 import no.entur.mummu.repositories.StopPlaceRepository;
+import no.entur.mummu.services.NetexEntitiesIndexLoader;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.irkalla.avro.EnumType;
 import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
@@ -15,19 +16,23 @@ import java.time.ZoneId;
 @Service
 public class StopPlacesUpdater {
     private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
+
+    private final NetexEntitiesIndexLoader netexEntitiesIndexLoader;
     private final NetexEntitiesIndex netexEntitiesIndex;
     private final StopPlaceRepository repository;
     private static final String DEFAULT_TIME_ZONE = "Europe/Oslo";
 
     @Autowired
-    public StopPlacesUpdater(NetexEntitiesIndex netexEntitiesIndex, StopPlaceRepository repository) {
-        this.netexEntitiesIndex = netexEntitiesIndex;
+    public StopPlacesUpdater(NetexEntitiesIndexLoader netexEntitiesIndexLoader, StopPlaceRepository repository) {
+        this.netexEntitiesIndexLoader = netexEntitiesIndexLoader;
+        this.netexEntitiesIndex = netexEntitiesIndexLoader.getNetexEntitiesIndex();
         this.repository = repository;
     }
 
     public void receiveStopPlaceUpdate(StopPlaceChangelogEvent event) {
         if (filter(event)) {
             log.info("Discarded event {}", event);
+            return;
         }
 
         String stopPlaceId = event.getStopPlaceId().toString();
@@ -75,11 +80,10 @@ public class StopPlacesUpdater {
     private void update(StopPlaceChangelogEvent event, String stopPlaceId) {
         log.info("event type {} stopPlace id={}", event.getEventType(), stopPlaceId);
         var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
-
-        if (stopPlaceUpdate != null) {
-            stopPlaceUpdate.getVersions().forEach((s, versions) -> netexEntitiesIndex.getStopPlaceIndex().put(s, versions));
-            stopPlaceUpdate.getQuayVersions().forEach((s, quays) -> netexEntitiesIndex.getQuayIndex().put(s, quays));
-            stopPlaceUpdate.getParkingVersions().forEach((s, parkings) -> netexEntitiesIndex.getParkingIndex().put(s, parkings));
+        try {
+            netexEntitiesIndexLoader.updateWithPublicationDeliveryStream(stopPlaceUpdate);
+        } catch (RuntimeException exception) {
+            log.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
         }
     }
 }
