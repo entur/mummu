@@ -11,14 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.ZoneId;
 
 @Service
 public class StopPlacesUpdater {
     private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
-
     private final NetexEntitiesIndexLoader netexEntitiesIndexLoader;
     private final NetexEntitiesIndex netexEntitiesIndex;
+    private final Instant publicationTime;
     private final StopPlaceRepository repository;
     private static final String DEFAULT_TIME_ZONE = "Europe/Oslo";
 
@@ -26,6 +27,7 @@ public class StopPlacesUpdater {
     public StopPlacesUpdater(NetexEntitiesIndexLoader netexEntitiesIndexLoader, StopPlaceRepository repository) {
         this.netexEntitiesIndexLoader = netexEntitiesIndexLoader;
         this.netexEntitiesIndex = netexEntitiesIndexLoader.getNetexEntitiesIndex();
+        this.publicationTime = getPublicationTime(netexEntitiesIndex);
         this.repository = repository;
     }
 
@@ -50,12 +52,6 @@ public class StopPlacesUpdater {
         }
 
         var changedTime = event.getStopPlaceChanged();
-        var localPublicationTimestamp = netexEntitiesIndex.getPublicationTimestamp();
-        var timeZone = netexEntitiesIndex.getSiteFrames().stream()
-                .findFirst()
-                .map(frame -> frame.getFrameDefaults().getDefaultLocale().getTimeZone())
-                .orElse(DEFAULT_TIME_ZONE);
-        var publicationTime = localPublicationTimestamp.atZone(ZoneId.of(timeZone)).toInstant();
         return changedTime.isBefore(publicationTime);
     }
 
@@ -85,5 +81,14 @@ public class StopPlacesUpdater {
         } catch (RuntimeException exception) {
             log.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
         }
+    }
+
+    private Instant getPublicationTime(NetexEntitiesIndex netexEntitiesIndex) {
+        var localPublicationTimestamp = netexEntitiesIndex.getPublicationTimestamp();
+        var timeZone = netexEntitiesIndex.getSiteFrames().stream()
+                .findFirst()
+                .map(frame -> frame.getFrameDefaults().getDefaultLocale().getTimeZone())
+                .orElse(DEFAULT_TIME_ZONE);
+        return localPublicationTimestamp.atZone(ZoneId.of(timeZone)).toInstant();
     }
 }
