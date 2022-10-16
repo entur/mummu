@@ -34,7 +34,9 @@ public class StopPlaceRepository {
                 .queryParam("idList", "{idList}")
                 .queryParam("topographicPlaceExportMode", "{topographicPlaceExportMode}")
                 .queryParam("tariffZoneExportMode", "{tariffZoneExportMode}")
+                .queryParam("groupOfTariffZonesExportMode", "{groupOfTariffZonesExportMode}")
                 .queryParam("fareZoneExportMode", "{fareZoneExportMode}")
+                .queryParam("groupOfStopPlacesExportMode", "{groupOfStopPlacesExportMode}")
                 .queryParam("allVersions", "{allVersions}")
                 .queryParam("size", "{size}")
                 .encode()
@@ -48,9 +50,11 @@ public class StopPlaceRepository {
                     Resource.class,
                     Map.of(
                             "idList", stopPlaceId,
-                            "topographicPlaceExportMode", "NONE",
-                            "tariffZoneExportMode", "NONE",
-                            "fareZoneExportMode", "NONE",
+                            "topographicPlaceExportMode", "RELEVANT",
+                            "tariffZoneExportMode", "RELEVANT",
+                            "groupOfTariffZonesExportMode", "RELEVANT",
+                            "fareZoneExportMode", "RELEVANT",
+                            "groupOfStopPlacesExportMode", "RELEVANT",
                             "allVersions", true,
                             "size", Integer.MAX_VALUE
                     )
