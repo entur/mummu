@@ -5,8 +5,9 @@ rollingUpdate:
   maxUnavailable: 1
 
 resources:
+  cpuLimit: 1
   memLimit: 5.2Gi
-  cpuRequest: 250m
+  cpuRequest: 0.5
   memRequest: 5.2Gi
   xss: 1024m
   xms: 4096m
