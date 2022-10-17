@@ -42,7 +42,6 @@ spec:
                 name: ror-mummu-secrets
           resources:
             limits:
-              cpu: {{ .Values.resources.cpuLimit }}
               memory: {{ .Values.resources.memLimit }}
             requests:
               cpu: {{ .Values.resources.cpuRequest }}
