@@ -32,3 +32,5 @@ horizontalPodAutoscaler:
   maxReplicas: 2
   minReplicas: 1
   targetCPUUtilizationPercentage: 80
+
+slackUrlSecret : ${serviceVariable.slackUrlSecret}
