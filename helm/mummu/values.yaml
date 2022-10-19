@@ -7,7 +7,7 @@ rollingUpdate:
 resources:
   cpuLimit: 1
   memLimit: 5.2Gi
-  cpuRequest: 0.5
+  cpuRequest: 1
   memRequest: 5.2Gi
   xss: 1024m
   xms: 4096m
