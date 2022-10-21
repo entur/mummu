@@ -1,10 +1,12 @@
 package no.entur.mummu.services;
 
 import no.entur.mummu.resources.NotFoundException;
+import no.entur.mummu.util.FareZoneAuthorityRefFilter;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
 import no.entur.mummu.util.StopPlaceTypesFilter;
+import no.entur.mummu.util.TariffZoneAuthorityRefFilter;
 import no.entur.mummu.util.TopographicPlacesFilter;
 import no.entur.mummu.util.TransportModesFilter;
 import org.entur.netex.index.api.NetexEntitiesIndex;
@@ -205,10 +207,12 @@ public class NetexEntitiesService {
     public List<TariffZone> getTariffZones(
             Integer count,
             Integer skip,
-            List<String> ids
+            List<String> ids,
+            List<String> authorityRefs
     ) {
         return netexEntitiesIndex.getTariffZoneIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new TariffZoneAuthorityRefFilter(authorityRefs))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -255,10 +259,12 @@ public class NetexEntitiesService {
     public List<FareZone> getFareZones(
             Integer count,
             Integer skip,
-            List<String> ids
+            List<String> ids,
+            List<String> authorityRefs
     ) {
         return netexEntitiesIndex.getFareZoneIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new FareZoneAuthorityRefFilter(authorityRefs))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
