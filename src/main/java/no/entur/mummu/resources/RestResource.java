@@ -287,18 +287,20 @@ public class RestResource {
     public List<TariffZone> getTariffZones(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
-            @RequestParam(required = false) List<String> ids
+            @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false) List<String> authorityRefs
     ) {
-        return netexEntitiesService.getTariffZones(count, skip, ids);
+        return netexEntitiesService.getTariffZones(count, skip, ids, authorityRefs);
     }
 
     @GetMapping(value = "/tariff-zones", produces = "application/xml")
     public JAXBElement<TariffZonesInFrame_RelStructure> getJAXBElementTariffZones(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
-            @RequestParam(required = false) List<String> ids
+            @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false) List<String> authorityRefs
     ) {
-        var tariffZones = netexEntitiesService.getTariffZones(count, skip, ids);
+        var tariffZones = netexEntitiesService.getTariffZones(count, skip, ids, authorityRefs);
         return netexObjectFactory.createTariffZones(tariffZones);
     }
 
@@ -369,18 +371,20 @@ public class RestResource {
     public List<FareZone> getFareZones(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
-            @RequestParam(required = false) List<String> ids
+            @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false) List<String> authorityRefs
     ) {
-        return netexEntitiesService.getFareZones(count, skip, ids);
+        return netexEntitiesService.getFareZones(count, skip, ids, authorityRefs);
     }
 
     @GetMapping(value = "/fare-zones", produces = "application/xml")
     public JAXBElement<FareZonesInFrame_RelStructure> getJAXBElementFareZones(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
-            @RequestParam(required = false) List<String> ids
+            @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false) List<String> authorityRefs
     ) {
-        var fareZones = netexEntitiesService.getFareZones(count, skip, ids);
+        var fareZones = netexEntitiesService.getFareZones(count, skip, ids, authorityRefs);
         return netexObjectFactory.createFareZones(fareZones);
     }
 
