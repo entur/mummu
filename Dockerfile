@@ -1,6 +1,7 @@
 FROM adoptopenjdk/openjdk11:jre-11.0.11_9-alpine
 
-RUN apk add --no-cache tini
+RUN apk update && apk upgrade && apk add --no-cache \
+    tini
 
 WORKDIR /deployments
 COPY target/mummu-*-SNAPSHOT.jar /deployments/mummu.jar
