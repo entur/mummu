@@ -42,7 +42,7 @@ data:
     entur.kafka.sasl.password=${KAFKAPASSWORD}
 
     # mummu
-    no.entur.mummu.data-file=/deployments/netex_data.zip
+    no.entur.mummu.data-file=/tmp/netex_data.zip
     no.entur.mummu.tiamat.url={{ .Values.configMap.tiamatUrl }}
     no.entur.mummu.changelog.topic={{ .Values.configMap.changelogTopic }}
     
