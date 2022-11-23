@@ -9,6 +9,9 @@ common:
     internalPort: 8080
   container:
     image: ${artifact.metadata.image}
+    envFrom:
+      - secretRef:
+          name: ror-mummu-secrets
     cpu: 1
     memory: 5200
     cpuLimit: 1000m
