@@ -48,11 +48,9 @@ spec:
       value: {{ template "app.name" . }}
     - name: CLOUDSDK_CORE_PROJECT
       value: {{ .Values.cronJob.gcpProject }}
-    - name: SLACK_URL
-      valueFrom:
-        secretKeyRef:
-          key: slack-url
-          name: {{ .Values.cronJob.slackUrl }}
+    envFrom:
+    - secretRef:
+         name: ror-slack-url
     securityContext:
       runAsNonRoot: true
       allowPrivilegeEscalation: false
