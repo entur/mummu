@@ -2,7 +2,7 @@
 var etClientName = context.getVariable("request.header.et-client-name");
 
 var identifiedUser = {
-    quota: "2000", spikeArrest: "150ps"
+    quota: "3000", spikeArrest: "300ps"
 };
 
 var unidentifiedUser = {
