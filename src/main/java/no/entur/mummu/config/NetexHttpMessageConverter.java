@@ -29,7 +29,7 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
 
     @Override
     protected void writeToResult(Object o, HttpHeaders headers, Result result) throws Exception {
-        getMarshaller().marshal(o, result);
+        createMarshaller().marshal(o, result);
     }
 
     @Override
@@ -40,14 +40,6 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
     @Override
     public List<MediaType> getSupportedMediaTypes(Class<?> clazz) {
         return List.of(MediaType.APPLICATION_XML);
-    }
-
-    private Marshaller getMarshaller() throws JAXBException {
-        if (marshaller == null) {
-            marshaller = createMarshaller();
-        }
-
-        return marshaller;
     }
 
     private Marshaller createMarshaller() throws JAXBException {
