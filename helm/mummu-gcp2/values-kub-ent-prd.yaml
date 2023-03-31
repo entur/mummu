@@ -1,4 +1,7 @@
 common:
+  configmap:
+    data:
+      NETEX_DATA_URL: https://storage.googleapis.com/marduk-production/tiamat/Full_latest.zip
   env: prd
   replicas: 2
   container:
@@ -11,8 +14,6 @@ configMap:
   tiamatUrl: https://api.entur.io/stop-places/v1
   changelogTopic: ror-stop-place-changelog-production
   kafkaCluster: PROD_EXT
-
-netexDataUrl: https://storage.googleapis.com/marduk-production/tiamat/Full_latest.zip
 
 ingress:
   domainName: .entur.io

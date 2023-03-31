@@ -1,4 +1,7 @@
 common:
+  configmap:
+    data:
+      NETEX_DATA_URL: https://storage.googleapis.com/marduk-dev/tiamat/Full_latest.zip
   env: dev
   replicas: 1
 
@@ -8,9 +11,6 @@ configMap:
   tiamatUrl: https://api.dev.entur.io/stop-places/v1
   changelogTopic: ror-stop-place-changelog-dev
   kafkaCluster: TEST_EXT
-
-
-netexDataUrl: https://storage.googleapis.com/marduk-dev/tiamat/Full_latest.zip
 
 ingress:
   domainName: .dev.entur.io
