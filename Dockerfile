@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.6_10-jdk-alpine
+FROM eclipse-temurin:17.0.7_7-jdk-alpine
 
 RUN apk update && apk upgrade && apk add --no-cache \
     tini
