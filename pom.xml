@@ -216,9 +216,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <jvmArguments>
+                        -Dmanagement.server.port=9002
                         -Dspring.application.admin.enabled=true
                         -Dspring.profiles.active=test
                         -Dspringdoc.api-docs.path=/api-docs
+                        -Dno.entur.mummu.data-file=src/test/resources/IntegrationTestFixture.xml.zip
                         -Dno.entur.mummu.swagger.host.url=https://api.entur.io/stop-places/v1/read
                     </jvmArguments>
                 </configuration>
