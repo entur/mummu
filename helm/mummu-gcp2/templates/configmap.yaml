@@ -26,9 +26,9 @@ data:
     server.compression.min-response-size=1024
     server.http2.enabled=true
 
-    # swagger
-    springdoc.api-docs.path=/api-docs
-    no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
+    # disable swagger runtime
+    springdoc.api-docs.enabled=false
+    springdoc.swagger-ui.enabled=false
 
     # Kafka
     entur.kafka.kafkaCluster={{ .Values.configMap.kafkaCluster }}

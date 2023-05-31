@@ -9,6 +9,7 @@ import no.entur.mummu.serializers.CustomSerializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -22,7 +23,6 @@ import java.util.List;
 
 
 @Configuration
-@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
     private final CustomSerializers customSerializers;
@@ -40,6 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new ByteArrayHttpMessageConverter());
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter(jsonObjectMapper()));
         converters.add(new NetexHttpMessageConverter());
