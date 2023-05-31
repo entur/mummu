@@ -27,6 +27,7 @@ data:
     server.http2.enabled=true
 
     # disable swagger runtime
+    no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
     springdoc.api-docs.enabled=false
     springdoc.swagger-ui.enabled=false
 
