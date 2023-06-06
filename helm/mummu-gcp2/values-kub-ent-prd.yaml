@@ -13,7 +13,7 @@ configMap:
   hostUrl: https://api.entur.io/stop-places/v1/read
   tiamatUrl: https://api.entur.io/stop-places/v1
   changelogTopic: ror-stop-place-changelog-production
-  kafkaCluster: PROD_EXT
+  kafkaCluster: AIVEN_PROD_EXT
 
 ingress:
   domainName: .entur.io

@@ -10,7 +10,7 @@ configMap:
   hostUrl: https://api.staging.entur.io/stop-places/v1/read
   tiamatUrl: https://api.staging.entur.io/stop-places/v1
   changelogTopic: ror-stop-place-changelog-staging
-  kafkaCluster: TEST_EXT
+  kafkaCluster: AIVEN_TEST_EXT
 
 ingress:
   domainName: .staging.entur.io
