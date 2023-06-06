@@ -10,7 +10,7 @@ configMap:
   hostUrl: https://api.dev.entur.io/stop-places/v1/read
   tiamatUrl: https://api.dev.entur.io/stop-places/v1
   changelogTopic: ror-stop-place-changelog-dev
-  kafkaCluster: TEST_EXT
+  kafkaCluster: AIVEN_TEST_EXT
 
 ingress:
   domainName: .dev.entur.io
