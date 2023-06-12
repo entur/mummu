@@ -25,7 +25,6 @@ data:
     server.compression.mime-types=text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     server.compression.min-response-size=1024
     server.http2.enabled=true
-    server.tomcat.keep-alive-timeout=10s
 
     # disable swagger runtime
     no.entur.mummu.swagger.host.url={{ .Values.configMap.hostUrl }}
