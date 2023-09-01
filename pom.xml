@@ -15,7 +15,7 @@
     <properties>
         <java.version>17</java.version>
         <entur.helpers.version>1.0.77</entur.helpers.version>
-        <netex-parser-java.version>2.1.0</netex-parser-java.version>
+        <netex-parser-java.version>2.2.0</netex-parser-java.version>
         <jaxb-version>2.3.0.1</jaxb-version>
         <entur-kafka-spring-starter.version>2.9.9.1</entur-kafka-spring-starter.version>
     </properties>
