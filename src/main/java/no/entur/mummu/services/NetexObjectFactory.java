@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 public class NetexObjectFactory extends ObjectFactory {
 
     public static final String NAMESPACE_URI = "http://www.netex.org.uk/netex";
+
+    private static final QName _stopPlace_QNAME = new QName(NAMESPACE_URI, "stopPlace");
     private static final QName _stopPlaces_QNAME = new QName(NAMESPACE_URI, "stopPlaces");
     private static final QName _groupsOfStopPlaces_QNAME = new QName(NAMESPACE_URI, "groupsOfStopPlaces");
     private static final QName _fareZones_QNAME = new QName(NAMESPACE_URI, "fareZones");
@@ -40,7 +42,7 @@ public class NetexObjectFactory extends ObjectFactory {
     }
 
     public JAXBElement<StopPlacesInFrame_RelStructure> createStopPlaces(List<StopPlace> stopPlaces) {
-        var stopPlacesInFrame = createStopPlacesInFrame_RelStructure().withStopPlace(stopPlaces);
+        var stopPlacesInFrame = createStopPlacesInFrame_RelStructure().withStopPlace_(stopPlaces.stream().map(stopPlace -> new JAXBElement<>(_stopPlace_QNAME, StopPlace.class, stopPlace)).collect(Collectors.toList()));
         return new JAXBElement<>(_stopPlaces_QNAME, StopPlacesInFrame_RelStructure.class, stopPlacesInFrame);
     }
 
