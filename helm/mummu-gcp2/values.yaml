@@ -42,4 +42,4 @@ common:
       TZ: Europe/Oslo
     enabled: true
     toEnv: true
-cronJobImage: eu.gcr.io/entur-system-1287/deployment-rollout-restart:0.1.2
+cronJobImage: eu.gcr.io/entur-system-1287/deployment-rollout-restart:0.1.10
