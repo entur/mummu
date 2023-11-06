@@ -62,7 +62,7 @@ public class StopPlacesUpdater {
             log.info("couldn't find stop place in index {}", stopPlaceId);
         } else {
             if (stopPlace.getQuays() != null) {
-                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
+                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay.getValue()).getId()));
             }
             netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
                 if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
