@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import no.entur.mummu.serializers.CustomSerializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -46,6 +47,13 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(new StringHttpMessageConverter());
         converters.add(new MappingJackson2HttpMessageConverter(jsonObjectMapper()));
         converters.add(new NetexHttpMessageConverter());
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        WebMvcConfigurer.super.addFormatters(registry);
+        registry.addFormatter(new StringToVehicleModeEnumeration());
+        registry.addFormatter(new StringToStopTypeEnumeration());
     }
 
     public ObjectMapper jsonObjectMapper() {
