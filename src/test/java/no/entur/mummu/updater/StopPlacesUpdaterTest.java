@@ -51,7 +51,7 @@ class StopPlacesUpdaterTest {
         Assertions.assertTrue(netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:4055").size() > 0);
         Collection<String> quays = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:4055").getQuays().getQuayRefOrQuay()
                 .stream()
-                .map(o -> (Quay) o)
+                .map(o -> (Quay) o.getValue())
                 .map(EntityStructure::getId)
                 .collect(Collectors.toList());
 

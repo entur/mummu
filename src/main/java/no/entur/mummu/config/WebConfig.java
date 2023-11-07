@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import no.entur.mummu.serializers.CustomSerializers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -49,18 +51,24 @@ public class WebConfig implements WebMvcConfigurer {
         converters.add(new NetexHttpMessageConverter());
     }
 
-    @Override
+   /* @Override
     public void addFormatters(FormatterRegistry registry) {
         WebMvcConfigurer.super.addFormatters(registry);
         registry.addFormatter(new StringToVehicleModeEnumeration());
         registry.addFormatter(new StringToStopTypeEnumeration());
-    }
+    }*/
 
     public ObjectMapper jsonObjectMapper() {
         ArrayList<Module> modules = new ArrayList<>();
+
         var customSerializersModule = new SimpleModule();
         customSerializersModule.setSerializers(customSerializers);
         modules.add(customSerializersModule);
+
+        JaxbAnnotationModule jaxbAnnotationModule = new JaxbAnnotationModule();
+        modules.add(jaxbAnnotationModule);
+
+
         return Jackson2ObjectMapperBuilder.json()
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
