@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.rutebanken.netex.model.TariffZoneRefs_RelStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +35,10 @@ public class CustomSerializers extends SimpleSerializers {
 
         if (isLocalDateTimeType(type)) {
             return new LocalDateTimeWithConstantZoneSerializer(mummuSerializerContext);
+        }
+
+        if (type.getRawClass().equals(TariffZoneRefs_RelStructure.class)) {
+            return new TariffZoneRefsSerializer();
         }
 
         return super.findSerializer(config, type, beanDesc);
