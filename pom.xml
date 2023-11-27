@@ -16,8 +16,9 @@
         <java.version>21</java.version>
         <entur.helpers.version>2.5</entur.helpers.version>
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
-        <jaxb-version>2.3.0.1</jaxb-version>
-        <entur-kafka-spring-starter.version>2.9.13.3</entur-kafka-spring-starter.version>
+        <jakarta-xml-bind.version>4.0.1</jakarta-xml-bind.version>
+        <glassfish-jaxb.version>4.0.4</glassfish-jaxb.version>
+        <entur-kafka-spring-starter.version>3.1.4.5</entur-kafka-spring-starter.version>
     </properties>
 
     <licenses>
@@ -114,19 +115,15 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>${jaxb-version}</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jakarta-xml-bind.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>${jaxb-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-xjc</artifactId>
-            <version>${jaxb-version}</version>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${glassfish-jaxb.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.avro</groupId>
