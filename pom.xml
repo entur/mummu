@@ -132,8 +132,6 @@
             <artifactId>kafka-avro-serializer</artifactId>
             <version>7.5.2</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
@@ -158,20 +156,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>no.entur.mummu.MummuApplication</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.avro</groupId>
@@ -202,6 +186,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>no.entur.mummu.MummuApplication</mainClass>
                     <jvmArguments>
                         -Dmanagement.server.port=9003
                         -Dmanagement.endpoints.enabled-by-default=false
@@ -209,6 +194,7 @@
                         -Dmanagement.endpoints.jmx.exposure.exclude=*
                         -Dspring.profiles.active=test
                         -Dspringdoc.api-docs.path=/api-docs
+                        -Dspringdoc.api-docs.enabled=true
                         -Dno.entur.mummu.data-file=src/test/resources/IntegrationTestFixture.xml.zip
                         -Dno.entur.mummu.swagger.host.url=https://api.entur.io/stop-places/v1/read
                     </jvmArguments>
@@ -224,6 +210,11 @@
                         <id>post-integration-test</id>
                         <goals>
                             <goal>stop</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
