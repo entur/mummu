@@ -1,5 +1,6 @@
 package no.entur.mummu.services;
 
+import jakarta.xml.bind.JAXBElement;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
@@ -17,7 +18,6 @@ import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.TopographicPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.Zone_VersionStructure;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import java.util.Collection;
 import java.util.List;

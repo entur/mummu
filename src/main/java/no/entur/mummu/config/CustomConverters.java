@@ -7,7 +7,7 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import java.util.Iterator;
 
 public class CustomConverters implements ModelConverter {

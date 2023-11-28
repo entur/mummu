@@ -1,5 +1,6 @@
 package no.entur.mummu.config;
 
+import jakarta.xml.bind.JAXBContext;
 import org.rutebanken.netex.model.PublicationDeliveryStructure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,14 +8,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.xml.AbstractXmlHttpMessageConverter;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import java.util.List;
 
-import static javax.xml.bind.JAXBContext.newInstance;
+import static jakarta.xml.bind.JAXBContext.newInstance;
 
 public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<Object> {
 

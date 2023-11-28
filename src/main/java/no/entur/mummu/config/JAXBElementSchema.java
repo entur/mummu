@@ -3,8 +3,8 @@ package no.entur.mummu.config;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import jakarta.xml.bind.JAXBElement;
 
-import javax.xml.bind.JAXBElement;
 import java.util.Map;
 
 public class JAXBElementSchema extends Schema<JAXBElement<?>> {

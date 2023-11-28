@@ -1,5 +1,6 @@
 package no.entur.mummu.resources;
 
+import jakarta.xml.bind.JAXBElement;
 import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.services.NetexObjectFactory;
 import org.rutebanken.netex.model.FareZone;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.bind.JAXBElement;
 import java.util.Collection;
 import java.util.List;
 
