@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
+import static jakarta.servlet.RequestDispatcher.ERROR_STATUS_CODE;
+
 @Controller
 public class RestErrorController implements ErrorController {
 
@@ -22,7 +24,7 @@ public class RestErrorController implements ErrorController {
 
     private HttpStatus getStatus(HttpServletRequest request) {
         Integer statusCode = (Integer) request
-                .getAttribute("javax.servlet.error.status_code");
+                .getAttribute(ERROR_STATUS_CODE);
         if (statusCode != null) {
             try {
                 return HttpStatus.valueOf(statusCode);
