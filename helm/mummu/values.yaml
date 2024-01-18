@@ -8,13 +8,9 @@ common:
     externalPort: 80
     internalPort: 8080
   container:
-    image: ${artifact.metadata.image}
-    envFrom:
-      - secretRef:
-          name: ror-mummu-secrets
+    image: <+artifacts.primary.image>
     cpu: 1
     memory: 5200
-    cpuLimit: 1000m
     memoryLimit: 5200
     probes:
       liveness:
@@ -37,9 +33,12 @@ common:
     enabled: false
   configmap:
     data:
-      JDK_JAVA_OPTIONS:  -server -Xmx4096m -Xss1024m -Xms4096m -Dspring.config.location=/etc/application-config/application.properties
+      JDK_JAVA_OPTIONS: -server -Xmx4096m -Xss1024m -Xms4096m -Dspring.config.location=/etc/application-config/application.properties
         -Dfile.encoding=UTF-8
       TZ: Europe/Oslo
     enabled: true
     toEnv: true
+  secrets:
+    kafka: [KAFKAPASSWORD, KAFKAUSERNAME]
+    slack: [SLACK_URL]
 cronJobImage: eu.gcr.io/entur-system-1287/deployment-rollout-restart:0.1.10
