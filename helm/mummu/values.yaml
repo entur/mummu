@@ -33,9 +33,12 @@ common:
     enabled: false
   configmap:
     data:
-      JDK_JAVA_OPTIONS:  -server -Xmx4096m -Xss1024m -Xms4096m -Dspring.config.location=/etc/application-config/application.properties
+      JDK_JAVA_OPTIONS: -server -Xmx4096m -Xss1024m -Xms4096m -Dspring.config.location=/etc/application-config/application.properties
         -Dfile.encoding=UTF-8
       TZ: Europe/Oslo
     enabled: true
     toEnv: true
+  secrets:
+    ror-mummu-secrets: [KAFKAPASSWORD, KAFKAUSERNAME]
+    ror-slack-url: [SLACK_URL]
 cronJobImage: eu.gcr.io/entur-system-1287/deployment-rollout-restart:0.1.10
