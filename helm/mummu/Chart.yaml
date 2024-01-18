@@ -1,0 +1,17 @@
+apiVersion: v2
+appVersion: "0.0.1"
+description: Read-only API for stop place related NeTEx entities
+name: mummu
+version: 0.1.0
+keywords:
+  - mummu
+sources:
+  - https://github.com/entur/mummu
+maintainers:
+  - name: 'team-ror'
+    email: team.rutedata@entur.org
+engine: gotpl
+dependencies:
+  - name: common
+    version: 1.17.5
+    repository: "https://entur.github.io/helm-charts"

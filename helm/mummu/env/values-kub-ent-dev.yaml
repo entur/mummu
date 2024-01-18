@@ -1,0 +1,20 @@
+common:
+  configmap:
+    data:
+      NETEX_DATA_URL: https://storage.googleapis.com/marduk-dev/tiamat/Full_latest.zip
+  env: dev
+  replicas: 1
+
+configMap:
+  logLevel: DEBUG
+  hostUrl: https://api.dev.entur.io/stop-places/v1/read
+  tiamatUrl: https://api.dev.entur.io/stop-places/v1
+  changelogTopic: ror-stop-place-changelog-dev
+  kafkaCluster: AIVEN_TEST_EXT
+
+ingress:
+  domainName: .dev.entur.io
+
+cronJob:
+  gcpProject: entur-dev-gcp2
+  slackUrl: ror-dev-slack-url

@@ -1,0 +1,22 @@
+common:
+  configmap:
+    data:
+      NETEX_DATA_URL: https://storage.googleapis.com/marduk-test/tiamat/Full_latest.zip
+  env: tst
+  replicas: 1
+
+configMap:
+  logLevel: INFO
+  hostUrl: https://api.staging.entur.io/stop-places/v1/read
+  tiamatUrl: https://api.staging.entur.io/stop-places/v1
+  changelogTopic: ror-stop-place-changelog-staging
+  kafkaCluster: AIVEN_TEST_EXT
+
+ingress:
+  domainName: .staging.entur.io
+
+cronJob:
+  gcpProject: entur-test-gcp2
+  slackUrl: ror-staging-slack-url
+
+

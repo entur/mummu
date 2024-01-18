@@ -1,0 +1,28 @@
+common:
+  configmap:
+    data:
+      NETEX_DATA_URL: https://storage.googleapis.com/marduk-production/tiamat/Full_latest.zip
+  env: prd
+  replicas: 2
+  container:
+    maxReplicas: 5
+    replicas: 2
+
+configMap:
+  logLevel: INFO
+  hostUrl: https://api.entur.io/stop-places/v1/read
+  tiamatUrl: https://api.entur.io/stop-places/v1
+  changelogTopic: ror-stop-place-changelog-production
+  kafkaCluster: AIVEN_PROD_EXT
+
+ingress:
+  domainName: .entur.io
+
+cronJob:
+  gcpProject: entur-prod-gcp2
+  slackUrl: ror-prod-slack-url
+
+horizontalPodAutoscaler:
+  maxReplicas: 5
+  minReplicas: 2
+  targetCPUUtilizationPercentage: 80
