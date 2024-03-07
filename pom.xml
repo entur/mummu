@@ -17,7 +17,7 @@
         <entur.helpers.version>2.5</entur.helpers.version>
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.1</jakarta-xml-bind.version>
-        <glassfish-jaxb.version>4.0.4</glassfish-jaxb.version>
+        <glassfish-jaxb.version>4.0.5</glassfish-jaxb.version>
         <entur-kafka-spring-starter.version>3.1.4.10</entur-kafka-spring-starter.version>
     </properties>
 
