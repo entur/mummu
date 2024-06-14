@@ -96,6 +96,16 @@ public class NetexEntitiesService {
         ).orElseThrow(NotFoundException::new);
     }
 
+    public List<StopPlace> getStopPlaceChildren(String id) {
+        return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
+                .filter(stopPlace -> {
+                    if (stopPlace.getParentSiteRef() != null) {
+                        return stopPlace.getParentSiteRef().getRef().equals(id);
+                    }
+                    return false;
+                }).toList();
+    }
+
     public Collection<Parking> getParkingByStopPlaceId(String id) {
         if (netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(id) == null) {
             throw new NotFoundException();
