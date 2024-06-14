@@ -60,6 +60,15 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetStopPlaceChildren() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:59687/children"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.[*]").isNotEmpty());
+    }
+
+    @Test
     void testGetFilterStopPlaces() throws Exception {
         mvc.perform(get("/stop-places?stopPlaceTypes=ONSTREET_TRAM&topographicPlaceIds=KVE:TopographicPlace:03"))
                 .andExpect(status().isOk())

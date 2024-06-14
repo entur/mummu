@@ -126,6 +126,17 @@ public class RestResource {
         return netexObjectFactory.createStopPlace(stopPlace);
     }
 
+    @GetMapping(value = "/stop-places/{id}/children", produces = "application/json")
+    public Collection<StopPlace> getStopPlaceChildren(@PathVariable String id) {
+        return netexEntitiesService.getStopPlaceChildren(id);
+    }
+
+    @GetMapping(value = "/stop-places/{id}/children", produces = "application/xml")
+    public JAXBElement<StopPlacesInFrame_RelStructure> getJAXBElementStopPlaceChildren(@PathVariable String id) {
+        var stopPlaces = netexEntitiesService.getStopPlaceChildren(id);
+        return netexObjectFactory.createStopPlaces(stopPlaces);
+    }
+
     @GetMapping(value="/stop-places/{id}/parkings", produces = "application/json")
     public Collection<Parking> getParkingByStopPlaceId(@PathVariable String id) {
         return netexEntitiesService.getParkingByStopPlaceId(id);
