@@ -1,6 +1,8 @@
 package no.entur.mummu.services;
 
 import no.entur.mummu.resources.NotFoundException;
+import no.entur.mummu.serializers.MummuSerializerContext;
+import no.entur.mummu.util.CurrentValidityFilter;
 import no.entur.mummu.util.FareZoneAuthorityRefFilter;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
@@ -32,12 +34,15 @@ import java.util.stream.Collectors;
 @Service
 public class NetexEntitiesService {
     private final NetexEntitiesIndex netexEntitiesIndex;
+    private final MummuSerializerContext mummuSerializerContext;
 
     @Autowired
     public NetexEntitiesService(
-            NetexEntitiesIndexLoader loader
+            NetexEntitiesIndexLoader loader,
+            MummuSerializerContext mummuSerializerContext
     ) {
         this.netexEntitiesIndex = loader.getNetexEntitiesIndex();
+        this.mummuSerializerContext = mummuSerializerContext;
     }
 
     public List<GroupOfStopPlaces> getGroupsOfStopPlaces(
@@ -72,6 +77,7 @@ public class NetexEntitiesService {
                 .filter(new TransportModesFilter(transportModes))
                 .filter(new StopPlaceTypesFilter(stopPlaceTypes))
                 .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
