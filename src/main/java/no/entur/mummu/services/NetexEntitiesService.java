@@ -52,6 +52,7 @@ public class NetexEntitiesService {
     ) {
         return netexEntitiesIndex.getGroupOfStopPlacesIndex().getAll().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -109,7 +110,9 @@ public class NetexEntitiesService {
                         return stopPlace.getParentSiteRef().getRef().equals(id);
                     }
                     return false;
-                }).toList();
+                })
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
+                .toList();
     }
 
     public Collection<Parking> getParkingByStopPlaceId(String id) {
@@ -126,6 +129,7 @@ public class NetexEntitiesService {
     ) {
         return netexEntitiesIndex.getQuayIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -165,6 +169,7 @@ public class NetexEntitiesService {
     ) {
         return netexEntitiesIndex.getParkingIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -196,6 +201,7 @@ public class NetexEntitiesService {
     ) {
         return netexEntitiesIndex.getTopographicPlaceIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -229,6 +235,7 @@ public class NetexEntitiesService {
         return netexEntitiesIndex.getTariffZoneIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .filter(new TariffZoneAuthorityRefFilter(authorityRefs))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -260,6 +267,7 @@ public class NetexEntitiesService {
     ) {
         return netexEntitiesIndex.getGroupOfTariffZonesIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
@@ -281,6 +289,7 @@ public class NetexEntitiesService {
         return netexEntitiesIndex.getFareZoneIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
                 .filter(new FareZoneAuthorityRefFilter(authorityRefs))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
                 .sorted(new NetexIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())
