@@ -1,0 +1,1013 @@
+schema {
+  query: StopPlaceRegister
+}
+
+"""This directive allows results to be deferred during execution"""
+directive @defer on FIELD
+
+type AccessibilityAssessment {
+  id: String
+  version: String
+  limitations: AccessibilityLimitations
+  mobilityImpairedAccess: LimitationStatusType
+}
+
+type AccessibilityLimitations {
+  id: String
+  version: String
+  wheelchairAccess: LimitationStatusType
+  stepFreeAccess: LimitationStatusType
+  escalatorFreeAccess: LimitationStatusType
+  liftFreeAccess: LimitationStatusType
+  audibleSignalsAvailable: LimitationStatusType
+}
+
+type AddressablePlace {
+  placeEquipments: PlaceEquipments
+
+  """
+  This field is set either on StopPlace (i.e. all Quays are equal), or on every Quay.
+  """
+  accessibilityAssessment: AccessibilityAssessment
+  publicCode: String
+  privateCode: PrivateCode
+  modificationEnumeration: ModificationEnumerationType
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  validBetween: ValidBetween
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+}
+
+type AlternativeName {
+  nameType: nameType!
+  name: EmbeddableMultilingualString!
+}
+
+"""Check if authorized for entity with role"""
+type AuthorizationCheck {
+  """The identificatior for entity"""
+  id: String
+
+  """The relevant roles for the given ID"""
+  roles: [String]
+}
+
+"""Built-in java.math.BigDecimal"""
+scalar BigDecimal
+
+"""Built-in java.math.BigInteger"""
+scalar BigInteger
+
+type BoardingPosition {
+  id: String
+  publicCode: String
+  geometry: GeoJSON
+}
+
+scalar Coordinates
+
+type CycleStorageEquipment {
+  id: String
+  numberOfSpaces: BigInteger
+  cycleStorageType: cycleStorageType
+}
+
+enum cycleStorageType {
+  racks
+  bars
+  railings
+  cycleScheme
+  other
+}
+
+"""
+Date time using the format: yyyy-MM-dd'T'HH:mm:ss.SSSXXXX. Example: 2017-04-23T18:25:43.511+0100
+"""
+scalar DateTime
+
+type EmbeddableMultilingualString {
+  value: String
+  lang: String
+}
+
+"""The version of the referenced entity."""
+type EntityRef {
+  ref: String
+  version: String
+  addressablePlace: AddressablePlace
+}
+
+type FareZone {
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  validBetween: ValidBetween
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+  authorityRef: String
+  privateCode: PrivateCode
+  zoneTopology: ZoneTopologyEnumerationType
+  scopingMethod: ScopingMethodEnumerationType
+  neighbours: [FareZone]
+  members: [StopPlace]
+}
+
+enum gender {
+  both
+  femaleOnly
+  maleOnly
+  sameSexOnly
+}
+
+type GeneralSign {
+  id: String
+  privateCode: PrivateCode
+  content: EmbeddableMultilingualString
+  signContentType: signContentType
+}
+
+"""
+Geometry-object as specified in the GeoJSON-standard (http://geojson.org/geojson-spec.html).
+"""
+type GeoJSON {
+  type: GeoJSONType
+  coordinates: Coordinates
+}
+
+enum GeoJSONType {
+  Point
+  LineString
+  Polygon
+  MultiPoint
+  MultiLineString
+  MultiPolygon
+  GeometryCollection
+}
+
+type GroupOfStopPlaces {
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  versionComment: String
+  members: [StopPlaceInterface]
+}
+
+type GroupOfTariffZones {
+  id: String
+  name: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  versionComment: String
+  members: [FareZone]
+}
+
+enum InterchangeWeightingType {
+  noInterchange
+  interchangeAllowed
+  recommendedInterchange
+  preferredInterchange
+}
+
+type KeyValues {
+  key: String
+  values: [String]
+}
+
+enum LimitationStatusType {
+  FALSE
+  TRUE
+  PARTIAL
+  UNKNOWN
+}
+
+enum ModificationEnumerationType {
+  new
+  delete
+  revise
+  delta
+}
+
+enum nameType {
+  alias
+  translation
+  copy
+  label
+  other
+}
+
+type ParentStopPlace implements StopPlaceInterface {
+  versionComment: String
+  changedBy: String
+  topographicPlace: TopographicPlace
+  validBetween: ValidBetween
+  alternativeNames: [AlternativeName]
+  tariffZones: [TariffZone]
+  fareZones: [FareZone]
+  tags: [Tag]
+  groups: [GroupOfStopPlaces]
+  placeEquipments: PlaceEquipments
+
+  """
+  This field is set either on StopPlace (i.e. all Quays are equal), or on every Quay.
+  """
+  accessibilityAssessment: AccessibilityAssessment
+  publicCode: String
+  privateCode: PrivateCode
+  modificationEnumeration: ModificationEnumerationType
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+  children: [StopPlace]
+}
+
+type Parking {
+  id: String
+  version: String
+  name: EmbeddableMultilingualString
+  validBetween: ValidBetween
+  parentSiteRef: String
+  totalCapacity: BigInteger
+  parkingType: ParkingType
+  parkingVehicleTypes: [ParkingVehicleType]
+  parkingLayout: ParkingLayoutType
+  principalCapacity: BigInteger
+  overnightParkingPermitted: Boolean
+  rechargingAvailable: Boolean
+  secure: Boolean
+  realTimeOccupancyAvailable: Boolean
+  parkingReservation: ParkingReservationType
+  bookingUrl: String
+  freeParkingOutOfHours: Boolean
+  parkingPaymentProcess: [ParkingPaymentProcessType]
+  parkingProperties: [ParkingProperties]
+  parkingAreas: [ParkingArea]
+  geometry: GeoJSON
+}
+
+type ParkingArea {
+  label: EmbeddableMultilingualString
+  totalCapacity: BigInteger
+  parkingProperties: ParkingProperties
+}
+
+type ParkingCapacity {
+  parkingVehicleType: ParkingVehicleType
+  parkingUserType: ParkingUserType
+  parkingStayType: ParkingStayType
+  numberOfSpaces: BigInteger
+  numberOfSpacesWithRechargePoint: BigInteger
+}
+
+enum ParkingLayoutType {
+  covered
+  openSpace
+  multistorey
+  underground
+  roadside
+  undefined
+  other
+  cycleHire
+}
+
+enum ParkingPaymentProcessType {
+  free
+  payAtBay
+  payAndDisplay
+  payAtExitBoothManualCollection
+  payAtMachineOnFootPriorToExit
+  payByPrepaidToken
+  payByMobileDevice
+  undefined
+  other
+}
+
+type ParkingProperties {
+  parkingUserTypes: [ParkingUserType]
+  maximumStay: BigInteger
+  spaces: [ParkingCapacity]
+}
+
+enum ParkingReservationType {
+  reservationRequired
+  reservationAllowed
+  noReservations
+  registrationRequired
+  other
+}
+
+enum ParkingStayType {
+  shortStay
+  midTerm
+  longTerm
+  dropoff
+  unlimited
+  other
+  all
+}
+
+enum ParkingType {
+  parkAndRide
+  liftShareParking
+  urbanParking
+  airportParking
+  trainStationParking
+  exhibitionCentreParking
+  rentalCarParking
+  shoppingCentreParking
+  motorwayParking
+  roadside
+  parkingZone
+  undefined
+  cycleRental
+  other
+}
+
+enum ParkingUserType {
+  allUsers
+  staff
+  visitors
+  registeredDisabled
+  registered
+  rental
+  doctors
+  residentsWithPermits
+  reservationHolders
+  emergencyServices
+  other
+  all
+}
+
+enum ParkingVehicleType {
+  pedalCycle
+  moped
+  motorcycle
+  motorcycleWithSidecar
+  motorScooter
+  twoWheeledVehicle
+  threeWheeledVehicle
+  car
+  smallCar
+  passengerCar
+  largeCar
+  fourWheelDrive
+  taxi
+  camperCar
+  carWithTrailer
+  carWithCaravan
+  minibus
+  bus
+  van
+  largeVan
+  highSidedVehicle
+  lightGoodsVehicle
+  heavyGoodsVehicle
+  truck
+  agriculturalVehicle
+  tanker
+  tram
+  articulatedVehicle
+  vehicleWithTrailer
+  lightGoodsVehicleWithTrailer
+  heavyGoodsVehicleWithTrailer
+  undefined
+  other
+  allPassengerVehicles
+  all
+}
+
+type PathLink {
+  id: String
+  from: PathLinkEnd
+  to: PathLinkEnd
+  version: String
+  geometry: GeoJSON
+  transferDuration: TransferDuration
+}
+
+type PathLinkEnd {
+  id: String
+  placeRef: EntityRef
+}
+
+type PlaceEquipments {
+  id: String
+  waitingRoomEquipment: [WaitingRoomEquipment]
+  sanitaryEquipment: [SanitaryEquipment]
+  ticketingEquipment: [TicketingEquipment]
+  shelterEquipment: [ShelterEquipment]
+  cycleStorageEquipment: [CycleStorageEquipment]
+  generalSign: [GeneralSign]
+}
+
+type PrivateCode {
+  type: String
+  value: String
+}
+
+type Quay {
+  placeEquipments: PlaceEquipments
+
+  """
+  This field is set either on StopPlace (i.e. all Quays are equal), or on every Quay.
+  """
+  accessibilityAssessment: AccessibilityAssessment
+  publicCode: String
+  privateCode: PrivateCode
+  modificationEnumeration: ModificationEnumerationType
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  validBetween: ValidBetween
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+  compassBearing: BigDecimal
+  alternativeNames: [AlternativeName]
+  boardingPositions: [BoardingPosition]
+}
+
+type SanitaryEquipment {
+  id: String
+  numberOfToilets: BigInteger
+  gender: gender
+}
+
+enum ScopingMethodEnumerationType {
+  explicitStops
+  implicitSpatialProjection
+  explicitPeripheryStops
+  other
+}
+
+type ShelterEquipment {
+  id: String
+  seats: BigInteger
+  stepFree: Boolean
+  enclosed: Boolean
+}
+
+enum signContentType {
+  entrance
+  exit
+  emergencyExit
+  transportMode
+  noSmoking
+  tickets
+  assistance
+  sosPhone
+  touchPoint
+  meetingPoint
+  TransportModePoint
+  other
+}
+
+type StopPlace implements StopPlaceInterface {
+  versionComment: String
+  changedBy: String
+  topographicPlace: TopographicPlace
+  validBetween: ValidBetween
+  alternativeNames: [AlternativeName]
+  tariffZones: [TariffZone]
+  fareZones: [FareZone]
+  tags: [Tag]
+  groups: [GroupOfStopPlaces]
+  placeEquipments: PlaceEquipments
+
+  """
+  This field is set either on StopPlace (i.e. all Quays are equal), or on every Quay.
+  """
+  accessibilityAssessment: AccessibilityAssessment
+  publicCode: String
+  privateCode: PrivateCode
+  modificationEnumeration: ModificationEnumerationType
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+  transportMode: TransportModeType
+  submode: SubmodeType
+  stopPlaceType: StopPlaceType
+  weighting: InterchangeWeightingType
+  parentSiteRef: String
+
+  """
+  Any references to another SITE of which this STOP PLACE is deemed to be a nearby but distinct.
+  """
+  adjacentSites: [VersionLessEntityRef]
+  quays: [Quay]
+}
+
+interface StopPlaceInterface {
+  placeEquipments: PlaceEquipments
+
+  """
+  This field is set either on StopPlace (i.e. all Quays are equal), or on every Quay.
+  """
+  accessibilityAssessment: AccessibilityAssessment
+  publicCode: String
+  privateCode: PrivateCode
+  modificationEnumeration: ModificationEnumerationType
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  validBetween: ValidBetween
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+  versionComment: String
+  changedBy: String
+  topographicPlace: TopographicPlace
+  alternativeNames: [AlternativeName]
+  tariffZones: [TariffZone]
+  fareZones: [FareZone]
+  tags: [Tag]
+  groups: [GroupOfStopPlaces]
+}
+
+"""Query and search for data"""
+type StopPlaceRegister {
+  """Search for StopPlaces"""
+  stopPlace(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+
+    """
+    Fetch all versions for entitites in result. Should not be combined with argument versionValidity
+    """
+    allVersions: Boolean
+
+    """
+    IDs used to lookup StopPlace(s). When used - all other searchparameters are ignored.
+    """
+    id: String
+
+    """
+    Find stop place from id and version. Only used together with id argument
+    """
+    version: Int
+
+    """
+    Find stop place from id and version. Only used together with id argument
+    """
+    versionValidity: VersionValidity
+
+    """Only return StopPlaces with given StopPlaceType(s)."""
+    stopPlaceType: [StopPlaceType]
+
+    """Only return StopPlaces located in given counties."""
+    countyReference: [String]
+
+    """Only return StopPlaces located in given countries."""
+    countryReference: [String]
+
+    """
+    Only return StopPlaces reffered to by the tag names provided. Values should not start with #
+    """
+    tags: [String]
+
+    """Only return StopPlaces located in given municipalities."""
+    municipalityReference: [String]
+
+    """
+    Searches for StopPlace by name, id, imported-id, merged-id or a single tag prefixed with #
+    """
+    query: String
+
+    """Searches for StopPlace by importedId."""
+    importedId: String
+
+    """
+    Sets the point in time to use in search. Only StopPlaces valid on the given
+    timestamp will be returned. If no value is provided, the search will fall
+    back versionValidity's default value. Cannot be combined with
+    versionValidity Date format: yyyy-MM-dd'T'HH:mm:ss.SSSXXXX
+    """
+    pointInTime: DateTime
+
+    """
+    Must be used together with parameter 'values', other search-parameters are ignored. Defines key to search for.
+    """
+    key: String
+
+    """Set to true to only return objects that do not have coordinates."""
+    withoutLocationOnly: Boolean = false
+
+    """withoutQuaysOnly"""
+    withoutQuaysOnly: Boolean = false
+
+    """
+    Set to true to only return stop places that have quays with duplicated imported IDs.
+    """
+    withDuplicatedQuayImportedIds: Boolean = false
+
+    """withNearbySimilarDuplicates"""
+    withNearbySimilarDuplicates: Boolean = false
+
+    """hasParking"""
+    hasParking: Boolean = false
+
+    """Set to true to only return mono modal stop places."""
+    onlyMonomodalStopPlaces: Boolean = false
+
+    """
+    Must be used together with parameter 'key', other search-parameters are ignored. Defines value to search for.
+    """
+    values: [String]
+
+    """
+    If set to true, only stop places with valid tags are returned. If false, filter does not apply.
+    """
+    withTags: Boolean = false
+
+    """
+    Filter results by data producer code space - i.e. code from original imported ID
+    """
+    code: String
+  ): [StopPlaceInterface]
+
+  """Find StopPlaces within given BoundingBox."""
+  stopPlaceBBox(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+
+    """Bottom left longitude (xMin)."""
+    lonMin: BigDecimal!
+
+    """Bottom left latitude (yMin)."""
+    latMin: BigDecimal!
+
+    """Top right longitude (xMax)."""
+    lonMax: BigDecimal!
+
+    """Top right longitude (yMax)."""
+    latMax: BigDecimal!
+
+    """ID of StopPlace to excluded from result."""
+    ignoreStopPlaceId: String
+
+    """
+    Set to true if expired StopPlaces should be returned, default is 'false'.
+    """
+    includeExpired: Boolean = false
+
+    """
+    Sets the point in time to use in search. Only StopPlaces valid on the given
+    timestamp will be returned. If no value is provided, the search will fall
+    back versionValidity's default value. Cannot be combined with
+    versionValidity Date format: yyyy-MM-dd'T'HH:mm:ss.SSSXXXX
+    """
+    pointInTime: DateTime
+  ): [StopPlaceInterface]
+
+  """Find topographic places"""
+  topographicPlace(
+    id: String
+
+    """
+    Fetch all versions for entitites in result. Should not be combined with argument versionValidity
+    """
+    allVersions: Boolean
+
+    """Limits results to specified placeType."""
+    topographicPlaceType: TopographicPlaceType
+
+    """Searches for TopographicPlaces by name."""
+    query: String
+  ): [TopographicPlace]
+
+  """Find path links"""
+  pathLink(
+    id: String
+
+    """
+    Fetch all versions for entitites in result. Should not be combined with argument versionValidity
+    """
+    allVersions: Boolean
+    stopPlaceId: String
+  ): [PathLink]
+
+  """Find parking"""
+  parking(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+    id: String
+    version: Int
+    stopPlaceId: String
+
+    """
+    Fetch all versions for entitites in result. Should not be combined with argument versionValidity
+    """
+    allVersions: Boolean
+  ): [Parking]
+
+  """List all valid Transportmode/Submode-combinations."""
+  validTransportModes: [TransportModes]
+
+  """Check if authorized for entity with role"""
+  checkAuthorized(
+    """The entity ID to check authorization for. For instance stop place ID"""
+    id: String
+  ): AuthorizationCheck
+
+  """Fetches already used tags by name distinctively"""
+  tags(
+    """Tag name"""
+    name: String!
+  ): [Tag]
+
+  """Group of stop places"""
+  groupOfStopPlaces(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+    id: String
+    query: String
+    stopPlaceId: String
+  ): [GroupOfStopPlaces]
+
+  """Group of tariff zones"""
+  groupOfTariffZones(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+    id: String
+    query: String
+    tariffZoneId: String
+  ): [GroupOfTariffZones]
+
+  """Tariff zones"""
+  tariffZones(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+    query: String
+  ): [TariffZone]
+
+  """Fare zones"""
+  fareZones(
+    """Pagenumber when using pagination - default is 0"""
+    page: Int = 0
+
+    """Number of hits per page when using pagination - default is 20"""
+    size: Int = 20
+    query: String
+    id: String
+    authorityRef: String
+    scopingMethod: ScopingMethodEnumerationType
+    zoneTopology: ZoneTopologyEnumerationType
+  ): [FareZone]
+}
+
+enum StopPlaceType {
+  onstreetBus
+  onstreetTram
+  airport
+  railStation
+  metroStation
+  busStation
+  coachStation
+  tramStation
+  harbourPort
+  ferryPort
+  ferryStop
+  liftStation
+  vehicleRailInterchange
+  other
+}
+
+enum SubmodeType {
+  localBus
+  regionalBus
+  expressBus
+  nightBus
+  sightseeingBus
+  shuttleBus
+  schoolBus
+  railReplacementBus
+  airportLinkBus
+  localTram
+  local
+  regionalRail
+  interregionalRail
+  longDistance
+  nightRail
+  touristRailway
+  metro
+  internationalFlight
+  domesticFlight
+  helicopterService
+  internationalCarFerry
+  nationalCarFerry
+  localCarFerry
+  internationalPassengerFerry
+  localPassengerFerry
+  highSpeedVehicleService
+  highSpeedPassengerService
+  sightseeingService
+  telecabin
+  funicular
+}
+
+"""A tag for an entity like StopPlace"""
+type Tag {
+  """Tag name"""
+  name: String
+
+  """
+  A reference to a netex ID. For instance: NSR:StopPlace:1. Types supported: StopPlace
+  """
+  idReference: String
+
+  """When this tag was added to the referenced entity"""
+  created: DateTime
+
+  """Who created this tag for the referenced entity"""
+  createdBy: String
+
+  """A comment for this tag on this entity"""
+  comment: String
+
+  """
+  When this tag was removed. If set, the tag is removed from entity it references in field 'idReference'
+  """
+  removed: DateTime
+
+  """Removed by username. Only set if tag has been removed"""
+  removedBy: String
+}
+
+type TariffZone {
+  id: String
+  name: EmbeddableMultilingualString
+  shortName: EmbeddableMultilingualString
+  description: EmbeddableMultilingualString
+  version: String
+  validBetween: ValidBetween
+  geometry: GeoJSON
+  importedId: [String] @deprecated(reason: "Moved to keyValues")
+  keyValues: [KeyValues]
+  polygon: GeoJSON
+}
+
+type TicketingEquipment {
+  id: String
+  ticketOffice: Boolean
+  ticketMachines: Boolean
+  numberOfMachines: BigInteger
+}
+
+type TopographicPlace {
+  id: String
+  topographicPlaceType: TopographicPlaceType
+  name: EmbeddableMultilingualString
+  version: Int
+  parentTopographicPlace: TopographicPlace
+  polygon: GeoJSON
+}
+
+enum TopographicPlaceType {
+  continent
+  interregion
+  country
+  principality
+  state
+  province
+  region
+  county
+  area
+  conurbation
+  city
+  municipality
+  quarter
+  suburb
+  town
+  urbanCentre
+  district
+  parish
+  village
+  hamlet
+  placeOfInterest
+  other
+  unrecorded
+}
+
+"""Transfer durations in seconds"""
+type TransferDuration {
+  """Default duration in seconds"""
+  defaultDuration: Int
+
+  """Frequent traveller duration in seconds"""
+  frequentTravellerDuration: Int
+
+  """Occasional traveller duration in seconds"""
+  occasionalTravellerDuration: Int
+
+  """Mobility restriced traveller duration in seconds"""
+  mobilityRestrictedTravellerDuration: Int
+}
+
+type TransportModes {
+  transportMode: String
+  submode: [String]
+}
+
+enum TransportModeType {
+  air
+  bus
+  metro
+  rail
+  tram
+  water
+  cableway
+  funicular
+}
+
+type ValidBetween {
+  """
+  Date time using the format: yyyy-MM-dd'T'HH:mm:ss.SSSXXXX. Example: 2017-04-23T18:25:43.511+0100
+  """
+  fromDate: DateTime
+
+  """
+  Date time using the format: yyyy-MM-dd'T'HH:mm:ss.SSSXXXX. Example: 2017-04-23T18:25:43.511+0100
+  """
+  toDate: DateTime
+}
+
+"""A reference to an entity without version"""
+type VersionLessEntityRef {
+  """
+  The NeTEx ID of the of the referenced entity. The reference must already exist
+  """
+  ref: String
+}
+
+enum VersionValidity {
+  ALL
+  CURRENT
+  CURRENT_FUTURE
+  MAX_VERSION
+}
+
+type WaitingRoomEquipment {
+  id: String
+  seats: BigInteger
+  heated: Boolean
+  stepFree: Boolean
+}
+
+enum ZoneTopologyEnumerationType {
+  overlapping
+  honeycomb
+  ring
+  annular
+  nested
+  tiled
+  sequence
+  overlappingSequence
+  other
+}
