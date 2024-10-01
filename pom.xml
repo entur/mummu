@@ -195,6 +195,7 @@
                         -Dspring.profiles.active=test
                         -Dspringdoc.api-docs.path=/api-docs
                         -Dspringdoc.api-docs.enabled=true
+                        -Dspringdoc.paths-to-exclude=/error
                         -Dno.entur.mummu.data-file=src/test/resources/IntegrationTestFixture.xml.zip
                         -Dno.entur.mummu.swagger.host.url=https://api.entur.io/stop-places/v1/read
                     </jvmArguments>
