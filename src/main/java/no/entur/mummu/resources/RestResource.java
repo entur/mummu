@@ -3,6 +3,7 @@ package no.entur.mummu.resources;
 import jakarta.xml.bind.JAXBElement;
 import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.services.NetexObjectFactory;
+import no.entur.mummu.util.MultimodalFilter;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
@@ -72,11 +73,12 @@ public class RestResource {
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false, defaultValue = "both") MultimodalFilter.MultimodalFilterType multimodal,
             @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
             @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
-        return netexEntitiesService.getStopPlaces(count, skip, ids, transportModes, stopPlaceTypes, topographicPlaceIds);
+        return netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds);
     }
 
     @GetMapping(value = "/stop-places", produces = "application/xml")
@@ -84,11 +86,12 @@ public class RestResource {
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
             @RequestParam(required = false) List<String> ids,
+            @RequestParam(required = false, defaultValue = "both") MultimodalFilter.MultimodalFilterType multimodal,
             @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
             @RequestParam(required = false) List<String> topographicPlaceIds
     ) {
-        var stopPlaces = netexEntitiesService.getStopPlaces(count, skip, ids, transportModes, stopPlaceTypes, topographicPlaceIds);
+        var stopPlaces = netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds);
         return netexObjectFactory.createStopPlaces(stopPlaces);
     }
 

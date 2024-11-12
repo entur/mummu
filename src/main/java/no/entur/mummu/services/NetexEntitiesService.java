@@ -4,6 +4,7 @@ import no.entur.mummu.resources.NotFoundException;
 import no.entur.mummu.serializers.MummuSerializerContext;
 import no.entur.mummu.util.CurrentValidityFilter;
 import no.entur.mummu.util.FareZoneAuthorityRefFilter;
+import no.entur.mummu.util.MultimodalFilter;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
@@ -69,12 +70,14 @@ public class NetexEntitiesService {
             Integer count,
             Integer skip,
             List<String> ids,
+            MultimodalFilter.MultimodalFilterType multimodalFilterType,
             List<VehicleModeEnumeration> transportModes,
             List<StopTypeEnumeration> stopPlaceTypes,
             List<String> topographicPlaceIds
     ) {
         return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
+                .filter(new MultimodalFilter(multimodalFilterType))
                 .filter(new TransportModesFilter(transportModes))
                 .filter(new StopPlaceTypesFilter(stopPlaceTypes))
                 .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
