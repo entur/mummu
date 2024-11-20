@@ -16,15 +16,27 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Copy maven settings
         run: |
           wget https://raw.githubusercontent.com/entur/ror-maven-settings/master/.m2/settings.xml -O .github/workflows/settings.xml
       - uses: actions/setup-java@v4
         with:
-          java-version: 21.0.1+12
-          distribution: liberica
-          cache: 'maven'
-      - run: mvn verify -s .github/workflows/settings.xml
+          java-version: 21.0.5+11
+          distribution: temurin
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+            ${{ runner.os }}-maven-
+            ${{ runner.os }}-
+
+      - name: Run maven build
+        run: mvn verify -s .github/workflows/settings.xml
       - uses: actions/upload-artifact@v4.4.3
         with:
           path: target
@@ -43,15 +55,14 @@ jobs:
                   -Dsonar.organization=enturas-github \
                   -Dsonar.projectName=${SONAR_PROJECT_NAME} \
                   -Dsonar.host.url=https://sonarcloud.io \
-                  -Dsonar.login=${SONAR_TOKEN}
-
+                  -Dsonar.token=${SONAR_TOKEN}
   docker-build:
+    if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [maven-verify]
     uses: entur/gha-docker/.github/workflows/build.yml@v1
     with:
       build_artifact_name: artifact
       build_artifact_path: target
   docker-push:
-    if: github.repository_owner == 'entur' && github.event_name == 'push'
     needs: [docker-build]
     uses: entur/gha-docker/.github/workflows/push.yml@v1
