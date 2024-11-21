@@ -39,9 +39,6 @@ jobs:
 
       - name: Run maven build
         run: mvn verify
-      - uses: actions/upload-artifact@v4.4.3
-        with:
-          path: target
       - name: Sonar Scan
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
@@ -58,6 +55,9 @@ jobs:
                   -Dsonar.projectName=${SONAR_PROJECT_NAME} \
                   -Dsonar.host.url=https://sonarcloud.io \
                   -Dsonar.token=${SONAR_TOKEN}
+      - uses: actions/upload-artifact@v4.4.3
+        with:
+          path: target
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [maven-verify]
