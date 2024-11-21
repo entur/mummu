@@ -189,6 +189,7 @@
                     <mainClass>no.entur.mummu.MummuApplication</mainClass>
                     <jvmArguments>
                         -Dmanagement.server.port=9003
+                        -Dserver.port=8082
                         -Dmanagement.endpoints.enabled-by-default=false
                         -Dmanagement.endpoints.web.exposure.exclude=*
                         -Dmanagement.endpoints.jmx.exposure.exclude=*
@@ -233,7 +234,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <apiDocsUrl>http://localhost:8080/api-docs</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:8082/api-docs</apiDocsUrl>
                         <outputFileName>openapi.json</outputFileName>
                         <outputDir>src/main/resources/public</outputDir>
                 </configuration>
