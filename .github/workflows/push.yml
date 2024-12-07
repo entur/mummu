@@ -21,7 +21,7 @@ jobs:
       - name: Copy maven settings
         run: |
           wget https://raw.githubusercontent.com/entur/ror-maven-settings/master/.m2/settings.xml -O .github/workflows/settings.xml
-      - uses: s4u/setup-maven-action@v1.16.0
+      - uses: s4u/setup-maven-action@v1.17.0
         with:
           java-version: 21
           java-distribution: temurin
