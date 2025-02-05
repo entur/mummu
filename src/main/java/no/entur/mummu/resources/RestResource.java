@@ -1,5 +1,6 @@
 package no.entur.mummu.resources;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.xml.bind.JAXBElement;
 import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.services.NetexObjectFactory;
@@ -311,6 +312,7 @@ public class RestResource {
     }
 
     @GetMapping(value = "/tariff-zones", produces = "application/json")
+    @Operation(deprecated = true)
     public List<TariffZone> getTariffZones(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
@@ -321,6 +323,7 @@ public class RestResource {
     }
 
     @GetMapping(value = "/tariff-zones", produces = "application/xml")
+    @Operation(deprecated = true)
     public JAXBElement<TariffZonesInFrame_RelStructure> getJAXBElementTariffZones(
             @RequestParam(defaultValue = "10") Integer count,
             @RequestParam(defaultValue = "0") Integer skip,
@@ -332,17 +335,20 @@ public class RestResource {
     }
 
     @GetMapping(value = "/tariff-zones/{id}", produces = "application/json")
+    @Operation(deprecated = true)
     public TariffZone getTariffZoneById(@PathVariable String id) {
         return netexEntitiesService.getTariffZone(id);
     }
 
     @GetMapping(value = "/tariff-zones/{id}", produces = "application/xml")
+    @Operation(deprecated = true)
     public JAXBElement<TariffZone> getJAXBElementTariffZoneById(@PathVariable String id) {
         var tariffZone = netexEntitiesService.getTariffZone(id);
         return netexObjectFactory.createTariffZone(tariffZone);
     }
 
     @GetMapping(value = "/tariff-zones/{id}/versions", produces = "application/json")
+    @Operation(deprecated = true)
     public Collection<TariffZone> getTariffZoneVersions(@PathVariable String id) {
         return netexEntitiesService.getTariffZoneVersions(id);
     }
@@ -354,11 +360,13 @@ public class RestResource {
     }
 
     @GetMapping(value = "/tariff-zones/{id}/versions/{version}", produces = "application/json")
+    @Operation(deprecated = true)
     public TariffZone getTariffZoneVersion(@PathVariable String id, @PathVariable String version) {
         return netexEntitiesService.getTariffZoneVersion(id, version);
     }
 
     @GetMapping(value = "/tariff-zones/{id}/versions/{version}", produces = "application/xml")
+    @Operation(deprecated = true)
     public JAXBElement<TariffZone> getJAXBElementTariffZoneVersion(@PathVariable String id, @PathVariable String version) {
         var tariffZone = netexEntitiesService.getTariffZoneVersion(id, version);
         return netexObjectFactory.createTariffZone(tariffZone);

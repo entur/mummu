@@ -18,7 +18,7 @@
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.2</jakarta-xml-bind.version>
         <glassfish-jaxb.version>4.0.5</glassfish-jaxb.version>
-        <entur-kafka-spring-starter.version>3.4.0.0</entur-kafka-spring-starter.version>
+        <entur-kafka-spring-starter.version>3.4.0.1</entur-kafka-spring-starter.version>
     </properties>
 
     <licenses>
@@ -88,17 +88,17 @@
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-core-jakarta</artifactId>
-            <version>2.2.26</version>
+            <version>2.2.28</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-models-jakarta</artifactId>
-            <version>2.2.26</version>
+            <version>2.2.28</version>
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations-jakarta</artifactId>
-            <version>2.2.26</version>
+            <version>2.2.28</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
