@@ -1,7 +1,6 @@
 package no.entur.mummu.services;
 
 import jakarta.xml.bind.JAXBElement;
-import org.checkerframework.checker.units.qual.N;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
