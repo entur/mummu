@@ -14,6 +14,8 @@ import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.ParkingsInFrame_RelStructure;
 import org.rutebanken.netex.model.Quay;
+import org.rutebanken.netex.model.ScheduledStopPoint;
+import org.rutebanken.netex.model.ScheduledStopPointsInFrame_RelStructure;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.StopTypeEnumeration;
@@ -106,6 +108,17 @@ public class RestResource {
     public JAXBElement<StopPlace> getJAXBElementStopPlaceById(@PathVariable String id) {
         var stopPlace = netexEntitiesService.getStopPlace(id);
         return netexObjectFactory.createStopPlace(stopPlace);
+    }
+
+    @GetMapping(value = "/stop-places/{id}/scheduled-stop-points", produces = "application/json")
+    public Collection<ScheduledStopPoint> getScheduledStopPointsForStopPlace(@PathVariable String id) {
+        return netexEntitiesService.getScheduledStopPointsForStopPlaceWithId(id);
+    }
+
+    @GetMapping(value = "/stop-places/{id}/scheduled-stop-points", produces = "application/xml")
+    public JAXBElement<ScheduledStopPointsInFrame_RelStructure> getJAXBElementScheduledStopPointsForStopPlace(@PathVariable String id) {
+        var scheduledStopPoints = netexEntitiesService.getScheduledStopPointsForStopPlaceWithId(id);
+        return netexObjectFactory.createScheduledStopPoints(scheduledStopPoints);
     }
 
     @GetMapping(value = "/stop-places/{id}/versions", produces = "application/json")
@@ -440,5 +453,32 @@ public class RestResource {
     public JAXBElement<FareZone> getJAXBElementFareZoneVersion(@PathVariable String id, @PathVariable String version) {
         var fareZone = netexEntitiesService.getFareZoneVersion(id, version);
         return netexObjectFactory.createFareZone(fareZone);
+    }
+
+    @GetMapping(value = "/scheduled-stop-points", produces = "application/json")
+    public List<ScheduledStopPoint> getScheduledStopPoints(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip
+    ) {
+        return netexEntitiesService.getScheduledStopPoints(count, skip);
+    }
+
+    @GetMapping(value = "/scheduled-stop-points", produces = "application/xml")
+    public JAXBElement<ScheduledStopPointsInFrame_RelStructure> getJAXBElementScheduledStopPoints(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip
+    ) {
+        var scheduledStopPoints = netexEntitiesService.getScheduledStopPoints(count, skip);
+        return netexObjectFactory.createScheduledStopPoints(scheduledStopPoints);
+    }
+
+    @GetMapping(value = "/scheduled-stop-points/{id}", produces = "application/json")
+    public ScheduledStopPoint getScheduledStopPointById(@PathVariable String id) {
+        return netexEntitiesService.getScheduledStopPoint(id);
+    }
+
+    @GetMapping(value = "/scheduled-stop-points/{id}", produces = "application/xml")
+    public JAXBElement<ScheduledStopPoint> getJAXBElementScheduledStopPointById(@PathVariable String id) {
+        return netexObjectFactory.createScheduledStopPoint(netexEntitiesService.getScheduledStopPoint(id));
     }
 }

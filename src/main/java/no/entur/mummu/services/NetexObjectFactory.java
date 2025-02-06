@@ -10,6 +10,8 @@ import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.ObjectFactory;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.ParkingsInFrame_RelStructure;
+import org.rutebanken.netex.model.ScheduledStopPoint;
+import org.rutebanken.netex.model.ScheduledStopPointsInFrame_RelStructure;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.TariffZone;
@@ -33,6 +35,7 @@ public class NetexObjectFactory extends ObjectFactory {
     private static final QName _groupsOfTariffZones_QNAME = new QName(NAMESPACE_URI, "groupsOfTariffZones");
     private static final QName _parkings_QNAME = new QName(NAMESPACE_URI, "parkings");
     private static final QName _topographicPlaces_QNAME = new QName(NAMESPACE_URI, "topographicPlaces");
+    private static final QName _scheduledStopPoints_QNAME = new QName(NAMESPACE_URI, "scheduledStopPoints");
 
     public JAXBElement<GroupsOfStopPlacesInFrame_RelStructure> createGroupsOfStopPlaces(List<GroupOfStopPlaces> groupsOfStopPlaces) {
         var groupsOfStopPlacesInFrame = createGroupsOfStopPlacesInFrame_RelStructure().withGroupOfStopPlaces(groupsOfStopPlaces);
@@ -71,5 +74,10 @@ public class NetexObjectFactory extends ObjectFactory {
     public JAXBElement<TopographicPlacesInFrame_RelStructure> createTopographicPlaces(Collection<TopographicPlace> topographicPlaces) {
         var topographicPlacesInFrame = createTopographicPlacesInFrame_RelStructure().withTopographicPlace(topographicPlaces);
         return new JAXBElement<>(_topographicPlaces_QNAME, TopographicPlacesInFrame_RelStructure.class, topographicPlacesInFrame);
+    }
+
+    public JAXBElement<ScheduledStopPointsInFrame_RelStructure> createScheduledStopPoints(Collection<ScheduledStopPoint> scheduledStopPoints) {
+        var scheduledStopPointsInFrame = createScheduledStopPointsInFrame_RelStructure().withScheduledStopPoint(scheduledStopPoints);
+        return new JAXBElement<>(_scheduledStopPoints_QNAME, ScheduledStopPointsInFrame_RelStructure.class, scheduledStopPointsInFrame);
     }
 }

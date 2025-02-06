@@ -3,6 +3,7 @@ package no.entur.mummu;
 import jakarta.xml.bind.JAXBElement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.StopPlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -282,5 +283,46 @@ class RestResourceIntegrationTest {
                 .createUnmarshaller();
         JAXBElement<StopPlace> stopPlace = (JAXBElement<StopPlace>) unmarshaller.unmarshal(new ByteArrayInputStream(contentAsString.getBytes()));
         Assertions.assertEquals("NSR:StopPlace:4004", stopPlace.getValue().getId());
+    }
+
+    @Test
+    void testGetScheduledStopPointForStopPlace() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:4004/scheduled-stop-points"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"));
+    }
+
+    @Test
+    void testGetScheduledStopPoints() throws Exception {
+        mvc.perform(get("/scheduled-stop-points"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"));
+    }
+
+    @Test
+    void testGetScheduledStopPointById() throws Exception {
+        mvc.perform(get("/scheduled-stop-points/NSR:ScheduledStopPoint:S4004"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name.value").value("Jernbanetorget"));
+    }
+
+    @Test
+    void testGetScheduledStopPointByIdAsXML() throws Exception {
+        ResultActions resultActions = mvc.perform(get("/scheduled-stop-points/NSR:ScheduledStopPoint:S4004")
+                        .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk());
+        MvcResult mvcResult = resultActions.andReturn();
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        Unmarshaller unmarshaller = JAXBContext
+                .newInstance(ScheduledStopPoint.class)
+                .createUnmarshaller();
+        JAXBElement<ScheduledStopPoint> scheduledStopPoint = (JAXBElement<ScheduledStopPoint>) unmarshaller.unmarshal(new ByteArrayInputStream(contentAsString.getBytes()));
+        Assertions.assertEquals("NSR:ScheduledStopPoint:S4004", scheduledStopPoint.getValue().getId());
     }
 }

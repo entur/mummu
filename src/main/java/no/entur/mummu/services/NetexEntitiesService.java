@@ -18,6 +18,7 @@ import org.rutebanken.netex.model.GroupOfStopPlaces;
 import org.rutebanken.netex.model.GroupOfTariffZones;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
+import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
@@ -315,5 +316,30 @@ public class NetexEntitiesService {
         return Optional.ofNullable(
                 netexEntitiesIndex.getFareZoneIndex().getVersion(id, version)
         ).orElseThrow(NotFoundException::new);
+    }
+
+    public List<ScheduledStopPoint> getScheduledStopPoints(
+            Integer count,
+            Integer skip
+        ) {
+        return netexEntitiesIndex.getScheduledStopPointIndex().getLatestVersions().stream()
+                .sorted(new NetexIdComparator())
+                .skip(skip)
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<ScheduledStopPoint> getScheduledStopPointsForStopPlaceWithId(String id) {
+        return netexEntitiesIndex.getPassengerStopAssignmentsByStopPointRefIndex().entries().stream().filter(entry -> {
+            var passengerStopAssignment = entry.getValue();
+            return passengerStopAssignment.getStopPlaceRef() != null && passengerStopAssignment.getStopPlaceRef().getRef().equals(id);
+        }).map(entry -> {
+            var stopPointRef = entry.getKey();
+            return netexEntitiesIndex.getScheduledStopPointIndex().getLatestVersion(stopPointRef);
+        }).collect(Collectors.toSet());
+    }
+
+    public ScheduledStopPoint getScheduledStopPoint(String id) {
+        return netexEntitiesIndex.getScheduledStopPointIndex().getLatestVersion(id);
     }
 }
