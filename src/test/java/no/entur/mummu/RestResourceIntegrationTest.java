@@ -283,4 +283,32 @@ class RestResourceIntegrationTest {
         JAXBElement<StopPlace> stopPlace = (JAXBElement<StopPlace>) unmarshaller.unmarshal(new ByteArrayInputStream(contentAsString.getBytes()));
         Assertions.assertEquals("NSR:StopPlace:4004", stopPlace.getValue().getId());
     }
+
+    @Test
+    void testGetScheduledStopPointForStopPlace() throws Exception {
+        mvc.perform(get("/stop-places/NSR:StopPlace:4004/scheduled-stop-points"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"));
+    }
+
+    @Test
+    void testGetScheduledStopPoints() throws Exception {
+        mvc.perform(get("/scheduled-stop-points"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"));
+    }
+
+    @Test
+    void testGetScheduledStopPointById() throws Exception {
+        mvc.perform(get("/scheduled-stop-points/NSR:ScheduledStopPoint:S4004"))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name.value").value("Jernbanetorget"));
+    }
+
 }

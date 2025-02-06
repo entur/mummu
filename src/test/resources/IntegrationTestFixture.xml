@@ -9,6 +9,50 @@
                     <TimeZone>Europe/Oslo</TimeZone>
                 </DefaultLocale>
             </FrameDefaults>
+            <scheduledStopPoints>
+                <ScheduledStopPoint version="1" id="NSR:ScheduledStopPoint:S4004">
+                    <ValidBetween>
+                        <FromDate>2017-06-19T19:12:29.887</FromDate>
+                        <ToDate>2021-10-05T12:11:14.999</ToDate>
+                    </ValidBetween>
+                    <Name>Jernbanetorget</Name>
+                </ScheduledStopPoint>
+                <ScheduledStopPoint version="5" id="NSR:ScheduledStopPoint:Q105942">
+                    <ValidBetween/>
+                    <Name>Jernbanetorget</Name>
+                </ScheduledStopPoint>
+                <ScheduledStopPoint version="1" id="NSR:ScheduledStopPoint:S16597">
+                    <ValidBetween>
+                        <FromDate>2017-06-19T19:33:17.697</FromDate>
+                    </ValidBetween>
+                    <Name>Norefjell skiheis</Name>
+                </ScheduledStopPoint>
+            </scheduledStopPoints>
+            <stopAssignments>
+                <PassengerStopAssignment order="1" version="1" id="NSR:PassengerStopAssignment:PS4004">
+                    <ValidBetween>
+                        <FromDate>2017-06-19T19:12:29.887</FromDate>
+                        <ToDate>2021-10-05T12:11:14.999</ToDate>
+                    </ValidBetween>
+                    <ScheduledStopPointRef ref="NSR:ScheduledStopPoint:S4004" versionRef="1"/>
+                    <StopPlaceRef ref="NSR:StopPlace:4004" version="1"/>
+                </PassengerStopAssignment>
+                <PassengerStopAssignment order="4" version="1" id="NSR:PassengerStopAssignment:PQ105942">
+                    <ValidBetween>
+                        <FromDate>2017-06-19T19:12:30.689</FromDate>
+                        <ToDate>2018-01-18T12:00:54.999</ToDate>
+                    </ValidBetween>
+                    <ScheduledStopPointRef ref="NSR:ScheduledStopPoint:Q105942" versionRef="1"/>
+                    <QuayRef ref="NSR:Quay:105942" version="1"/>
+                </PassengerStopAssignment>
+                <PassengerStopAssignment order="44866" version="1" id="NSR:PassengerStopAssignment:PS16597">
+                    <ValidBetween>
+                        <FromDate>2017-06-19T19:33:17.697</FromDate>
+                    </ValidBetween>
+                    <ScheduledStopPointRef ref="NSR:ScheduledStopPoint:S16597" versionRef="1"/>
+                    <StopPlaceRef ref="NSR:StopPlace:16597" version="1"/>
+                </PassengerStopAssignment>
+            </stopAssignments>
         </ServiceFrame>
         <SiteFrame modification="new" version="1" id="NSR:SiteFrame:1">
             <Description>Site frame ExportParams{topographicPlaceExportMode=RELEVANT, municipalityReferences=[], countyReferences=[], countryReferences=[], stopPlaceSearch=StopPlaceSearch{stopPlaceType=[], netexIdList=[], allVersions=false, versionValidity=CURRENT, withoutLocationOnly=false, withoutQuaysOnly=false, withDuplicatedQuayImportedIds=false, withTags=[], tags=[], page=0, size=20}, tariffZoneExportMode=RELEVANT, serviceFrameExportMode=ALL}</Description>
