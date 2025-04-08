@@ -18,7 +18,7 @@
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.2</jakarta-xml-bind.version>
         <glassfish-jaxb.version>4.0.5</glassfish-jaxb.version>
-        <entur-kafka-spring-starter.version>3.4.0.2</entur-kafka-spring-starter.version>
+        <entur-kafka-spring-starter.version>3.4.0.3</entur-kafka-spring-starter.version>
     </properties>
 
     <licenses>
