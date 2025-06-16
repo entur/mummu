@@ -64,7 +64,7 @@ jobs:
     uses: entur/gha-api/.github/workflows/lint.yml@v3
     secrets: inherit
     with:
-      artifact: default
+      artifact: artifact
       artifact_contents: src/main/resources/public/openapi.json
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
