@@ -7,9 +7,6 @@ on:
     branches:
       - master
 jobs:
-  Openapi-lint:
-    name: API Lint
-    uses: entur/gha-api/.github/workflows/lint.yml@v3
   maven-verify:
     env:
       JFROG_USER: ${{ secrets.ARTIFACTORY_AUTH_USER }}
@@ -40,6 +37,7 @@ jobs:
 
       - name: Run maven build
         run: mvn verify -s .github/workflows/settings.xml
+
       - name: Sonar Scan
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
@@ -58,7 +56,16 @@ jobs:
                   -Dsonar.token=${SONAR_TOKEN}
       - uses: actions/upload-artifact@v4.6.2
         with:
-          path: target
+          path: |
+            target
+            src/main/resources/public/openapi.json
+  Openapi-lint:
+    needs: [maven-verify]
+    uses: entur/gha-api/.github/workflows/lint.yml@v3
+    secrets: inherit
+    with:
+      artifact: default
+      artifact_contents: src/main/resources/public/openapi.json
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [maven-verify]
