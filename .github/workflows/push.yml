@@ -56,15 +56,18 @@ jobs:
                   -Dsonar.token=${SONAR_TOKEN}
       - uses: actions/upload-artifact@v4.6.2
         with:
-          path: |
-            target/mummu-*-SNAPSHOT.jar
-            src/main/resources/public/openapi.json
+          name: target
+          path: target
+      - uses: actions/upload-artifact@v4.6.2
+        with:
+          name: apispec
+          path: src/main/resources/public/openapi.json
   Openapi-lint:
     needs: [maven-verify]
     uses: entur/gha-api/.github/workflows/lint.yml@v3
     secrets: inherit
     with:
-      artifact: artifact
+      artifact: apispec
       artifact_contents: src/main/resources/public/openapi.json
       upload_to_bucket: ${{ github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
   docker-build:
@@ -72,7 +75,7 @@ jobs:
     needs: [maven-verify]
     uses: entur/gha-docker/.github/workflows/build.yml@v1
     with:
-      build_artifact_name: artifact
+      build_artifact_name: target
       build_artifact_path: target
   docker-push:
     needs: [docker-build]
