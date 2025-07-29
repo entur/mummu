@@ -57,7 +57,7 @@ jobs:
       - uses: actions/upload-artifact@v4.6.2
         with:
           path: |
-            target/
+            target/mummu-*-SNAPSHOT.jar
             src/main/resources/public/openapi.json
   Openapi-lint:
     needs: [maven-verify]
