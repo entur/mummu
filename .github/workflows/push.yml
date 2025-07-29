@@ -61,7 +61,7 @@ jobs:
             src/main/resources/public/openapi.json
   Openapi-lint:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/lint.yml@v3
+    uses: entur/gha-api/.github/workflows/lint.yml@v4
     secrets: inherit
     with:
       artifact: artifact
