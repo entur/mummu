@@ -1,94 +1,68 @@
 package no.entur.mummu.updater;
 
-import no.entur.mummu.repositories.StopPlaceRepository;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import no.entur.mummu.services.NetexEntitiesIndexLoader;
-import org.entur.netex.index.api.NetexEntitiesIndex;
-import org.rutebanken.irkalla.avro.EnumType;
-import org.rutebanken.irkalla.avro.StopPlaceChangelogEvent;
-import org.rutebanken.netex.model.Quay;
+import org.rutebanken.helper.stopplace.changelog.StopPlaceChangelog;
+import org.rutebanken.helper.stopplace.changelog.StopPlaceChangelogListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.ZoneId;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Service
-public class StopPlacesUpdater {
+@ConditionalOnProperty(
+        name = "no.entur.mummu.stopplacesupdater.enabled",
+        havingValue = "true"
+)
+public class StopPlacesUpdater implements StopPlaceChangelogListener {
     private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
     private final NetexEntitiesIndexLoader netexEntitiesIndexLoader;
-    private final NetexEntitiesIndex netexEntitiesIndex;
-    private final Instant publicationTime;
-    private final StopPlaceRepository repository;
-    private static final String DEFAULT_TIME_ZONE = "Europe/Oslo";
+    private final StopPlaceChangelog stopPlaceChangelog;
 
     @Autowired
-    public StopPlacesUpdater(NetexEntitiesIndexLoader netexEntitiesIndexLoader, StopPlaceRepository repository) {
+    public StopPlacesUpdater(NetexEntitiesIndexLoader netexEntitiesIndexLoader, StopPlaceChangelog stopPlaceChangelog) {
         this.netexEntitiesIndexLoader = netexEntitiesIndexLoader;
-        this.netexEntitiesIndex = netexEntitiesIndexLoader.getNetexEntitiesIndex();
-        this.publicationTime = getPublicationTime(netexEntitiesIndex);
-        this.repository = repository;
+        this.stopPlaceChangelog = stopPlaceChangelog;
     }
 
-    public void receiveStopPlaceUpdate(StopPlaceChangelogEvent event) {
-        if (filter(event)) {
-            log.info("Discarded event {}", event);
-            return;
-        }
-
-        String stopPlaceId = event.getStopPlaceId().toString();
-
-        if (event.getEventType().equals(EnumType.DELETE)) {
-            delete(stopPlaceId);
-        } else {
-            update(event, stopPlaceId);
-        }
+    @PostConstruct
+    public void init() {
+        stopPlaceChangelog.registerStopPlaceChangelogListener(this);
     }
 
-    protected boolean filter(StopPlaceChangelogEvent event) {
-        if (event.getStopPlaceChanged() == null) {
-            return true;
-        }
-
-        var changedTime = event.getStopPlaceChanged();
-        return changedTime.isBefore(publicationTime);
+    @PreDestroy
+    public void preDestroy() {
+        stopPlaceChangelog.unregisterStopPlaceChangelogListener(this);
     }
 
-    private void delete(String stopPlaceId) {
-        log.info("deleting stopPlace id={}", stopPlaceId);
-        var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId);
-        if (stopPlace == null) {
-            log.info("couldn't find stop place in index {}", stopPlaceId);
-        } else {
-            if (stopPlace.getQuays() != null) {
-                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
-            }
-            netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
-                if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
-                    netexEntitiesIndex.getStopPlaceIndex().remove(stop.getId());
-                }
-            });
-            netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
-        }
+    @Override
+    public void onStopPlaceCreated(String id, InputStream stopPlace) {
+        log.info("Creating stop place with id {}", id);
+        update(id, stopPlace);
     }
 
-    private void update(StopPlaceChangelogEvent event, String stopPlaceId) {
-        log.info("event type {} stopPlace id={}", event.getEventType(), stopPlaceId);
-        var stopPlaceUpdate = repository.getStopPlaceUpdate(stopPlaceId);
-        try {
+    @Override
+    public void onStopPlaceUpdated(String id, InputStream stopPlace) {
+        log.info("Updating stop place with id {}", id);
+        update(id, stopPlace);
+    }
+
+    @Override
+    public void onStopPlaceDeactivated(String id, InputStream stopPlace) {
+        log.info("Deactivating stop place with id {}", id);
+        update(id, stopPlace);
+    }
+
+    private void update(String stopPlaceId, InputStream stopPlaceUpdate) {
+        try (stopPlaceUpdate) {
             netexEntitiesIndexLoader.updateWithPublicationDeliveryStream(stopPlaceUpdate);
-        } catch (RuntimeException exception) {
-            log.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
+        } catch (RuntimeException | IOException exception) {
+            log.warn("Failed to stop with id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
         }
-    }
-
-    private Instant getPublicationTime(NetexEntitiesIndex netexEntitiesIndex) {
-        var localPublicationTimestamp = netexEntitiesIndex.getPublicationTimestamp();
-        var timeZone = netexEntitiesIndex.getSiteFrames().stream()
-                .findFirst()
-                .map(frame -> frame.getFrameDefaults().getDefaultLocale().getTimeZone())
-                .orElse(DEFAULT_TIME_ZONE);
-        return localPublicationTimestamp.atZone(ZoneId.of(timeZone)).toInstant();
     }
 }

@@ -11,9 +11,14 @@ common:
 configMap:
   logLevel: INFO
   hostUrl: https://api.entur.io/stop-places/v1/read
-  tiamatUrl: https://api.entur.io/stop-places/v1
-  changelogTopic: ror-stop-place-changelog-production
-  kafkaCluster: AIVEN_PROD_EXT
+  stopplace:
+    changelog:
+      kafka:
+        bootstrapServers: entur-kafka-prod-ext-entur-prod.aivencloud.com:14019
+        schemaRegistryUrl: https://entur-kafka-prod-ext-entur-prod.aivencloud.com:14009
+        topic: ror-stop-place-changelog-production
+      repository:
+        url: https://api.entur.io/stop-places/v1
 
 ingress:
   domainName: .entur.io
