@@ -9,12 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.rutebanken.helper.stopplace.changelog.StopPlaceChangelog;
-import org.rutebanken.netex.model.EntityStructure;
-import org.rutebanken.netex.model.Quay;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -32,44 +28,6 @@ class StopPlacesUpdaterTest {
         NetexEntitiesIndexLoader loader = new NetexEntitiesIndexLoader("src/test/resources/no/entur/mummu/updater/UpdateBaseFixture.xml.zip");
         netexEntitiesIndex = loader.getNetexEntitiesIndex();
         stopPlacesUpdater = new StopPlacesUpdater(loader, stopPlaceChangelog);
-    }
-
-    @Test
-    void testDelete() {
-        Assertions.assertTrue(netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:4055").size() > 0);
-        Collection<String> quays = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:4055").getQuays().getQuayRefOrQuay()
-                .stream()
-                .map(o -> (Quay) o)
-                .map(EntityStructure::getId)
-                .collect(Collectors.toList());
-
-        Assertions.assertTrue(
-                quays.stream().map(id -> netexEntitiesIndex.getQuayIndex().getLatestVersion(id)).findAny().isPresent()
-        );
-
-        stopPlacesUpdater.onStopPlaceDeleted("NSR:StopPlace:4055");
-
-        Assertions.assertEquals(0, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:4055").size());
-        Assertions.assertNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:4055"));
-        quays.stream().map(id -> netexEntitiesIndex.getQuayIndex().getAllVersions(id)).forEach(versions -> Assertions.assertTrue(versions.isEmpty()));
-        quays.stream().map(id -> netexEntitiesIndex.getQuayIndex().getLatestVersion(id)).forEach(Assertions::assertNull);
-    }
-
-    @Test
-    void testDeleteMultimodal() {
-        Assertions.assertEquals(7, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:59872").size());
-        Assertions.assertEquals(6, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:337").size());
-
-        Assertions.assertNotNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:59872"));
-        Assertions.assertNotNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:337"));
-
-        stopPlacesUpdater.onStopPlaceDeleted("NSR:StopPlace:59872");
-
-        Assertions.assertEquals(0, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:59872").size());
-        Assertions.assertNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:59872"));
-
-        Assertions.assertEquals(0, netexEntitiesIndex.getStopPlaceIndex().getAllVersions("NSR:StopPlace:337").size());
-        Assertions.assertNull(netexEntitiesIndex.getStopPlaceIndex().getLatestVersion("NSR:StopPlace:337"));
     }
 
     @Test

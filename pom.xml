@@ -14,11 +14,10 @@
     <description>Read-only API for stop place related NeTEx entities</description>
     <properties>
         <java.version>21</java.version>
-        <entur.helpers.version>2.5</entur.helpers.version>
+        <entur.helpers.version>5.44.0</entur.helpers.version>
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.2</jakarta-xml-bind.version>
         <glassfish-jaxb.version>4.0.5</glassfish-jaxb.version>
-        <entur-kafka-spring-starter.version>3.4.0.3</entur-kafka-spring-starter.version>
     </properties>
 
     <licenses>
@@ -42,8 +41,8 @@
     <dependencies>
         <dependency>
             <groupId>org.entur.ror.helpers</groupId>
-            <artifactId>stopplace-changelog</artifactId>
-            <version>5.41.0-SNAPSHOT</version>
+            <artifactId>stopplace-changelog-starter</artifactId>
+            <version>${entur.helpers.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -121,18 +120,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>1.12.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
-        <dependency>
-            <groupId>io.confluent</groupId>
-            <artifactId>kafka-avro-serializer</artifactId>
-            <version>7.5.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
@@ -156,23 +143,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.avro</groupId>
-                <artifactId>avro-maven-plugin</artifactId>
-                <version>1.12.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>schema</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
-                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

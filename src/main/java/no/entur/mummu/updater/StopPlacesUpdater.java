@@ -3,16 +3,15 @@ package no.entur.mummu.updater;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import no.entur.mummu.services.NetexEntitiesIndexLoader;
-import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.rutebanken.helper.stopplace.changelog.StopPlaceChangelog;
 import org.rutebanken.helper.stopplace.changelog.StopPlaceChangelogListener;
-import org.rutebanken.netex.model.Quay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 @Service
@@ -23,13 +22,11 @@ import java.io.InputStream;
 public class StopPlacesUpdater implements StopPlaceChangelogListener {
     private static final Logger log = LoggerFactory.getLogger(StopPlacesUpdater.class);
     private final NetexEntitiesIndexLoader netexEntitiesIndexLoader;
-    private final NetexEntitiesIndex netexEntitiesIndex;
     private final StopPlaceChangelog stopPlaceChangelog;
 
     @Autowired
     public StopPlacesUpdater(NetexEntitiesIndexLoader netexEntitiesIndexLoader, StopPlaceChangelog stopPlaceChangelog) {
         this.netexEntitiesIndexLoader = netexEntitiesIndexLoader;
-        this.netexEntitiesIndex = netexEntitiesIndexLoader.getNetexEntitiesIndex();
         this.stopPlaceChangelog = stopPlaceChangelog;
     }
 
@@ -61,35 +58,11 @@ public class StopPlacesUpdater implements StopPlaceChangelogListener {
         update(id, stopPlace);
     }
 
-    @Override
-    public void onStopPlaceDeleted(String id) {
-        log.info("Deleting stop place with id {}", id);
-        delete(id);
-    }
-
-    private void delete(String stopPlaceId) {
-        log.info("deleting stopPlace id={}", stopPlaceId);
-        var stopPlace = netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId);
-        if (stopPlace == null) {
-            log.info("couldn't find stop place in index {}", stopPlaceId);
-        } else {
-            if (stopPlace.getQuays() != null) {
-                stopPlace.getQuays().getQuayRefOrQuay().forEach(quay -> netexEntitiesIndex.getQuayIndex().remove(((Quay) quay).getId()));
-            }
-            netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().forEach(stop -> {
-                if (stop.getParentSiteRef() != null && stop.getParentSiteRef().getRef().equals(stopPlaceId)) {
-                    netexEntitiesIndex.getStopPlaceIndex().remove(stop.getId());
-                }
-            });
-            netexEntitiesIndex.getStopPlaceIndex().remove(stopPlaceId);
-        }
-    }
-
     private void update(String stopPlaceId, InputStream stopPlaceUpdate) {
-        try {
+        try (stopPlaceUpdate) {
             netexEntitiesIndexLoader.updateWithPublicationDeliveryStream(stopPlaceUpdate);
-        } catch (RuntimeException exception) {
-            log.warn("Failed to parse response for id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
+        } catch (RuntimeException | IOException exception) {
+            log.warn("Failed to stop with id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
         }
     }
 }
