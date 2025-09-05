@@ -32,19 +32,18 @@ data:
     springdoc.api-docs.enabled=false
     springdoc.swagger-ui.enabled=false
 
-    # Kafka
-    entur.kafka.kafkaCluster={{ .Values.configMap.kafkaCluster }}
-    entur.kafka.avroSerializableClasses=org.rutebanken.irkalla.avro.StopPlaceChangelogEvent
-    entur.kafka.consumer.enabled=true
-    entur.kafka.consumer.offsetReset=earliest
-    entur.kafka.consumer.enableAutoCommit=false
-    entur.kafka.producer.enabled=true
-    spring.kafka.listener.ack-mode=manual
-    entur.kafka.sasl.username=${KAFKAUSERNAME}
-    entur.kafka.sasl.password=${KAFKAPASSWORD}
-
-    # mummu
+    # stop place data 
     no.entur.mummu.data-file=/tmp/netex_data.zip
-    no.entur.mummu.tiamat.url={{ .Values.configMap.tiamatUrl }}
-    no.entur.mummu.changelog.topic={{ .Values.configMap.changelogTopic }}
-    
+
+    # stop place updater
+    no.entur.mummu.stopplacesupdater.enabled=true
+    org.rutebanken.helper.stopplace.changelog.enabled=true
+    org.rutebanken.helper.stopplace.changelog.kafka.bootstrap-servers={{ .Values.configMap.stopplace.changelog.kafka.bootstrapServers }}
+    org.rutebanken.helper.stopplace.changelog.kafka.schema-registry-url={{ .Values.configMap.stopplace.changelog.kafka.schemaRegistryUrl }}
+    org.rutebanken.helper.stopplace.changelog.kafka.security-protocol=SASL_SSL
+    org.rutebanken.helper.stopplace.changelog.kafka.sasl-mechanism=SCRAM-SHA-512
+    org.rutebanken.helper.stopplace.changelog.kafka.sasl-jaas-config=org.apache.kafka.common.security.scram.ScramLoginModule required username="${KAFKAUSERNAME}" password="${KAFKAPASSWORD}";
+    org.rutebanken.helper.stopplace.changelog.kafka.schema-registry-basic-auth-user-info=${KAFKAUSERNAME}:${KAFKAPASSWORD}
+    org.rutebanken.helper.stopplace.changelog.kafka.topic={{ .Values.configMap.stopplace.changelog.kafka.topic }}
+    org.rutebanken.helper.stopplace.changelog.repository.url={{ .Values.configMap.stopplace.changelog.repository.url }}
+    spring.main.allow-bean-definition-overriding=true

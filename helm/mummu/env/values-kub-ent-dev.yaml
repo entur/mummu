@@ -8,9 +8,14 @@ common:
 configMap:
   logLevel: DEBUG
   hostUrl: https://api.dev.entur.io/stop-places/v1/read
-  tiamatUrl: https://api.dev.entur.io/stop-places/v1
-  changelogTopic: ror-stop-place-changelog-dev
-  kafkaCluster: AIVEN_TEST_EXT
+  stopplace:
+    changelog:
+      kafka:
+        bootstrapServers: entur-kafka-test-ext-entur-test.aivencloud.com:11877
+        schemaRegistryUrl: https://entur-kafka-test-ext-entur-test.aivencloud.com:11867
+        topic: ror-stop-place-changelog-dev
+      repository:
+        url: https://api.dev.entur.io/stop-places/v1
 
 ingress:
   domainName: .dev.entur.io
