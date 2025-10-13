@@ -24,6 +24,7 @@ import org.rutebanken.netex.model.TariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.TopographicPlace;
 import org.rutebanken.netex.model.TopographicPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.VehicleModeEnumeration;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,31 +73,31 @@ public class RestResource {
     }
 
     @GetMapping(value = "/stop-places", produces = "application/json")
-    public Collection<StopPlace> getStopPlaces(
-            @RequestParam(defaultValue = "10") Integer count,
-            @RequestParam(defaultValue = "0") Integer skip,
-            @RequestParam(required = false) List<String> ids,
-            @RequestParam(required = false, defaultValue = "both") MultimodalFilter.MultimodalFilterType multimodal,
-            @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
-            @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
-            @RequestParam(required = false) List<String> topographicPlaceIds,
-            @RequestParam(required = false) List<String> quayIds
-    ) {
-        return netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds, quayIds);
+    public Collection<StopPlace> getStopPlaces(@ParameterObject StopPlacesRequestParams params) {
+        return netexEntitiesService.getStopPlaces(
+                params.count(),
+                params.skip(),
+                params.ids(),
+                params.multimodal(),
+                params.transportModes(),
+                params.stopPlaceTypes(),
+                params.topographicPlaceIds(),
+                params.quayIds()
+        );
     }
 
     @GetMapping(value = "/stop-places", produces = "application/xml")
-    public JAXBElement<StopPlacesInFrame_RelStructure> getJAXBElementStopPlaces(
-            @RequestParam(defaultValue = "10") Integer count,
-            @RequestParam(defaultValue = "0") Integer skip,
-            @RequestParam(required = false) List<String> ids,
-            @RequestParam(required = false, defaultValue = "both") MultimodalFilter.MultimodalFilterType multimodal,
-            @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
-            @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
-            @RequestParam(required = false) List<String> topographicPlaceIds,
-            @RequestParam(required = false) List<String> quayIds
-    ) {
-        var stopPlaces = netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds, quayIds);
+    public JAXBElement<StopPlacesInFrame_RelStructure> getJAXBElementStopPlaces(@ParameterObject StopPlacesRequestParams params) {
+        var stopPlaces = netexEntitiesService.getStopPlaces(
+                params.count(),
+                params.skip(),
+                params.ids(),
+                params.multimodal(),
+                params.transportModes(),
+                params.stopPlaceTypes(),
+                params.topographicPlaceIds(),
+                params.quayIds()
+        );
         return netexObjectFactory.createStopPlaces(stopPlaces);
     }
 
