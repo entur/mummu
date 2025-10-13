@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mummu API - NeTEx Entities</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        h2.deprecated {
+            color: #e74c3c;
+            border-bottom-color: #e74c3c;
+        }
+
+        .deprecated-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 3px solid #3498db;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .endpoint-path {
+            font-family: monospace;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .method {
+            background: #27ae60;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-right: 8px;
+        }
+
+        .description {
+            color: #7f8c8d;
+            font-size: 0.95em;
+            margin-top: 4px;
+        }
+
+        .params {
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #34495e;
+            margin-top: 5px;
+            padding-left: 15px;
+        }
+
+        .params-title {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚆 Mummu API</h1>
+    <p class="subtitle">Read-only API for stop place related NeTEx entities</p>
+
+    <div class="info">
+        <strong>All endpoints support both JSON and XML formats</strong> (specify with Accept header)
+    </div>
+
+    <h2>Groups of Stop Places</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /groups-of-stop-places</div>
+        <div class="description">Get groups of stop places</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids (optional)</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /groups-of-stop-places/{id}</div>
+        <div class="description">Get a specific group of stop places by ID</div>
+    </div>
+
+    <h2>Stop Places</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places</div>
+        <div class="description">Get stop places</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids, multimodal (default: both), transportModes, stopPlaceTypes, topographicPlaceIds</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places/{id}</div>
+        <div class="description">Get a specific stop place by ID</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places/{id}/scheduled-stop-points</div>
+        <div class="description">Get scheduled stop points for a stop place</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places/{id}/versions</div>
+        <div class="description">Get all versions of a stop place</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places/{id}/versions/{version}</div>
+        <div class="description">Get a specific version of a stop place</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places/{id}/children</div>
+        <div class="description">Get child stop places</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /stop-places/{id}/parkings</div>
+        <div class="description">Get parkings for a stop place</div>
+    </div>
+
+    <h2>Quays</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /quays</div>
+        <div class="description">Get quays</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids (optional)</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /quays/{id}</div>
+        <div class="description">Get a specific quay by ID</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /quays/{id}/versions</div>
+        <div class="description">Get all versions of a quay</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /quays/{id}/versions/{version}</div>
+        <div class="description">Get a specific version of a quay</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /quays/{id}/stop-place</div>
+        <div class="description">Get the stop place for a specific quay</div>
+    </div>
+
+    <h2>Parkings</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /parkings</div>
+        <div class="description">Get parkings</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids (optional)</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /parkings/{id}</div>
+        <div class="description">Get a specific parking by ID</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /parkings/{id}/versions</div>
+        <div class="description">Get all versions of a parking</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /parkings/{id}/versions/{version}</div>
+        <div class="description">Get a specific version of a parking</div>
+    </div>
+
+    <h2>Topographic Places</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /topographic-places</div>
+        <div class="description">Get topographic places</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids (optional)</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /topographic-places/{id}</div>
+        <div class="description">Get a specific topographic place by ID</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /topographic-places/{id}/versions</div>
+        <div class="description">Get all versions of a topographic place</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /topographic-places/{id}/versions/{version}</div>
+        <div class="description">Get a specific version of a topographic place</div>
+    </div>
+
+    <h2 class="deprecated">Tariff Zones <span class="deprecated-badge">DEPRECATED</span></h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /tariff-zones</div>
+        <div class="description">Get tariff zones</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids, authorityRefs</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /tariff-zones/{id}</div>
+        <div class="description">Get a specific tariff zone by ID</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /tariff-zones/{id}/versions</div>
+        <div class="description">Get all versions of a tariff zone</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /tariff-zones/{id}/versions/{version}</div>
+        <div class="description">Get a specific version of a tariff zone</div>
+    </div>
+
+    <h2>Groups of Tariff Zones</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /groups-of-tariff-zones</div>
+        <div class="description">Get groups of tariff zones</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids (optional)</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /groups-of-tariff-zones/{id}</div>
+        <div class="description">Get a specific group of tariff zones by ID</div>
+    </div>
+
+    <h2>Fare Zones</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /fare-zones</div>
+        <div class="description">Get fare zones</div>
+        <div class="params">Query: count (default: 10), skip (default: 0), ids, authorityRefs</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /fare-zones/{id}</div>
+        <div class="description">Get a specific fare zone by ID</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /fare-zones/{id}/versions</div>
+        <div class="description">Get all versions of a fare zone</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /fare-zones/{id}/versions/{version}</div>
+        <div class="description">Get a specific version of a fare zone</div>
+    </div>
+
+    <h2>Scheduled Stop Points</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /scheduled-stop-points</div>
+        <div class="description">Get scheduled stop points</div>
+        <div class="params">Query: count (default: 10), skip (default: 0)</div>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-path"><span class="method">GET</span> /scheduled-stop-points/{id}</div>
+        <div class="description">Get a specific scheduled stop point by ID</div>
+    </div>
+
+    <footer>
+        <p><a href="/openapi.json">View OpenAPI Specification</a></p>
+        <p>&copy; 2025 Mummu API</p>
+    </footer>
+</body>
+</html>
+
