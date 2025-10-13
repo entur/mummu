@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StopPlaceByQuayIdsFilterTest {
+class StopPlaceByQuayIdsFilterTest {
 
     @Test
     void testReturnsTrue_WhenQuayIdsListIsNull() {
@@ -113,7 +113,7 @@ public class StopPlaceByQuayIdsFilterTest {
     private StopPlace createStopPlaceWithQuays(List<String> quayIds) {
         var quays = quayIds.stream()
                 .map(id -> id != null ? new Quay().withId(id) : null)
-                .map(quay -> (Object) quay)
+                .map(Object.class::cast)
                 .toList();
 
         return new StopPlace()
