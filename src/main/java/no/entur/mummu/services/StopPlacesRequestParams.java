@@ -1,4 +1,4 @@
-package no.entur.mummu.resources;
+package no.entur.mummu.services;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import no.entur.mummu.util.MultimodalFilter;

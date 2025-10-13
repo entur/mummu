@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.xml.bind.JAXBElement;
 import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.services.NetexObjectFactory;
+import no.entur.mummu.services.StopPlacesRequestParams;
 import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.FareZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.GroupOfStopPlaces;
@@ -71,30 +72,12 @@ public class RestResource {
 
     @GetMapping(value = "/stop-places", produces = "application/json")
     public Collection<StopPlace> getStopPlaces(@ParameterObject StopPlacesRequestParams params) {
-        return netexEntitiesService.getStopPlaces(
-                params.count(),
-                params.skip(),
-                params.ids(),
-                params.multimodal(),
-                params.transportModes(),
-                params.stopPlaceTypes(),
-                params.topographicPlaceIds(),
-                params.quayIds()
-        );
+        return netexEntitiesService.getStopPlaces(params);
     }
 
     @GetMapping(value = "/stop-places", produces = "application/xml")
     public JAXBElement<StopPlacesInFrame_RelStructure> getJAXBElementStopPlaces(@ParameterObject StopPlacesRequestParams params) {
-        var stopPlaces = netexEntitiesService.getStopPlaces(
-                params.count(),
-                params.skip(),
-                params.ids(),
-                params.multimodal(),
-                params.transportModes(),
-                params.stopPlaceTypes(),
-                params.topographicPlaceIds(),
-                params.quayIds()
-        );
+        var stopPlaces = netexEntitiesService.getStopPlaces(params);
         return netexObjectFactory.createStopPlaces(stopPlaces);
     }
 

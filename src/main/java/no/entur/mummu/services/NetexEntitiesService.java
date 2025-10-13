@@ -21,10 +21,8 @@ import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.StopPlace;
-import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TopographicPlace;
-import org.rutebanken.netex.model.VehicleModeEnumeration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,26 +67,19 @@ public class NetexEntitiesService {
     }
 
     public List<StopPlace> getStopPlaces(
-            Integer count,
-            Integer skip,
-            List<String> ids,
-            MultimodalFilter.MultimodalFilterType multimodalFilterType,
-            List<VehicleModeEnumeration> transportModes,
-            List<StopTypeEnumeration> stopPlaceTypes,
-            List<String> topographicPlaceIds,
-            List<String> quayIds
+            StopPlacesRequestParams params
     ) {
         return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(ids))
-                .filter(new MultimodalFilter(multimodalFilterType))
-                .filter(new TransportModesFilter(transportModes))
-                .filter(new StopPlaceTypesFilter(stopPlaceTypes))
-                .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
+                .filter(new NetexIdFilter(params.ids()))
+                .filter(new MultimodalFilter(params.multimodal()))
+                .filter(new TransportModesFilter(params.transportModes()))
+                .filter(new StopPlaceTypesFilter(params.stopPlaceTypes()))
+                .filter(new TopographicPlacesFilter(params.topographicPlaceIds(), netexEntitiesIndex.getTopographicPlaceIndex()))
                 .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
-                .filter(new StopPlaceByQuayIdsFilter(quayIds))
+                .filter(new StopPlaceByQuayIdsFilter(params.quayIds()))
                 .sorted(new NetexTechnicalIdComparator())
-                .skip(skip)
-                .limit(ids == null ? count : ids.size())
+                .skip(params.skip())
+                .limit(params.ids() == null ? params.count() : params.ids().size())
                 .collect(Collectors.toList());
     }
 
