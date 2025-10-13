@@ -8,6 +8,7 @@ import no.entur.mummu.util.MultimodalFilter;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
 import no.entur.mummu.util.NetexTechnicalIdComparator;
+import no.entur.mummu.util.StopPlaceByQuayIdsFilter;
 import no.entur.mummu.util.StopPlaceTypesFilter;
 import no.entur.mummu.util.TariffZoneAuthorityRefFilter;
 import no.entur.mummu.util.TopographicPlacesFilter;
@@ -74,7 +75,8 @@ public class NetexEntitiesService {
             MultimodalFilter.MultimodalFilterType multimodalFilterType,
             List<VehicleModeEnumeration> transportModes,
             List<StopTypeEnumeration> stopPlaceTypes,
-            List<String> topographicPlaceIds
+            List<String> topographicPlaceIds,
+            List<String> quayIds
     ) {
         return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
                 .filter(new NetexIdFilter(ids))
@@ -83,6 +85,7 @@ public class NetexEntitiesService {
                 .filter(new StopPlaceTypesFilter(stopPlaceTypes))
                 .filter(new TopographicPlacesFilter(topographicPlaceIds, netexEntitiesIndex.getTopographicPlaceIndex()))
                 .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
+                .filter(new StopPlaceByQuayIdsFilter(quayIds))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(skip)
                 .limit(ids == null ? count : ids.size())

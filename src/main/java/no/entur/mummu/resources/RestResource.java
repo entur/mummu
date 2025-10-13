@@ -79,9 +79,10 @@ public class RestResource {
             @RequestParam(required = false, defaultValue = "both") MultimodalFilter.MultimodalFilterType multimodal,
             @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
-            @RequestParam(required = false) List<String> topographicPlaceIds
+            @RequestParam(required = false) List<String> topographicPlaceIds,
+            @RequestParam(required = false) List<String> quayIds
     ) {
-        return netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds);
+        return netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds, quayIds);
     }
 
     @GetMapping(value = "/stop-places", produces = "application/xml")
@@ -92,9 +93,10 @@ public class RestResource {
             @RequestParam(required = false, defaultValue = "both") MultimodalFilter.MultimodalFilterType multimodal,
             @RequestParam(required = false) List<VehicleModeEnumeration> transportModes,
             @RequestParam(required = false) List<StopTypeEnumeration> stopPlaceTypes,
-            @RequestParam(required = false) List<String> topographicPlaceIds
+            @RequestParam(required = false) List<String> topographicPlaceIds,
+            @RequestParam(required = false) List<String> quayIds
     ) {
-        var stopPlaces = netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds);
+        var stopPlaces = netexEntitiesService.getStopPlaces(count, skip, ids, multimodal, transportModes, stopPlaceTypes, topographicPlaceIds, quayIds);
         return netexObjectFactory.createStopPlaces(stopPlaces);
     }
 
