@@ -18,6 +18,7 @@
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.4</jakarta-xml-bind.version>
         <glassfish-jaxb.version>4.0.6</glassfish-jaxb.version>
+        <swagger-annotations.version>2.2.36</swagger-annotations.version>
     </properties>
 
     <licenses>
@@ -37,6 +38,26 @@
         <connection>scm:git:ssh://git@github.com:entur/mummu.git</connection>
         <developerConnection>scm:git:ssh://git@github.com:entur/mummu.git</developerConnection>
     </scm>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-models-jakarta</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
