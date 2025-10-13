@@ -18,7 +18,7 @@
         <netex-parser-java.version>3.0.5</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.4</jakarta-xml-bind.version>
         <glassfish-jaxb.version>4.0.6</glassfish-jaxb.version>
-        <swagger-annotations.version>2.2.36</swagger-annotations.version>
+        <swagger-annotations.version>2.2.39</swagger-annotations.version>
     </properties>
 
     <licenses>
