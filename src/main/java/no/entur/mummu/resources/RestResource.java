@@ -35,7 +35,7 @@ import java.util.List;
 
 
 @RestController
-@Tag(name = "NeTEx Entities", description = "REST API for stop place related NeTEx entities")
+@Tag(name = "Stop Place Register Entities", description = "REST API for stop place related NeTEx entities")
 public class RestResource {
     private final NetexEntitiesService netexEntitiesService;
     private static final NetexObjectFactory netexObjectFactory = new NetexObjectFactory();
