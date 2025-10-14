@@ -38,6 +38,15 @@ jobs:
       - name: Run maven build
         run: mvn verify -s .github/workflows/settings.xml
 
+      - name: Check OpenAPI spec is up-to-date
+        run: |
+          if git diff --exit-code src/main/resources/public/openapi.json; then
+            echo "OpenAPI spec is up-to-date"
+          else
+            echo "Error: OpenAPI spec has changes. Please run 'mvn verify' locally and commit the updated openapi.json file."
+            exit 1
+          fi
+
       - name: Sonar Scan
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
