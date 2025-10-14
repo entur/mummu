@@ -1,6 +1,7 @@
 package no.entur.mummu.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -64,6 +65,7 @@ public class WebConfig implements WebMvcConfigurer {
         return Jackson2ObjectMapperBuilder.json()
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .featuresToEnable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
                 .modules(modules)
                 .build();
     }
