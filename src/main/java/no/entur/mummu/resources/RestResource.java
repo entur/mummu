@@ -1,6 +1,7 @@
 package no.entur.mummu.resources;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.xml.bind.JAXBElement;
 import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.services.NetexObjectFactory;
@@ -34,6 +35,7 @@ import java.util.List;
 
 
 @RestController
+@Tag(name = "NeTEx Entities", description = "REST API for stop place related NeTEx entities")
 public class RestResource {
     private final NetexEntitiesService netexEntitiesService;
     private static final NetexObjectFactory netexObjectFactory = new NetexObjectFactory();
