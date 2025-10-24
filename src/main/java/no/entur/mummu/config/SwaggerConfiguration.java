@@ -10,6 +10,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.util.List;
 
@@ -27,6 +28,16 @@ public class SwaggerConfiguration {
 
         ModelConverters.getInstance().addConverter(new ModelResolver(objectMapper));
         ModelConverters.getInstance().addConverter(new CustomConverters());
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        builder.featuresToEnable(
+            SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS,
+            MapperFeature.SORT_PROPERTIES_ALPHABETICALLY
+        );
+        return builder;
     }
 
     @Bean
