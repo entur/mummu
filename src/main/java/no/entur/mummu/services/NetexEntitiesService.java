@@ -70,16 +70,16 @@ public class NetexEntitiesService {
             StopPlacesRequestParams params
     ) {
         return netexEntitiesIndex.getStopPlaceIndex().getLatestVersions().stream()
-                .filter(new NetexIdFilter(params.ids()))
-                .filter(new MultimodalFilter(params.multimodal()))
-                .filter(new TransportModesFilter(params.transportModes()))
-                .filter(new StopPlaceTypesFilter(params.stopPlaceTypes()))
-                .filter(new TopographicPlacesFilter(params.topographicPlaceIds(), netexEntitiesIndex.getTopographicPlaceIndex()))
+                .filter(new NetexIdFilter(params.getIds()))
+                .filter(new MultimodalFilter(params.getMultimodal()))
+                .filter(new TransportModesFilter(params.getTransportModes()))
+                .filter(new StopPlaceTypesFilter(params.getStopPlaceTypes()))
+                .filter(new TopographicPlacesFilter(params.getTopographicPlaceIds(), netexEntitiesIndex.getTopographicPlaceIndex()))
                 .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
-                .filter(new StopPlaceByQuayIdsFilter(params.quayIds()))
+                .filter(new StopPlaceByQuayIdsFilter(params.getQuayIds()))
                 .sorted(new NetexTechnicalIdComparator())
-                .skip(params.skip())
-                .limit(params.ids() == null ? params.count() : params.ids().size())
+                .skip(params.getSkip())
+                .limit(params.getIds() == null ? params.getCount() : params.getIds().size())
                 .collect(Collectors.toList());
     }
 
