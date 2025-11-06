@@ -466,4 +466,14 @@ public class RestResource {
     public JAXBElement<ScheduledStopPoint> getJAXBElementScheduledStopPointById(@PathVariable String id) {
         return netexObjectFactory.createScheduledStopPoint(netexEntitiesService.getScheduledStopPoint(id));
     }
+
+    @GetMapping(value = "/scheduled-stop-points/{id}/stop-place", produces = "application/json")
+    public StopPlace getStopPlaceByScheduledStopPointId(@PathVariable String id) {
+        return netexEntitiesService.getStopPlaceByScheduledStopPointId(id);
+    }
+
+    @GetMapping(value = "/scheduled-stop-points/{id}/stop-place", produces = "application/xml")
+    public JAXBElement<StopPlace> getJAXBElementStopPlacesByScheduledStopPointId(@PathVariable String id) {
+        return netexObjectFactory.createStopPlace(netexEntitiesService.getStopPlaceByScheduledStopPointId(id));
+    }
 }
