@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -335,5 +336,19 @@ public class NetexEntitiesService {
 
     public ScheduledStopPoint getScheduledStopPoint(String id) {
         return netexEntitiesIndex.getScheduledStopPointIndex().getLatestVersion(id);
+    }
+
+    public StopPlace getStopPlaceByScheduledStopPointId(String id) {
+        return netexEntitiesIndex.getPassengerStopAssignmentsByStopPointRefIndex().get(id).stream()
+                .filter(Objects::nonNull)
+                .filter(passengerStopAssignment -> passengerStopAssignment.getStopPlaceRef() != null)
+                .map(
+                passengerStopAssignment ->
+                        netexEntitiesIndex.getStopPlaceIndex().getVersion(
+                                passengerStopAssignment.getStopPlaceRef().getRef(),
+                                passengerStopAssignment.getStopPlaceRef().getVersion()
+                        )
+
+        ).findFirst().orElseThrow(NotFoundException::new);
     }
 }
