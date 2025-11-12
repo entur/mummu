@@ -71,7 +71,8 @@ jobs:
         with:
           name: apispec
           path: src/main/resources/public/openapi.json
-  Openapi-lint:
+
+  openapi-lint:
     needs: [maven-verify]
     uses: entur/gha-api/.github/workflows/lint.yml@v4
     secrets: inherit
@@ -79,6 +80,16 @@ jobs:
       artifact: apispec
       artifact_contents: openapi.json
       upload_to_bucket: ${{ github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+
+  openapi-publish:
+    if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [ openapi-lint ]
+    uses: entur/gha-api/.github/workflows/publish.yml@v4
+    secrets: inherit
+    with:
+      visibility: 'public'
+      spec: 'src/main/resources/public/openapi.json'
+
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [maven-verify]
