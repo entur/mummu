@@ -272,6 +272,81 @@ class RestResourceIntegrationTest {
     }
 
     @Test
+    void testGetUnknownStopPlaceReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/stop-places/FOO:StopPlace:1234"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void testGetUnknownQuayReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/quays/FOO:Quay:9999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void testGetUnknownGroupOfStopPlacesReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/groups-of-stop-places/FOO:GroupOfStopPlaces:9999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void testGetUnknownTopographicPlaceReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/topographic-places/FOO:TopographicPlace:9999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void testGetUnknownTariffZoneReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/tariff-zones/FOO:TariffZone:9999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void testGetUnknownParkingReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/parkings/FOO:Parking:9999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("RESOURCE_NOT_FOUND"))
+                .andExpect(jsonPath("$.message").exists());
+    }
+
+    @Test
+    void testInvalidParameterTypeReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/stop-places?count=invalid"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("INVALID_PARAMETER"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.details.parameter").value("count"))
+                .andExpect(jsonPath("$.details.providedValue").value("invalid"));
+    }
+
+    @Test
+    void testInvalidSkipParameterReturnsErrorResponse() throws Exception {
+        mvc.perform(get("/stop-places?skip=notanumber"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errorCode").value("INVALID_PARAMETER"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.details.parameter").value("skip"));
+    }
+
+    @Test
     void testXMLOutputCanBeMarshalled() throws Exception {
         ResultActions resultActions = mvc.perform(get("/stop-places/NSR:StopPlace:4004")
                 .accept(MediaType.APPLICATION_XML))

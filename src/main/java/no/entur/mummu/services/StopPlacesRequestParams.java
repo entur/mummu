@@ -9,23 +9,56 @@ import java.util.List;
 
 public class StopPlacesRequestParams {
 
-    @Schema(defaultValue = "10")
+    @Schema(
+        description = "Maximum number of stop places to return per page",
+        example = "10",
+        defaultValue = "10"
+    )
     private Integer count;
 
-    @Schema(defaultValue = "0")
+    @Schema(
+        description = "Number of stop places to skip for pagination",
+        example = "0",
+        defaultValue = "0"
+    )
     private Integer skip;
 
+    @Schema(
+        description = "Filter by specific stop place IDs",
+        example = "[\"NSR:StopPlace:337\", \"NSR:StopPlace:418\"]"
+    )
     private List<String> ids;
 
-    @Schema(defaultValue = "both")
+    @Schema(
+        description = "Filter by multimodal hierarchy: 'parent' for parent stop places only, 'child' for child stop places only, 'both' for all",
+        example = "both",
+        defaultValue = "both",
+        allowableValues = {"parent", "child", "both"}
+    )
     private MultimodalFilter.MultimodalFilterType multimodal;
 
+    @Schema(
+        description = "Filter by one or more transport modes",
+        example = "[\"RAIL\", \"BUS\"]"
+    )
     private List<VehicleModeEnumeration> transportModes;
 
+    @Schema(
+        description = "Filter by one or more stop place types",
+        example = "[\"RAIL_STATION\", \"BUS_STATION\"]"
+    )
     private List<StopTypeEnumeration> stopPlaceTypes;
 
+    @Schema(
+        description = "Filter by topographic place IDs (municipalities, counties)",
+        example = "[\"KVE:TopographicPlace:03\"]"
+    )
     private List<String> topographicPlaceIds;
 
+    @Schema(
+        description = "Filter stop places that contain specific quay IDs",
+        example = "[\"NSR:Quay:692\"]"
+    )
     private List<String> quayIds;
 
     public Integer getCount() {
