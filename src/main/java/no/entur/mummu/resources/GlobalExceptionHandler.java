@@ -16,6 +16,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final String INVALID_PARAMETER = "INVALID_PARAMETER";
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         ErrorResponse error = new ErrorResponse(
-            "INVALID_PARAMETER",
+                INVALID_PARAMETER,
             String.format("Invalid value '%s' for parameter '%s'", ex.getValue(), ex.getName()),
             Map.of("parameter", ex.getName(), "providedValue", String.valueOf(ex.getValue()))
         );
@@ -43,19 +44,19 @@ public class GlobalExceptionHandler {
             String parameterName = fieldError.getField();
             Object rejectedValue = fieldError.getRejectedValue();
             ErrorResponse error = new ErrorResponse(
-                "INVALID_PARAMETER",
+                    INVALID_PARAMETER,
                 String.format("Invalid value '%s' for parameter '%s'", rejectedValue, parameterName),
                 Map.of("parameter", parameterName, "providedValue", String.valueOf(rejectedValue))
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
-        ErrorResponse error = new ErrorResponse("INVALID_PARAMETER", "Validation failed");
+        ErrorResponse error = new ErrorResponse(INVALID_PARAMETER, "Validation failed");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex) {
-        ErrorResponse error = new ErrorResponse("INVALID_PARAMETER", ex.getMessage());
+        ErrorResponse error = new ErrorResponse(INVALID_PARAMETER, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
