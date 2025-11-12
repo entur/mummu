@@ -7,8 +7,10 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
-import org.springdoc.core.customizers.SpringDocCustomizers;
+import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +48,38 @@ public class SwaggerConfiguration {
     public OpenAPI customOpenAPI() {
         Server server = new Server();
         server.setUrl(hostUrl);
-        return new OpenAPI().servers(List.of(server));
+        return new OpenAPI()
+            .servers(List.of(server))
+            .info(new Info()
+                .title("Stop Place Register")
+                .version("1.0.0")
+                .description("The Stop Place Register provides access to public transportation infrastructure data across Norway, including stop places, quays, parkings, and related NeTEx entities. This API enables developers to query stop place information with details on location, accessibility features, transport modes, fare zones, and hierarchical relationships. Ideal for journey planning applications, transportation analysis, mobility services, and public transit integrations.")
+                .contact(new Contact()
+                    .name("Entur API Support")
+                    .url("https://developer.entur.org")))
+            .tags(List.of(
+                new Tag()
+                    .name("Stop Places")
+                    .description("Query and retrieve stop place information including stations, terminals, bus stops, and ferry ports. Includes filtering by transport mode, location, and other attributes."),
+                new Tag()
+                    .name("Quays")
+                    .description("Access detailed information about quays (platforms, boarding positions) and their relationship to stop places. Query by ID or retrieve version history."),
+                new Tag()
+                    .name("Scheduled Stop Points")
+                    .description("Retrieve scheduled stop points used in route planning and timetables, and their mappings to physical stop places."),
+                new Tag()
+                    .name("Fare Zones")
+                    .description("Access fare zone definitions and boundaries used for ticket pricing calculations. Query by authority or specific zones."),
+                new Tag()
+                    .name("Parking")
+                    .description("Find parking facilities associated with stop places, including capacity, pricing, and accessibility information."),
+                new Tag()
+                    .name("Geographic Areas")
+                    .description("Query topographic places (municipalities, counties, countries) and tariff zones for geographic and administrative boundaries."),
+                new Tag()
+                    .name("Groupings")
+                    .description("Access logical groupings of stop places and fare zones for organizational and operational purposes.")
+            ));
     }
 
     @Bean
