@@ -2,6 +2,7 @@ package no.entur.mummu.resources;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -110,7 +111,38 @@ public class RestResource {
             responseCode = "200",
             description = "Successfully retrieved list of stop places. Returns JSON by default, or XML if Accept: application/xml header is specified.",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = StopPlace.class)),
+                    @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = StopPlace.class)),
+                            examples = @ExampleObject(
+                                    name = "Stop Places List",
+                                    summary = "Example list of stop places",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:StopPlace:337",
+                                                "version": "25",
+                                                "name": {"value": "Oslo S", "lang": "no"},
+                                                "centroid": {
+                                                  "location": {"longitude": 10.7522, "latitude": 59.9111}
+                                                },
+                                                "transportMode": "RAIL",
+                                                "stopPlaceType": "RAIL_STATION"
+                                              },
+                                              {
+                                                "id": "NSR:StopPlace:418",
+                                                "version": "12",
+                                                "name": {"value": "Nationaltheatret", "lang": "no"},
+                                                "centroid": {
+                                                  "location": {"longitude": 10.7349, "latitude": 59.9149}
+                                                },
+                                                "transportMode": "METRO",
+                                                "stopPlaceType": "METRO_STATION"
+                                              }
+                                            ]
+                                            """
+                            )
+                    ),
                     @Content(mediaType = "application/xml")
             }
     )
