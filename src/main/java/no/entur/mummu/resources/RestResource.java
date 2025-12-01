@@ -103,13 +103,21 @@ public class RestResource {
 
     @Operation(
             summary = "List stop places",
-            description = "Retrieves a paginated list of stop places with optional filtering. Stop places represent physical locations where passengers can board or alight from public transport vehicles. Results can be filtered by transport mode, stop place type, geographic location, and hierarchy.",
+            description = "Retrieves a paginated list of stop places with optional filtering. Stop places represent physical locations where passengers can board or alight from public transport vehicles. Results can be filtered by transport mode, stop place type, geographic location, and hierarchy. Supports both JSON (default) and XML formats via Accept header.",
             tags = {"Stop Places"}
     )
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of stop places")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved list of stop places. Returns JSON by default, or XML if Accept: application/xml header is specified.",
+            content = {
+                    @Content(mediaType = "application/json", schema = @Schema(type = "array", implementation = StopPlace.class)),
+                    @Content(mediaType = "application/xml")
+            }
+    )
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping(value = "/stop-places", produces = "application/json")
     public Collection<StopPlace> getStopPlaces(@ParameterObject StopPlacesRequestParams params) {
         return netexEntitiesService.getStopPlaces(params);

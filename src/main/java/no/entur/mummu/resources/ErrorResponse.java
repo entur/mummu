@@ -2,19 +2,28 @@ package no.entur.mummu.resources;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import java.util.Map;
 
 @Schema(description = "Error response returned when a request fails")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlRootElement(name = "error")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ErrorResponse {
 
     @Schema(description = "Machine-readable error code", example = "RESOURCE_NOT_FOUND")
+    @XmlElement
     private String errorCode;
 
     @Schema(description = "Human-readable error message", example = "Resource not found")
+    @XmlElement
     private String message;
 
     @Schema(description = "Additional error context")
+    @XmlElement
     private Map<String, Object> details;
 
     public ErrorResponse() {}
