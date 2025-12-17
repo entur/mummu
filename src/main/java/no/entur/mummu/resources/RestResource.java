@@ -63,8 +63,52 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of stop place groups",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GroupOfStopPlaces.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GroupOfStopPlaces.class)),
+                            examples = @ExampleObject(
+                                    name = "Groups of Stop Places List",
+                                    summary = "Example list of stop place groups",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:GroupOfStopPlaces:1",
+                                                "version": "13",
+                                                "name": {"value": "Oslo", "lang": "nor"},
+                                                "centroid": {
+                                                  "location": {"longitude": 10.748128, "latitude": 59.911076}
+                                                },
+                                                "members": {
+                                                  "stopPlaceRef": [
+                                                    {"ref": "NSR:StopPlace:58366"},
+                                                    {"ref": "NSR:StopPlace:59872"}
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = GroupsOfStopPlacesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Groups of Stop Places XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <groupsOfStopPlaces xmlns="http://www.netex.org.uk/netex">
+                                              <GroupOfStopPlaces id="NSR:GroupOfStopPlaces:1" version="13">
+                                                <Name lang="nor">Oslo</Name>
+                                                <Centroid>
+                                                  <Location>
+                                                    <Longitude>10.748128</Longitude>
+                                                    <Latitude>59.911076</Latitude>
+                                                  </Location>
+                                                </Centroid>
+                                                <members>
+                                                  <StopPlaceRef ref="NSR:StopPlace:58366"/>
+                                                  <StopPlaceRef ref="NSR:StopPlace:59872"/>
+                                                </members>
+                                              </GroupOfStopPlaces>
+                                            </groupsOfStopPlaces>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -99,8 +143,52 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stop place group",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = GroupOfStopPlaces.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = GroupOfStopPlaces.class),
+                            examples = @ExampleObject(
+                                    name = "Group of Stop Places",
+                                    summary = "Example stop place group",
+                                    value = """
+                                            {
+                                              "id": "NSR:GroupOfStopPlaces:1",
+                                              "version": "13",
+                                              "name": {"value": "Oslo", "lang": "nor"},
+                                              "centroid": {
+                                                "location": {"longitude": 10.748128, "latitude": 59.911076}
+                                              },
+                                              "members": {
+                                                "stopPlaceRef": [
+                                                  {"ref": "NSR:StopPlace:58366"},
+                                                  {"ref": "NSR:StopPlace:59872"},
+                                                  {"ref": "NSR:StopPlace:58293"},
+                                                  {"ref": "NSR:StopPlace:58382"}
+                                                ]
+                                              },
+                                              "purposeOfGroupingRef": {"ref": "NSR:PurposeOfGrouping:1"}
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = GroupOfStopPlaces.class),
+                            examples = @ExampleObject(
+                                    name = "Group of Stop Places XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <GroupOfStopPlaces xmlns="http://www.netex.org.uk/netex" id="NSR:GroupOfStopPlaces:1" version="13">
+                                              <Name lang="nor">Oslo</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.748128</Longitude>
+                                                  <Latitude>59.911076</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <members>
+                                                <StopPlaceRef ref="NSR:StopPlace:58366"/>
+                                                <StopPlaceRef ref="NSR:StopPlace:59872"/>
+                                              </members>
+                                              <PurposeOfGroupingRef ref="NSR:PurposeOfGrouping:1"/>
+                                            </GroupOfStopPlaces>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Group not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -154,7 +242,27 @@ public class RestResource {
                                             """
                             )
                     ),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlacesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Places XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <stopPlaces xmlns="http://www.netex.org.uk/netex">
+                                              <StopPlace id="NSR:StopPlace:337" version="25">
+                                                <Name lang="no">Oslo S</Name>
+                                                <Centroid>
+                                                  <Location>
+                                                    <Longitude>10.7522</Longitude>
+                                                    <Latitude>59.9111</Latitude>
+                                                  </Location>
+                                                </Centroid>
+                                                <TransportMode>rail</TransportMode>
+                                                <StopPlaceType>railStation</StopPlaceType>
+                                              </StopPlace>
+                                            </stopPlaces>
+                                            """
+                            ))
             }
     )
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
@@ -180,8 +288,50 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stop place",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = StopPlace.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place",
+                                    summary = "Example stop place",
+                                    value = """
+                                            {
+                                              "id": "NSR:StopPlace:337",
+                                              "version": "25",
+                                              "name": {"value": "Oslo S", "lang": "no"},
+                                              "centroid": {
+                                                "location": {"longitude": 10.753276, "latitude": 59.910925}
+                                              },
+                                              "transportMode": "RAIL",
+                                              "stopPlaceType": "RAIL_STATION",
+                                              "weighting": "PREFERRED_INTERCHANGE",
+                                              "quays": {
+                                                "quayRefOrQuay": [
+                                                  {"id": "NSR:Quay:1", "publicCode": "1"},
+                                                  {"id": "NSR:Quay:2", "publicCode": "2"}
+                                                ]
+                                              }
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <StopPlace xmlns="http://www.netex.org.uk/netex" id="NSR:StopPlace:337" version="25">
+                                              <Name lang="no">Oslo S</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.753276</Longitude>
+                                                  <Latitude>59.910925</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <TransportMode>rail</TransportMode>
+                                              <StopPlaceType>railStation</StopPlaceType>
+                                              <Weighting>preferredInterchange</Weighting>
+                                            </StopPlace>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Stop place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -208,8 +358,33 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved scheduled stop points",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ScheduledStopPoint.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ScheduledStopPoint.class)),
+                            examples = @ExampleObject(
+                                    name = "Scheduled Stop Points",
+                                    summary = "Example list of scheduled stop points",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:ScheduledStopPoint:Q1",
+                                                "version": "36",
+                                                "name": {"value": "Oslo S Trelastgata"}
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = ScheduledStopPointsInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Scheduled Stop Points XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <scheduledStopPoints xmlns="http://www.netex.org.uk/netex">
+                                              <ScheduledStopPoint id="NSR:ScheduledStopPoint:Q1" version="36">
+                                                <Name>Oslo S Trelastgata</Name>
+                                              </ScheduledStopPoint>
+                                            </scheduledStopPoints>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Stop place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -236,8 +411,49 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stop place versions",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = StopPlace.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = StopPlace.class)),
+                            examples = @ExampleObject(
+                                    name = "Stop Place Versions",
+                                    summary = "Example list of stop place versions",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:StopPlace:337",
+                                                "version": "25",
+                                                "name": {"value": "Oslo S", "lang": "nor"},
+                                                "stopPlaceType": "RAIL_STATION",
+                                                "transportMode": "RAIL"
+                                              },
+                                              {
+                                                "id": "NSR:StopPlace:337",
+                                                "version": "24",
+                                                "name": {"value": "Oslo S", "lang": "nor"},
+                                                "stopPlaceType": "RAIL_STATION",
+                                                "transportMode": "RAIL"
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlacesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place Versions XML",
+                                    summary = "Example list of stop place versions in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <stopPlaces xmlns="http://www.netex.org.uk/netex">
+                                              <StopPlace id="NSR:StopPlace:337" version="25">
+                                                <Name lang="nor">Oslo S</Name>
+                                                <StopPlaceType>railStation</StopPlaceType>
+                                                <TransportMode>rail</TransportMode>
+                                              </StopPlace>
+                                              <StopPlace id="NSR:StopPlace:337" version="24">
+                                                <Name lang="nor">Oslo S</Name>
+                                                <StopPlaceType>railStation</StopPlaceType>
+                                                <TransportMode>rail</TransportMode>
+                                              </StopPlace>
+                                            </stopPlaces>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Stop place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -264,8 +480,42 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stop place version",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = StopPlace.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place Version",
+                                    summary = "Example specific stop place version",
+                                    value = """
+                                            {
+                                              "id": "NSR:StopPlace:337",
+                                              "version": "24",
+                                              "name": {"value": "Oslo S", "lang": "nor"},
+                                              "centroid": {
+                                                "location": {"longitude": 10.752245, "latitude": 59.910624}
+                                              },
+                                              "stopPlaceType": "RAIL_STATION",
+                                              "transportMode": "RAIL"
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place Version XML",
+                                    summary = "Example specific stop place version in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <StopPlace xmlns="http://www.netex.org.uk/netex" id="NSR:StopPlace:337" version="24">
+                                              <Name lang="nor">Oslo S</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.752245</Longitude>
+                                                  <Latitude>59.910624</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <StopPlaceType>railStation</StopPlaceType>
+                                              <TransportMode>rail</TransportMode>
+                                            </StopPlace>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Stop place or version not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -294,8 +544,53 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved child stop places",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = StopPlace.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = StopPlace.class)),
+                            examples = @ExampleObject(
+                                    name = "Child Stop Places",
+                                    summary = "Example list of child stop places",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:StopPlace:58366",
+                                                "version": "3",
+                                                "name": {"value": "Oslo S", "lang": "nor"},
+                                                "stopPlaceType": "RAIL_STATION",
+                                                "transportMode": "RAIL",
+                                                "parentSiteRef": {"ref": "NSR:StopPlace:337"}
+                                              },
+                                              {
+                                                "id": "NSR:StopPlace:58195",
+                                                "version": "2",
+                                                "name": {"value": "Oslo S", "lang": "nor"},
+                                                "stopPlaceType": "BUS_STATION",
+                                                "transportMode": "BUS",
+                                                "parentSiteRef": {"ref": "NSR:StopPlace:337"}
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlacesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Child Stop Places XML",
+                                    summary = "Example list of child stop places in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <stopPlaces xmlns="http://www.netex.org.uk/netex">
+                                              <StopPlace id="NSR:StopPlace:58366" version="3">
+                                                <Name lang="nor">Oslo S</Name>
+                                                <ParentSiteRef ref="NSR:StopPlace:337"/>
+                                                <StopPlaceType>railStation</StopPlaceType>
+                                                <TransportMode>rail</TransportMode>
+                                              </StopPlace>
+                                              <StopPlace id="NSR:StopPlace:58195" version="2">
+                                                <Name lang="nor">Oslo S</Name>
+                                                <ParentSiteRef ref="NSR:StopPlace:337"/>
+                                                <StopPlaceType>busStation</StopPlaceType>
+                                                <TransportMode>bus</TransportMode>
+                                              </StopPlace>
+                                            </stopPlaces>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Parent stop place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -322,8 +617,53 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved parking facilities",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Parking.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Parking.class)),
+                            examples = @ExampleObject(
+                                    name = "Stop Place Parkings",
+                                    summary = "Example list of parking facilities for a stop place",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:Parking:123",
+                                                "version": "2",
+                                                "name": {"value": "Oslo S - Bike Parking", "lang": "nor"},
+                                                "parentSiteRef": {"ref": "NSR:StopPlace:337"},
+                                                "totalCapacity": 200,
+                                                "parkingVehicleTypes": ["PEDAL_CYCLE"]
+                                              },
+                                              {
+                                                "id": "NSR:Parking:124",
+                                                "version": "1",
+                                                "name": {"value": "Oslo S - Park and Ride", "lang": "nor"},
+                                                "parentSiteRef": {"ref": "NSR:StopPlace:337"},
+                                                "totalCapacity": 50,
+                                                "parkingVehicleTypes": ["CAR"]
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = ParkingsInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place Parkings XML",
+                                    summary = "Example list of parking facilities in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <parkings xmlns="http://www.netex.org.uk/netex">
+                                              <Parking id="NSR:Parking:123" version="2">
+                                                <Name lang="nor">Oslo S - Bike Parking</Name>
+                                                <ParentSiteRef ref="NSR:StopPlace:337"/>
+                                                <TotalCapacity>200</TotalCapacity>
+                                                <ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>
+                                              </Parking>
+                                              <Parking id="NSR:Parking:124" version="1">
+                                                <Name lang="nor">Oslo S - Park and Ride</Name>
+                                                <ParentSiteRef ref="NSR:StopPlace:337"/>
+                                                <TotalCapacity>50</TotalCapacity>
+                                                <ParkingVehicleTypes>car</ParkingVehicleTypes>
+                                              </Parking>
+                                            </parkings>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Stop place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -350,8 +690,50 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of quays",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class)),
+                            examples = @ExampleObject(
+                                    name = "Quays List",
+                                    summary = "Example list of quays",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:Quay:1",
+                                                "version": "36",
+                                                "centroid": {
+                                                  "location": {"longitude": 10.75525, "latitude": 59.909548}
+                                                },
+                                                "privateCode": {"value": "30"},
+                                                "accessibilityAssessment": {
+                                                  "limitations": {
+                                                    "accessibilityLimitation": {
+                                                      "wheelchairAccess": "TRUE",
+                                                      "stepFreeAccess": "TRUE"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = Quays_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Quays XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <quays xmlns="http://www.netex.org.uk/netex">
+                                              <Quay id="NSR:Quay:1" version="36">
+                                                <Centroid>
+                                                  <Location>
+                                                    <Longitude>10.75525</Longitude>
+                                                    <Latitude>59.909548</Latitude>
+                                                  </Location>
+                                                </Centroid>
+                                                <PrivateCode>30</PrivateCode>
+                                              </Quay>
+                                            </quays>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -386,8 +768,54 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved quay",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Quay.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Quay.class),
+                            examples = @ExampleObject(
+                                    name = "Quay",
+                                    summary = "Example quay",
+                                    value = """
+                                            {
+                                              "id": "NSR:Quay:1",
+                                              "version": "36",
+                                              "centroid": {
+                                                "location": {"longitude": 10.75525, "latitude": 59.909548}
+                                              },
+                                              "privateCode": {"value": "30"},
+                                              "accessibilityAssessment": {
+                                                "limitations": {
+                                                  "accessibilityLimitation": {
+                                                    "wheelchairAccess": "TRUE",
+                                                    "stepFreeAccess": "TRUE"
+                                                  }
+                                                }
+                                              },
+                                              "placeEquipments": {
+                                                "installedEquipmentRefOrInstalledEquipment": [
+                                                  {"type": "ShelterEquipment", "value": {"enclosed": false, "seats": 1}}
+                                                ]
+                                              }
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = Quay.class),
+                            examples = @ExampleObject(
+                                    name = "Quay XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <Quay xmlns="http://www.netex.org.uk/netex" id="NSR:Quay:1" version="36">
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.75525</Longitude>
+                                                  <Latitude>59.909548</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <PrivateCode>30</PrivateCode>
+                                              <AccessibilityAssessment>
+                                                <MobilityImpairedAccess>unknown</MobilityImpairedAccess>
+                                              </AccessibilityAssessment>
+                                            </Quay>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Quay not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -413,8 +841,45 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved quay versions",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class)),
+                            examples = @ExampleObject(
+                                    name = "Quay Versions",
+                                    summary = "Example list of quay versions",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:Quay:7203",
+                                                "version": "10",
+                                                "name": {"value": "Platform 1", "lang": "nor"},
+                                                "publicCode": "1"
+                                              },
+                                              {
+                                                "id": "NSR:Quay:7203",
+                                                "version": "9",
+                                                "name": {"value": "Platform 1", "lang": "nor"},
+                                                "publicCode": "1"
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = Quays_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Quay Versions XML",
+                                    summary = "Example list of quay versions in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <quays xmlns="http://www.netex.org.uk/netex">
+                                              <Quay id="NSR:Quay:7203" version="10">
+                                                <Name lang="nor">Platform 1</Name>
+                                                <PublicCode>1</PublicCode>
+                                              </Quay>
+                                              <Quay id="NSR:Quay:7203" version="9">
+                                                <Name lang="nor">Platform 1</Name>
+                                                <PublicCode>1</PublicCode>
+                                              </Quay>
+                                            </quays>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Quay not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -441,8 +906,40 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved quay version",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Quay.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Quay.class),
+                            examples = @ExampleObject(
+                                    name = "Quay Version",
+                                    summary = "Example specific quay version",
+                                    value = """
+                                            {
+                                              "id": "NSR:Quay:7203",
+                                              "version": "9",
+                                              "name": {"value": "Platform 1", "lang": "nor"},
+                                              "centroid": {
+                                                "location": {"longitude": 10.752245, "latitude": 59.910624}
+                                              },
+                                              "publicCode": "1"
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = Quay.class),
+                            examples = @ExampleObject(
+                                    name = "Quay Version XML",
+                                    summary = "Example specific quay version in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <Quay xmlns="http://www.netex.org.uk/netex" id="NSR:Quay:7203" version="9">
+                                              <Name lang="nor">Platform 1</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.752245</Longitude>
+                                                  <Latitude>59.910624</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <PublicCode>1</PublicCode>
+                                            </Quay>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Quay or version not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -470,8 +967,42 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved stop place",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = StopPlace.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place for Quay",
+                                    summary = "Example stop place containing the quay",
+                                    value = """
+                                            {
+                                              "id": "NSR:StopPlace:337",
+                                              "version": "25",
+                                              "name": {"value": "Oslo S", "lang": "nor"},
+                                              "centroid": {
+                                                "location": {"longitude": 10.752245, "latitude": 59.910624}
+                                              },
+                                              "stopPlaceType": "RAIL_STATION",
+                                              "transportMode": "RAIL"
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Stop Place for Quay XML",
+                                    summary = "Example stop place in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <StopPlace xmlns="http://www.netex.org.uk/netex" id="NSR:StopPlace:337" version="25">
+                                              <Name lang="nor">Oslo S</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.752245</Longitude>
+                                                  <Latitude>59.910624</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <StopPlaceType>railStation</StopPlaceType>
+                                              <TransportMode>rail</TransportMode>
+                                            </StopPlace>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Quay or stop place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -497,8 +1028,48 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of parking facilities",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Parking.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Parking.class)),
+                            examples = @ExampleObject(
+                                    name = "Parkings List",
+                                    summary = "Example list of parking facilities",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:Parking:2",
+                                                "version": "3",
+                                                "name": {"value": "Kvål", "lang": "nor"},
+                                                "centroid": {
+                                                  "location": {"longitude": 10.279719, "latitude": 63.233515}
+                                                },
+                                                "parentSiteRef": {"ref": "NSR:StopPlace:369"},
+                                                "totalCapacity": 10,
+                                                "parkingVehicleTypes": ["CAR"]
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = ParkingsInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Parkings XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <parkings xmlns="http://www.netex.org.uk/netex">
+                                              <Parking id="NSR:Parking:2" version="3">
+                                                <Name lang="nor">Kvål</Name>
+                                                <Centroid>
+                                                  <Location>
+                                                    <Longitude>10.279719</Longitude>
+                                                    <Latitude>63.233515</Latitude>
+                                                  </Location>
+                                                </Centroid>
+                                                <ParentSiteRef ref="NSR:StopPlace:369"/>
+                                                <TotalCapacity>10</TotalCapacity>
+                                                <ParkingVehicleTypes>car</ParkingVehicleTypes>
+                                              </Parking>
+                                            </parkings>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -533,8 +1104,46 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved parking facility",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Parking.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Parking.class),
+                            examples = @ExampleObject(
+                                    name = "Parking",
+                                    summary = "Example parking facility",
+                                    value = """
+                                            {
+                                              "id": "NSR:Parking:5",
+                                              "version": "5",
+                                              "name": {"value": "HiNT / Røstad", "lang": "nor"},
+                                              "centroid": {
+                                                "location": {"longitude": 11.31878, "latitude": 63.752917}
+                                              },
+                                              "parentSiteRef": {"ref": "NSR:StopPlace:54"},
+                                              "totalCapacity": 12,
+                                              "parkingVehicleTypes": ["PEDAL_CYCLE"],
+                                              "covered": "OUTDOORS"
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = Parking.class),
+                            examples = @ExampleObject(
+                                    name = "Parking XML",
+                                    summary = "Example parking facility in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <Parking xmlns="http://www.netex.org.uk/netex" id="NSR:Parking:5" version="5">
+                                              <Name lang="nor">HiNT / Røstad</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>11.31878</Longitude>
+                                                  <Latitude>63.752917</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <ParentSiteRef ref="NSR:StopPlace:54"/>
+                                              <TotalCapacity>12</TotalCapacity>
+                                              <ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>
+                                              <Covered>outdoors</Covered>
+                                            </Parking>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Parking facility not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -560,8 +1169,49 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved parking facility versions",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Parking.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Parking.class)),
+                            examples = @ExampleObject(
+                                    name = "Parking Versions",
+                                    summary = "Example list of parking facility versions",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:Parking:5",
+                                                "version": "5",
+                                                "name": {"value": "HiNT / Røstad", "lang": "nor"},
+                                                "totalCapacity": 12,
+                                                "parkingVehicleTypes": ["PEDAL_CYCLE"]
+                                              },
+                                              {
+                                                "id": "NSR:Parking:5",
+                                                "version": "4",
+                                                "name": {"value": "HiNT / Røstad", "lang": "nor"},
+                                                "totalCapacity": 10,
+                                                "parkingVehicleTypes": ["PEDAL_CYCLE"]
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = ParkingsInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Parking Versions XML",
+                                    summary = "Example list of parking facility versions in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <parkings xmlns="http://www.netex.org.uk/netex">
+                                              <Parking id="NSR:Parking:5" version="5">
+                                                <Name lang="nor">HiNT / Røstad</Name>
+                                                <TotalCapacity>12</TotalCapacity>
+                                                <ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>
+                                              </Parking>
+                                              <Parking id="NSR:Parking:5" version="4">
+                                                <Name lang="nor">HiNT / Røstad</Name>
+                                                <TotalCapacity>10</TotalCapacity>
+                                                <ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>
+                                              </Parking>
+                                            </parkings>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Parking facility not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -588,8 +1238,44 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved parking facility version",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Parking.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Parking.class),
+                            examples = @ExampleObject(
+                                    name = "Parking Version",
+                                    summary = "Example specific parking facility version",
+                                    value = """
+                                            {
+                                              "id": "NSR:Parking:5",
+                                              "version": "4",
+                                              "name": {"value": "HiNT / Røstad", "lang": "nor"},
+                                              "centroid": {
+                                                "location": {"longitude": 11.31878, "latitude": 63.752917}
+                                              },
+                                              "parentSiteRef": {"ref": "NSR:StopPlace:54"},
+                                              "totalCapacity": 10,
+                                              "parkingVehicleTypes": ["PEDAL_CYCLE"]
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = Parking.class),
+                            examples = @ExampleObject(
+                                    name = "Parking Version XML",
+                                    summary = "Example specific parking facility version in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <Parking xmlns="http://www.netex.org.uk/netex" id="NSR:Parking:5" version="4">
+                                              <Name lang="nor">HiNT / Røstad</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>11.31878</Longitude>
+                                                  <Latitude>63.752917</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <ParentSiteRef ref="NSR:StopPlace:54"/>
+                                              <TotalCapacity>10</TotalCapacity>
+                                              <ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>
+                                            </Parking>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Parking facility or version not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -617,8 +1303,41 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of topographic places",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TopographicPlace.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TopographicPlace.class)),
+                            examples = @ExampleObject(
+                                    name = "Topographic Places List",
+                                    summary = "Example list of topographic places",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "KVE:TopographicPlace:03",
+                                                "version": "1",
+                                                "descriptor": {
+                                                  "name": {"value": "Oslo", "lang": "nor"}
+                                                },
+                                                "isoCode": "NO-03",
+                                                "countryRef": {"ref": "NO"}
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TopographicPlacesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Topographic Places XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <topographicPlaces xmlns="http://www.netex.org.uk/netex">
+                                              <TopographicPlace id="KVE:TopographicPlace:03" version="1">
+                                                <Descriptor>
+                                                  <Name lang="nor">Oslo</Name>
+                                                </Descriptor>
+                                                <IsoCode>NO-03</IsoCode>
+                                                <CountryRef ref="NO"/>
+                                              </TopographicPlace>
+                                            </topographicPlaces>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -653,8 +1372,39 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved topographic place",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = TopographicPlace.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TopographicPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Topographic Place",
+                                    summary = "Example topographic place (Oslo county)",
+                                    value = """
+                                            {
+                                              "id": "KVE:TopographicPlace:03",
+                                              "version": "1",
+                                              "descriptor": {
+                                                "name": {"value": "Oslo", "lang": "nor"}
+                                              },
+                                              "isoCode": "NO-03",
+                                              "topographicPlaceType": "COUNTY",
+                                              "countryRef": {"ref": "NO"}
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TopographicPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Topographic Place XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <TopographicPlace xmlns="http://www.netex.org.uk/netex" id="KVE:TopographicPlace:03" version="1">
+                                              <Descriptor>
+                                                <Name lang="nor">Oslo</Name>
+                                              </Descriptor>
+                                              <IsoCode>NO-03</IsoCode>
+                                              <TopographicPlaceType>county</TopographicPlaceType>
+                                              <CountryRef ref="NO"/>
+                                            </TopographicPlace>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Topographic place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -681,8 +1431,45 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved topographic place versions",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TopographicPlace.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TopographicPlace.class)),
+                            examples = @ExampleObject(
+                                    name = "Topographic Place Versions",
+                                    summary = "Example list of topographic place versions",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "KVE:TopographicPlace:03",
+                                                "version": "2",
+                                                "name": {"value": "Oslo", "lang": "nor"},
+                                                "topographicPlaceType": "COUNTY"
+                                              },
+                                              {
+                                                "id": "KVE:TopographicPlace:03",
+                                                "version": "1",
+                                                "name": {"value": "Oslo", "lang": "nor"},
+                                                "topographicPlaceType": "COUNTY"
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TopographicPlacesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Topographic Place Versions XML",
+                                    summary = "Example list of topographic place versions in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <topographicPlaces xmlns="http://www.netex.org.uk/netex">
+                                              <TopographicPlace id="KVE:TopographicPlace:03" version="2">
+                                                <Name lang="nor">Oslo</Name>
+                                                <TopographicPlaceType>county</TopographicPlaceType>
+                                              </TopographicPlace>
+                                              <TopographicPlace id="KVE:TopographicPlace:03" version="1">
+                                                <Name lang="nor">Oslo</Name>
+                                                <TopographicPlaceType>county</TopographicPlaceType>
+                                              </TopographicPlace>
+                                            </topographicPlaces>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Topographic place not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -709,8 +1496,33 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved topographic place version",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = TopographicPlace.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = TopographicPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Topographic Place Version",
+                                    summary = "Example specific topographic place version",
+                                    value = """
+                                            {
+                                              "id": "KVE:TopographicPlace:03",
+                                              "version": "1",
+                                              "name": {"value": "Oslo", "lang": "nor"},
+                                              "topographicPlaceType": "COUNTY",
+                                              "countryRef": {"ref": "NO"}
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = TopographicPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Topographic Place Version XML",
+                                    summary = "Example specific topographic place version in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <TopographicPlace xmlns="http://www.netex.org.uk/netex" id="KVE:TopographicPlace:03" version="1">
+                                              <Name lang="nor">Oslo</Name>
+                                              <TopographicPlaceType>county</TopographicPlaceType>
+                                              <CountryRef ref="NO"/>
+                                            </TopographicPlace>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Topographic place or version not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -868,8 +1680,43 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of tariff zone groups",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GroupOfTariffZones.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GroupOfTariffZones.class)),
+                            examples = @ExampleObject(
+                                    name = "Groups of Tariff Zones List",
+                                    summary = "Example list of tariff zone groups",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "RUT:GroupOfTariffZones:1",
+                                                "version": "1",
+                                                "name": {"value": "Ruter sonenett", "lang": "nor"},
+                                                "members": {
+                                                  "tariffZoneRef": [
+                                                    {"ref": "RUT:TariffZone:1"},
+                                                    {"ref": "RUT:TariffZone:2V"}
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = GroupsOfTariffZonesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Groups of Tariff Zones XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <groupsOfTariffZones xmlns="http://www.netex.org.uk/netex">
+                                              <GroupOfTariffZones id="RUT:GroupOfTariffZones:1" version="1">
+                                                <Name lang="nor">Ruter sonenett</Name>
+                                                <members>
+                                                  <TariffZoneRef ref="RUT:TariffZone:1"/>
+                                                  <TariffZoneRef ref="RUT:TariffZone:2V"/>
+                                                </members>
+                                              </GroupOfTariffZones>
+                                            </groupsOfTariffZones>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -904,8 +1751,40 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved tariff zone group",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = GroupOfTariffZones.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = GroupOfTariffZones.class),
+                            examples = @ExampleObject(
+                                    name = "Group of Tariff Zones",
+                                    summary = "Example tariff zone group",
+                                    value = """
+                                            {
+                                              "id": "RUT:GroupOfTariffZones:1",
+                                              "version": "1",
+                                              "name": {"value": "Ruter sonenett", "lang": "nor"},
+                                              "members": {
+                                                "tariffZoneRef": [
+                                                  {"ref": "RUT:TariffZone:1"},
+                                                  {"ref": "RUT:TariffZone:2V"},
+                                                  {"ref": "RUT:TariffZone:3V"}
+                                                ]
+                                              }
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = GroupOfTariffZones.class),
+                            examples = @ExampleObject(
+                                    name = "Group of Tariff Zones XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <GroupOfTariffZones xmlns="http://www.netex.org.uk/netex" id="RUT:GroupOfTariffZones:1" version="1">
+                                              <Name lang="nor">Ruter sonenett</Name>
+                                              <members>
+                                                <TariffZoneRef ref="RUT:TariffZone:1"/>
+                                                <TariffZoneRef ref="RUT:TariffZone:2V"/>
+                                              </members>
+                                            </GroupOfTariffZones>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Tariff zone group not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -932,8 +1811,47 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of fare zones",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FareZone.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FareZone.class)),
+                            examples = @ExampleObject(
+                                    name = "Fare Zones List",
+                                    summary = "Example list of fare zones",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "RUT:FareZone:1",
+                                                "version": "2",
+                                                "name": {"value": "Sone 1", "lang": "nor"},
+                                                "transportOrganisationRef": {
+                                                  "ref": "RUT:Authority:RUT"
+                                                },
+                                                "scopingMethod": "EXPLICIT_STOPS"
+                                              },
+                                              {
+                                                "id": "RUT:FareZone:2V",
+                                                "version": "1",
+                                                "name": {"value": "Sone 2V", "lang": "nor"},
+                                                "transportOrganisationRef": {
+                                                  "ref": "RUT:Authority:RUT"
+                                                }
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = FareZonesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Fare Zones XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <fareZones xmlns="http://www.netex.org.uk/netex">
+                                              <FareZone id="RUT:FareZone:1" version="2">
+                                                <Name lang="nor">Sone 1</Name>
+                                                <TransportOrganisationRef ref="RUT:Authority:RUT"/>
+                                                <ScopingMethod>explicitStops</ScopingMethod>
+                                              </FareZone>
+                                            </fareZones>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -971,8 +1889,44 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved fare zone",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = FareZone.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = FareZone.class),
+                            examples = @ExampleObject(
+                                    name = "Fare Zone",
+                                    summary = "Example fare zone",
+                                    value = """
+                                            {
+                                              "id": "RUT:FareZone:1",
+                                              "version": "2",
+                                              "name": {"value": "Sone 1", "lang": "nor"},
+                                              "transportOrganisationRef": {
+                                                "ref": "RUT:Authority:RUT"
+                                              },
+                                              "scopingMethod": "EXPLICIT_STOPS",
+                                              "members": {
+                                                "scheduledStopPointRef": [
+                                                  {"ref": "NSR:ScheduledStopPoint:1"},
+                                                  {"ref": "NSR:ScheduledStopPoint:2"}
+                                                ]
+                                              }
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = FareZone.class),
+                            examples = @ExampleObject(
+                                    name = "Fare Zone XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <FareZone xmlns="http://www.netex.org.uk/netex" id="RUT:FareZone:1" version="2">
+                                              <Name lang="nor">Sone 1</Name>
+                                              <TransportOrganisationRef ref="RUT:Authority:RUT"/>
+                                              <ScopingMethod>explicitStops</ScopingMethod>
+                                              <members>
+                                                <ScheduledStopPointRef ref="NSR:ScheduledStopPoint:1"/>
+                                              </members>
+                                            </FareZone>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Fare zone not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -998,8 +1952,45 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved fare zone versions",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FareZone.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FareZone.class)),
+                            examples = @ExampleObject(
+                                    name = "Fare Zone Versions",
+                                    summary = "Example list of fare zone versions",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "RUT:FareZone:1",
+                                                "version": "2",
+                                                "name": {"value": "Zone 1", "lang": "nor"},
+                                                "transportOrganisationRef": {"ref": "RUT:Authority:RUT"}
+                                              },
+                                              {
+                                                "id": "RUT:FareZone:1",
+                                                "version": "1",
+                                                "name": {"value": "Zone 1", "lang": "nor"},
+                                                "transportOrganisationRef": {"ref": "RUT:Authority:RUT"}
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = FareZonesInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Fare Zone Versions XML",
+                                    summary = "Example list of fare zone versions in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <fareZones xmlns="http://www.netex.org.uk/netex">
+                                              <FareZone id="RUT:FareZone:1" version="2">
+                                                <Name lang="nor">Zone 1</Name>
+                                                <TransportOrganisationRef ref="RUT:Authority:RUT"/>
+                                              </FareZone>
+                                              <FareZone id="RUT:FareZone:1" version="1">
+                                                <Name lang="nor">Zone 1</Name>
+                                                <TransportOrganisationRef ref="RUT:Authority:RUT"/>
+                                              </FareZone>
+                                            </fareZones>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Fare zone not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -1026,8 +2017,31 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved fare zone version",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = FareZone.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = FareZone.class),
+                            examples = @ExampleObject(
+                                    name = "Fare Zone Version",
+                                    summary = "Example specific fare zone version",
+                                    value = """
+                                            {
+                                              "id": "RUT:FareZone:1",
+                                              "version": "1",
+                                              "name": {"value": "Zone 1", "lang": "nor"},
+                                              "transportOrganisationRef": {"ref": "RUT:Authority:RUT"}
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = FareZone.class),
+                            examples = @ExampleObject(
+                                    name = "Fare Zone Version XML",
+                                    summary = "Example specific fare zone version in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <FareZone xmlns="http://www.netex.org.uk/netex" id="RUT:FareZone:1" version="1">
+                                              <Name lang="nor">Zone 1</Name>
+                                              <TransportOrganisationRef ref="RUT:Authority:RUT"/>
+                                            </FareZone>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Fare zone or version not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -1056,8 +2070,41 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of scheduled stop points",
             content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ScheduledStopPoint.class))),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ScheduledStopPoint.class)),
+                            examples = @ExampleObject(
+                                    name = "Scheduled Stop Points List",
+                                    summary = "Example list of scheduled stop points",
+                                    value = """
+                                            [
+                                              {
+                                                "id": "NSR:ScheduledStopPoint:Q1",
+                                                "version": "36",
+                                                "name": {"value": "Oslo S Trelastgata"}
+                                              },
+                                              {
+                                                "id": "NSR:ScheduledStopPoint:Q2",
+                                                "version": "25",
+                                                "name": {"value": "Oslo S Jernbanetorget"}
+                                              }
+                                            ]
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = ScheduledStopPointsInFrame_RelStructure.class),
+                            examples = @ExampleObject(
+                                    name = "Scheduled Stop Points XML",
+                                    summary = "Example list in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <scheduledStopPoints xmlns="http://www.netex.org.uk/netex">
+                                              <ScheduledStopPoint id="NSR:ScheduledStopPoint:Q1" version="36">
+                                                <Name>Oslo S Trelastgata</Name>
+                                              </ScheduledStopPoint>
+                                              <ScheduledStopPoint id="NSR:ScheduledStopPoint:Q2" version="25">
+                                                <Name>Oslo S Jernbanetorget</Name>
+                                              </ScheduledStopPoint>
+                                            </scheduledStopPoints>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -1089,8 +2136,29 @@ public class RestResource {
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved scheduled stop point",
             content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ScheduledStopPoint.class)),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ScheduledStopPoint.class),
+                            examples = @ExampleObject(
+                                    name = "Scheduled Stop Point",
+                                    summary = "Example scheduled stop point",
+                                    value = """
+                                            {
+                                              "id": "NSR:ScheduledStopPoint:Q1",
+                                              "version": "36",
+                                              "name": {"value": "Oslo S Trelastgata"}
+                                            }
+                                            """
+                            )),
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = ScheduledStopPoint.class),
+                            examples = @ExampleObject(
+                                    name = "Scheduled Stop Point XML",
+                                    summary = "Example in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <ScheduledStopPoint xmlns="http://www.netex.org.uk/netex" id="NSR:ScheduledStopPoint:Q1" version="36">
+                                              <Name>Oslo S Trelastgata</Name>
+                                            </ScheduledStopPoint>
+                                            """
+                            ))
             })
     @ApiResponse(responseCode = "404", description = "Scheduled stop point not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -1138,7 +2206,25 @@ public class RestResource {
                                             """
                             )
                     ),
-                    @Content(mediaType = "application/xml")
+                    @Content(mediaType = "application/xml", schema = @Schema(implementation = StopPlace.class),
+                            examples = @ExampleObject(
+                                    name = "Oslo S XML Example",
+                                    summary = "Stop place in NeTEx XML format",
+                                    value = """
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <StopPlace xmlns="http://www.netex.org.uk/netex" id="NSR:StopPlace:337" version="25">
+                                              <Name lang="no">Oslo S</Name>
+                                              <Centroid>
+                                                <Location>
+                                                  <Longitude>10.7522</Longitude>
+                                                  <Latitude>59.9111</Latitude>
+                                                </Location>
+                                              </Centroid>
+                                              <TransportMode>rail</TransportMode>
+                                              <StopPlaceType>railStation</StopPlaceType>
+                                            </StopPlace>
+                                            """
+                            ))
             }
     )
     @ApiResponse(
