@@ -22,6 +22,7 @@ import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.ParkingsInFrame_RelStructure;
 import org.rutebanken.netex.model.Quay;
+import org.rutebanken.netex.model.Quays_RelStructure;
 import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.ScheduledStopPointsInFrame_RelStructure;
 import org.rutebanken.netex.model.StopPlace;
@@ -344,11 +345,14 @@ public class RestResource {
 
     @Operation(
             summary = "List quays",
-            description = "Retrieves a paginated list of quays. Quays represent specific boarding positions within a stop place, such as platforms at a train station or bus stands at a bus terminal.",
+            description = "Retrieves a paginated list of quays. Quays represent specific boarding positions within a stop place, such as platforms at a train station or bus stands at a bus terminal. Supports both JSON (default) and XML formats via Accept header.",
             tags = {"Quays"}
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of quays",
-            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class))))
+            content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class))),
+                    @Content(mediaType = "application/xml")
+            })
     @ApiResponse(responseCode = "400", description = "Invalid parameters",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
@@ -362,6 +366,17 @@ public class RestResource {
             @RequestParam(required = false) List<String> ids
     ) {
         return netexEntitiesService.getQuays(count, skip, ids);
+    }
+
+    @Hidden
+    @GetMapping(value = "/quays", produces = "application/xml")
+    public JAXBElement<Quays_RelStructure> getJAXBElementQuays(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(defaultValue = "0") Integer skip,
+            @RequestParam(required = false) List<String> ids
+    ) {
+        var quays = netexEntitiesService.getQuays(count, skip, ids);
+        return netexObjectFactory.createQuays(quays);
     }
 
     @Operation(
@@ -393,11 +408,14 @@ public class RestResource {
 
     @Operation(
             summary = "List quay versions",
-            description = "Retrieves all historical versions of a specific quay. Tracks changes such as platform number changes, accessibility improvements, or equipment updates over time.",
+            description = "Retrieves all historical versions of a specific quay. Tracks changes such as platform number changes, accessibility improvements, or equipment updates over time. Supports both JSON (default) and XML formats via Accept header.",
             tags = {"Quays"}
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved quay versions",
-            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class))))
+            content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Quay.class))),
+                    @Content(mediaType = "application/xml")
+            })
     @ApiResponse(responseCode = "404", description = "Quay not found",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
@@ -407,6 +425,13 @@ public class RestResource {
             @PathVariable String id
     ) {
         return netexEntitiesService.getQuayVersions(id);
+    }
+
+    @Hidden
+    @GetMapping(value = "/quays/{id}/versions", produces = "application/xml")
+    public JAXBElement<Quays_RelStructure> getJAXBElementQuayVersions(@PathVariable String id) {
+        var quays = netexEntitiesService.getQuayVersions(id);
+        return netexObjectFactory.createQuays(quays);
     }
 
     @Operation(
