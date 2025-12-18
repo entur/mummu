@@ -10,6 +10,8 @@ import org.rutebanken.netex.model.GroupsOfTariffZonesInFrame_RelStructure;
 import org.rutebanken.netex.model.ObjectFactory;
 import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.ParkingsInFrame_RelStructure;
+import org.rutebanken.netex.model.Quay;
+import org.rutebanken.netex.model.Quays_RelStructure;
 import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.ScheduledStopPointsInFrame_RelStructure;
 import org.rutebanken.netex.model.StopPlace;
@@ -36,6 +38,7 @@ public class NetexObjectFactory extends ObjectFactory {
     private static final QName _parkings_QNAME = new QName(NAMESPACE_URI, "parkings");
     private static final QName _topographicPlaces_QNAME = new QName(NAMESPACE_URI, "topographicPlaces");
     private static final QName _scheduledStopPoints_QNAME = new QName(NAMESPACE_URI, "scheduledStopPoints");
+    private static final QName _quays_QNAME = new QName(NAMESPACE_URI, "quays");
 
     public JAXBElement<GroupsOfStopPlacesInFrame_RelStructure> createGroupsOfStopPlaces(List<GroupOfStopPlaces> groupsOfStopPlaces) {
         var groupsOfStopPlacesInFrame = createGroupsOfStopPlacesInFrame_RelStructure().withGroupOfStopPlaces(groupsOfStopPlaces);
@@ -79,5 +82,10 @@ public class NetexObjectFactory extends ObjectFactory {
     public JAXBElement<ScheduledStopPointsInFrame_RelStructure> createScheduledStopPoints(Collection<ScheduledStopPoint> scheduledStopPoints) {
         var scheduledStopPointsInFrame = createScheduledStopPointsInFrame_RelStructure().withScheduledStopPoint(scheduledStopPoints);
         return new JAXBElement<>(_scheduledStopPoints_QNAME, ScheduledStopPointsInFrame_RelStructure.class, scheduledStopPointsInFrame);
+    }
+
+    public JAXBElement<Quays_RelStructure> createQuays(Collection<Quay> quays) {
+        var quaysRelStructure = createQuays_RelStructure().withQuayRefOrQuay(quays);
+        return new JAXBElement<>(_quays_QNAME, Quays_RelStructure.class, quaysRelStructure);
     }
 }
