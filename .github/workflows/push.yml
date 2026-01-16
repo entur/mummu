@@ -63,11 +63,11 @@ jobs:
                   -Dsonar.projectName=${SONAR_PROJECT_NAME} \
                   -Dsonar.host.url=https://sonarcloud.io \
                   -Dsonar.token=${SONAR_TOKEN}
-      - uses: actions/upload-artifact@v4.6.2
+      - uses: actions/upload-artifact@v6.0.0
         with:
           name: target
           path: target
-      - uses: actions/upload-artifact@v4.6.2
+      - uses: actions/upload-artifact@v6.0.0
         with:
           name: apispec
           path: src/main/resources/public/openapi.json
