@@ -61,6 +61,13 @@ public class StopPlacesRequestParams {
     )
     private List<String> quayIds;
 
+    @Schema(
+            description = "Include deactivated stops",
+            example = "false",
+            defaultValue = "false"
+    )
+    private Boolean includeDeactivatedStops;
+
     public Integer getCount() {
         return count != null ? count : 10;
     }
@@ -123,5 +130,13 @@ public class StopPlacesRequestParams {
 
     public void setQuayIds(List<String> quayIds) {
         this.quayIds = quayIds;
+    }
+
+    public Boolean getIncludeDeactivatedStops() {
+        return includeDeactivatedStops != null ? includeDeactivatedStops : false;
+    }
+
+    public void setIncludeDeactivatedStops(Boolean includeDeactivatedStops) {
+        this.includeDeactivatedStops = includeDeactivatedStops;
     }
 }
