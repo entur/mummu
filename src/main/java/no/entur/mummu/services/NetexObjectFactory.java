@@ -14,6 +14,7 @@ import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.Quays_RelStructure;
 import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.ScheduledStopPointsInFrame_RelStructure;
+import org.rutebanken.netex.model.Site_VersionStructure;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.StopPlacesInFrame_RelStructure;
 import org.rutebanken.netex.model.TariffZone;
@@ -46,7 +47,10 @@ public class NetexObjectFactory extends ObjectFactory {
     }
 
     public JAXBElement<StopPlacesInFrame_RelStructure> createStopPlaces(List<StopPlace> stopPlaces) {
-        var stopPlacesInFrame = createStopPlacesInFrame_RelStructure().withStopPlace(stopPlaces);
+        Collection<JAXBElement<? extends Site_VersionStructure>> elements = stopPlaces.stream()
+                .map(this::createStopPlace)
+                .collect(Collectors.toList());
+        var stopPlacesInFrame = createStopPlacesInFrame_RelStructure().withStopPlace_(elements);
         return new JAXBElement<>(_stopPlaces_QNAME, StopPlacesInFrame_RelStructure.class, stopPlacesInFrame);
     }
 
@@ -85,7 +89,10 @@ public class NetexObjectFactory extends ObjectFactory {
     }
 
     public JAXBElement<Quays_RelStructure> createQuays(Collection<Quay> quays) {
-        var quaysRelStructure = createQuays_RelStructure().withQuayRefOrQuay(quays);
+        Collection<JAXBElement<?>> elements = quays.stream()
+                .map(this::createQuay)
+                .collect(Collectors.toList());
+        var quaysRelStructure = createQuays_RelStructure().withQuayRefOrQuay(elements);
         return new JAXBElement<>(_quays_QNAME, Quays_RelStructure.class, quaysRelStructure);
     }
 }

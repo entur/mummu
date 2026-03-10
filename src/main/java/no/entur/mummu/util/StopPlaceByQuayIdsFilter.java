@@ -1,5 +1,6 @@
 package no.entur.mummu.util;
 
+import jakarta.xml.bind.JAXBElement;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 
@@ -27,6 +28,6 @@ public class StopPlaceByQuayIdsFilter implements Predicate<StopPlace> {
 
         return stopPlace.getQuays().getQuayRefOrQuay().stream()
                 .filter(Objects::nonNull)
-                .anyMatch(v -> quayIds.contains(((Quay) v).getId()));
+                .anyMatch(v -> quayIds.contains(((Quay) ((JAXBElement<?>) v).getValue()).getId()));
     }
 }

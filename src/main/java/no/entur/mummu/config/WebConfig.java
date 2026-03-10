@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import no.entur.mummu.serializers.CustomSerializers;
+import no.entur.mummu.serializers.NetexJsonMixins;
+import org.rutebanken.netex.model.ParkingAreas_RelStructure;
+import org.rutebanken.netex.model.Quays_RelStructure;
+import org.rutebanken.netex.model.TariffZoneRefs_RelStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -67,6 +71,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .featuresToEnable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
                 .modules(modules)
+                .mixIn(Quays_RelStructure.class, NetexJsonMixins.QuaysRelStructureMixin.class)
+                .mixIn(TariffZoneRefs_RelStructure.class, NetexJsonMixins.TariffZoneRefsRelStructureMixin.class)
+                .mixIn(ParkingAreas_RelStructure.class, NetexJsonMixins.ParkingAreasRelStructureMixin.class)
                 .build();
     }
 
