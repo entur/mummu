@@ -47,6 +47,14 @@ jobs:
             exit 1
           fi
 
+      - name: Check for breaking API changes
+        if: github.event_name == 'pull_request'
+        uses: oasdiff/oasdiff-action/breaking@v0.0.31
+        with:
+          base: 'origin/${{ github.base_ref }}:src/main/resources/public/openapi.json'
+          revision: 'HEAD:src/main/resources/public/openapi.json'
+          fail-on: ERR
+
       - name: Sonar Scan
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}

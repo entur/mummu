@@ -164,7 +164,7 @@
                     <keyList>
                         <KeyValue>
                             <Key>imported-id</Key>
-                            <Value></Value>
+                            <Value>TEST:StopPlace:1</Value>
                         </KeyValue>
                         <KeyValue>
                             <Key>CHANGED_BY</Key>
@@ -695,7 +695,7 @@
                     <keyList>
                         <KeyValue>
                             <Key>imported-id</Key>
-                            <Value/>
+                            <Value>TEST:StopPlace:59687</Value>
                         </KeyValue>
                         <KeyValue>
                             <Key>CHANGED_BY</Key>
@@ -1025,7 +1025,7 @@
                     <keyList>
                         <KeyValue>
                             <Key>imported-id</Key>
-                            <Value></Value>
+                            <Value>TEST:TariffZone:13</Value>
                         </KeyValue>
                         <KeyValue>
                             <Key>CHANGED_BY</Key>
