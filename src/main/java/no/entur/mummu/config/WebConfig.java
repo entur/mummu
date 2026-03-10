@@ -8,8 +8,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import no.entur.mummu.serializers.CustomSerializers;
 import no.entur.mummu.serializers.NetexJsonMixins;
+import org.rutebanken.netex.model.ParkingAreaRefs_RelStructure;
 import org.rutebanken.netex.model.ParkingAreas_RelStructure;
 import org.rutebanken.netex.model.Quays_RelStructure;
+import org.rutebanken.netex.model.StopPlaceRefs_RelStructure;
 import org.rutebanken.netex.model.TariffZoneRefs_RelStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -74,6 +76,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .mixIn(Quays_RelStructure.class, NetexJsonMixins.QuaysRelStructureMixin.class)
                 .mixIn(TariffZoneRefs_RelStructure.class, NetexJsonMixins.TariffZoneRefsRelStructureMixin.class)
                 .mixIn(ParkingAreas_RelStructure.class, NetexJsonMixins.ParkingAreasRelStructureMixin.class)
+                .mixIn(StopPlaceRefs_RelStructure.class, NetexJsonMixins.StopPlaceRefsRelStructureMixin.class)
+                .mixIn(ParkingAreaRefs_RelStructure.class, NetexJsonMixins.ParkingAreaRefsRelStructureMixin.class)
                 .build();
     }
 

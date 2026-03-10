@@ -3,6 +3,8 @@ package no.entur.mummu.serializers;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.xml.bind.JAXBElement;
+import org.rutebanken.netex.model.ParkingAreaRefStructure;
+import org.rutebanken.netex.model.StopPlaceRefStructure;
 import org.rutebanken.netex.model.ZoneRefStructure;
 
 import java.util.List;
@@ -26,5 +28,17 @@ public class NetexJsonMixins {
         @JsonSerialize(using = JAXBElementUnwrappingSerializer.class)
         @JsonProperty("parkingAreaRefOrParkingArea")
         public abstract List<JAXBElement<?>> getParkingAreaRefOrParkingArea_();
+    }
+
+    public abstract static class StopPlaceRefsRelStructureMixin {
+        @JsonSerialize(using = JAXBElementUnwrappingSerializer.class)
+        @JsonProperty("stopPlaceRef")
+        public abstract List<JAXBElement<? extends StopPlaceRefStructure>> getStopPlaceRef();
+    }
+
+    public abstract static class ParkingAreaRefsRelStructureMixin {
+        @JsonSerialize(using = JAXBElementUnwrappingSerializer.class)
+        @JsonProperty("parkingAreaRef")
+        public abstract List<JAXBElement<? extends ParkingAreaRefStructure>> getParkingAreaRef();
     }
 }

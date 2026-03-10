@@ -149,11 +149,34 @@ public class SwaggerConfiguration {
                 }
             }
 
+            // Fix StopPlaceRefs_RelStructure: restore items ref and required
+            restoreJaxbElementArrayProp(schemas, "StopPlaceRefs_RelStructure",
+                    "stopPlaceRef", "StopPlaceRefStructure", "StopPlaceRef");
+
+            // Fix ParkingAreaRefs_RelStructure: restore items ref and required
+            restoreJaxbElementArrayProp(schemas, "ParkingAreaRefs_RelStructure",
+                    "parkingAreaRef", "ParkingAreaRefStructure", "ParkingAreaRef");
+
             // Restore TariffZoneRef schema (removed in new model, still referenced)
             if (!schemas.containsKey("TariffZoneRef")) {
                 schemas.put("TariffZoneRef", schemas.getOrDefault("ZoneRefStructure", new Schema<>()));
             }
         };
+    }
+
+    private static void restoreJaxbElementArrayProp(Map<String, Schema> schemas,
+                                                     String schemaName, String propName,
+                                                     String itemsRef, String xmlName) {
+        Schema schema = schemas.get(schemaName);
+        if (schema != null && schema.getProperties() != null) {
+            Map<String, Schema> props = schema.getProperties();
+            Schema prop = props.get(propName);
+            if (prop != null) {
+                prop.setItems(new Schema<>().$ref("#/components/schemas/" + itemsRef));
+                prop.xml(new io.swagger.v3.oas.models.media.XML().name(xmlName));
+                schema.setRequired(List.of(propName));
+            }
+        }
     }
 
     private static void renameProperty(Map<String, Schema> schemas, String schemaName,
