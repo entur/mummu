@@ -76,7 +76,7 @@ public class NetexEntitiesService {
                 .filter(new TransportModesFilter(params.getTransportModes()))
                 .filter(new StopPlaceTypesFilter(params.getStopPlaceTypes()))
                 .filter(new TopographicPlacesFilter(params.getTopographicPlaceIds(), netexEntitiesIndex.getTopographicPlaceIndex()))
-                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId()))
+                .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId(), params.getIncludeDeactivatedStops()))
                 .filter(new StopPlaceByQuayIdsFilter(params.getQuayIds()))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(params.getSkip())
