@@ -1,8 +1,15 @@
 package no.entur.mummu;
 
+import com.atlassian.oai.validator.OpenApiInteractionValidator;
+import com.atlassian.oai.validator.report.LevelResolver;
+import com.atlassian.oai.validator.report.ValidationReport;
 import jakarta.xml.bind.JAXBElement;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.rutebanken.netex.model.ScheduledStopPoint;
 import org.rutebanken.netex.model.StopPlace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +25,7 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 
+import static com.atlassian.oai.validator.mockmvc.OpenApiValidationMatchers.openApi;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -29,6 +37,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RestResourceIntegrationTest {
 
+    private static OpenApiInteractionValidator validator;
+
+    @BeforeAll
+    static void setupValidator() throws Exception {
+        var specJson = Files.readString(Path.of("src/main/resources/public/openapi.json"));
+        validator = OpenApiInteractionValidator
+                .createForInlineApiSpecification(specJson)
+                .withLevelResolver(
+                        LevelResolver.create()
+                                .withLevel("validation.schema.additionalProperties",
+                                        ValidationReport.Level.IGNORE)
+                                .withLevel("validation.request.parameter.schema.invalidJson",
+                                        ValidationReport.Level.IGNORE)
+                                .build()
+                )
+                .build();
+    }
+
     @Autowired
     private MockMvc mvc;
 
@@ -39,7 +65,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -48,7 +75,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name.value").value("Oslo"));
+                .andExpect(jsonPath("$.name.value").value("Oslo"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -57,7 +85,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -66,7 +95,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -75,7 +105,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[0].topographicPlaceRef.ref").value(startsWith("KVE:TopographicPlace:03")));
+                .andExpect(jsonPath("$.[0].topographicPlaceRef.ref").value(startsWith("KVE:TopographicPlace:03")))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -84,7 +115,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                     .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name.value").value("Jernbanetorget"));
+                .andExpect(jsonPath("$.name.value").value("Jernbanetorget"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -93,7 +125,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -102,7 +135,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.version").value("71"));
+                .andExpect(jsonPath("$.version").value("71"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -111,7 +145,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[0].id").value("NSR:Parking:1"));
+                .andExpect(jsonPath("$.[0].id").value("NSR:Parking:1"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -127,7 +162,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                     .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isEmpty());
+                .andExpect(jsonPath("$.[*]").isEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -136,7 +172,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -145,7 +182,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.privateCode.value").value("11"));
+                .andExpect(jsonPath("$.privateCode.value").value("11"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -154,7 +192,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value("NSR:StopPlace:4004"));
+                .andExpect(jsonPath("$.id").value("NSR:StopPlace:4004"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -163,7 +202,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -172,7 +212,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.version").value("71"));
+                .andExpect(jsonPath("$.version").value("71"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -181,7 +222,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -190,7 +232,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name.value").value("Drammen"));
+                .andExpect(jsonPath("$.name.value").value("Drammen"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -199,7 +242,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -208,7 +252,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                 .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.countryRef.ref").value("NO"));
+                .andExpect(jsonPath("$.countryRef.ref").value("NO"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -217,7 +262,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -226,7 +272,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name.value").value("E2"));
+                .andExpect(jsonPath("$.name.value").value("E2"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -235,7 +282,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -244,7 +292,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.members.tariffZoneRef[0].ref").value("NOR:FareZone:77"));
+                .andExpect(jsonPath("$.members.tariffZoneRef[0].ref").value("NOR:FareZone:77"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -253,7 +302,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.[*]").isNotEmpty());
+                .andExpect(jsonPath("$.[*]").isNotEmpty())
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -262,7 +312,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name.value").value("Drammen"));
+                .andExpect(jsonPath("$.name.value").value("Drammen"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -366,7 +417,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"));
+                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -375,7 +427,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"));
+                .andExpect(jsonPath("$[0].name.value").value("Jernbanetorget"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
@@ -384,7 +437,8 @@ class RestResourceIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name.value").value("Jernbanetorget"));
+                .andExpect(jsonPath("$.name.value").value("Jernbanetorget"))
+                .andExpect(openApi().isValid(validator));
     }
 
     @Test
