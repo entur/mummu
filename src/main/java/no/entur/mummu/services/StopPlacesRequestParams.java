@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import no.entur.mummu.util.MultimodalFilter;
 import org.rutebanken.netex.model.StopTypeEnumeration;
 import org.rutebanken.netex.model.VehicleModeEnumeration;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class StopPlacesRequestParams {
@@ -67,6 +69,13 @@ public class StopPlacesRequestParams {
             defaultValue = "false"
     )
     private Boolean includeDeactivatedStops;
+
+    @Schema(
+            description = "Only include stop places modified after this timestamp (ISO 8601 format)",
+            example = "2024-01-01T00:00:00"
+    )
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime modifiedSince;
 
     public Integer getCount() {
         return count != null ? count : 10;
@@ -138,5 +147,13 @@ public class StopPlacesRequestParams {
 
     public void setIncludeDeactivatedStops(Boolean includeDeactivatedStops) {
         this.includeDeactivatedStops = includeDeactivatedStops;
+    }
+
+    public LocalDateTime getModifiedSince() {
+        return modifiedSince;
+    }
+
+    public void setModifiedSince(LocalDateTime modifiedSince) {
+        this.modifiedSince = modifiedSince;
     }
 }
