@@ -18,7 +18,7 @@ configMap:
         schemaRegistryUrl: https://entur-kafka-prod-ext-entur-prod.aivencloud.com:14009
         topic: ror-stop-place-changelog-production
       repository:
-        url: http://tiamat.prd.entur.internal
+        url: http://tiamat.prd.entur.internal/service
 
 ingress:
   domainName: .entur.io
