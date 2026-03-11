@@ -15,7 +15,7 @@ configMap:
         schemaRegistryUrl: https://entur-kafka-test-ext-entur-test.aivencloud.com:11867
         topic: ror-stop-place-changelog-staging
       repository:
-        url: http://tiamat.tst.entur.internal/service
+        url: http://tiamat.tst.entur.internal/services/stop_places/netex
 
 ingress:
   domainName: .staging.entur.io
