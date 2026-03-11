@@ -4,6 +4,7 @@ import no.entur.mummu.resources.NotFoundException;
 import no.entur.mummu.serializers.MummuSerializerContext;
 import no.entur.mummu.util.CurrentValidityFilter;
 import no.entur.mummu.util.FareZoneAuthorityRefFilter;
+import no.entur.mummu.util.ModifiedSinceFilter;
 import no.entur.mummu.util.MultimodalFilter;
 import no.entur.mummu.util.NetexIdComparator;
 import no.entur.mummu.util.NetexIdFilter;
@@ -78,6 +79,7 @@ public class NetexEntitiesService {
                 .filter(new TopographicPlacesFilter(params.getTopographicPlaceIds(), netexEntitiesIndex.getTopographicPlaceIndex()))
                 .filter(new CurrentValidityFilter(mummuSerializerContext.getZoneId(), params.getIncludeDeactivatedStops()))
                 .filter(new StopPlaceByQuayIdsFilter(params.getQuayIds()))
+                .filter(new ModifiedSinceFilter(params.getModifiedSince()))
                 .sorted(new NetexTechnicalIdComparator())
                 .skip(params.getSkip())
                 .limit(params.getIds() == null ? params.getCount() : params.getIds().size())
