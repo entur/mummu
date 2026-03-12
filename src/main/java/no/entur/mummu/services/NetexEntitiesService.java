@@ -329,7 +329,7 @@ public class NetexEntitiesService {
     public Collection<ScheduledStopPoint> getScheduledStopPointsForStopPlaceWithId(String id) {
         return netexEntitiesIndex.getPassengerStopAssignmentsByStopPointRefIndex().entries().stream().filter(entry -> {
             var passengerStopAssignment = entry.getValue();
-            return passengerStopAssignment.getStopPlaceRef() != null && passengerStopAssignment.getStopPlaceRef().getRef().equals(id);
+            return passengerStopAssignment.getStopPlaceRef() != null && passengerStopAssignment.getStopPlaceRef().getValue().getRef().equals(id);
         }).map(entry -> {
             var stopPointRef = entry.getKey();
             return netexEntitiesIndex.getScheduledStopPointIndex().getLatestVersion(stopPointRef);
@@ -347,10 +347,10 @@ public class NetexEntitiesService {
                 .map(
                 passengerStopAssignment ->
                         netexEntitiesIndex.getStopPlaceIndex().getVersion(
-                                passengerStopAssignment.getStopPlaceRef().getRef(),
-                                passengerStopAssignment.getStopPlaceRef().getVersion()
+                                passengerStopAssignment.getStopPlaceRef().getValue().getRef(),
+                                passengerStopAssignment.getStopPlaceRef().getValue().getVersion()
                         )
 
-        ).findFirst().orElseThrow(NotFoundException::new);
+        ).map(StopPlace.class::cast).findFirst().orElseThrow(NotFoundException::new);
     }
 }

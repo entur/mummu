@@ -9,15 +9,20 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class SwaggerConfiguration {
@@ -80,6 +85,120 @@ public class SwaggerConfiguration {
                     .name("Groupings")
                     .description("Access logical groupings of stop places and fare zones for organizational and operational purposes.")
             ));
+    }
+
+    @Bean
+    public OpenApiCustomizer netexModelCompatibilityCustomizer() {
+        return openApi -> {
+            Map<String, Schema> schemas = openApi.getComponents().getSchemas();
+            if (schemas == null) return;
+
+            // Fix TariffZoneRefs_RelStructure: rename tariffZoneRef_ back to tariffZoneRef
+            Schema tariffZoneRefs = schemas.get("TariffZoneRefs_RelStructure");
+            if (tariffZoneRefs != null && tariffZoneRefs.getProperties() != null) {
+                Map<String, Schema> props = tariffZoneRefs.getProperties();
+                if (props.containsKey("tariffZoneRef_")) {
+                    Schema tariffZoneRefProp = props.remove("tariffZoneRef_");
+                    // Restore original schema: array of TariffZoneRef with XML name
+                    Schema restoredProp = new ArraySchema()
+                            .items(new Schema<>().$ref("#/components/schemas/TariffZoneRef"));
+                    restoredProp.xml(new io.swagger.v3.oas.models.media.XML().name("TariffZoneRef"));
+                    props.put("tariffZoneRef", restoredProp);
+                    // Re-sort properties alphabetically
+                    Map<String, Schema> sorted = new LinkedHashMap<>();
+                    props.entrySet().stream()
+                            .sorted(Map.Entry.comparingByKey())
+                            .forEach(e -> sorted.put(e.getKey(), e.getValue()));
+                    tariffZoneRefs.setProperties(sorted);
+                    // Restore required field
+                    tariffZoneRefs.setRequired(List.of("tariffZoneRef"));
+                }
+            }
+
+            // Fix Quays_RelStructure: restore quayRefOrQuay items to empty schema
+            Schema quaysRel = schemas.get("Quays_RelStructure");
+            if (quaysRel != null && quaysRel.getProperties() != null) {
+                Map<String, Schema> props = quaysRel.getProperties();
+                Schema quayProp = props.get("quayRefOrQuay");
+                if (quayProp != null && quayProp.getItems() != null) {
+                    quayProp.setItems(new Schema<>());
+                }
+            }
+
+            // Fix ParkingAreas_RelStructure: rename parkingAreaRefOrParkingArea_ back
+            renameProperty(schemas, "ParkingAreas_RelStructure",
+                    "parkingAreaRefOrParkingArea_", "parkingAreaRefOrParkingArea");
+
+            // Fix StopPlacesInFrame_RelStructure: rename stopPlace_ back to stopPlace
+            Schema stopPlacesInFrame = schemas.get("StopPlacesInFrame_RelStructure");
+            if (stopPlacesInFrame != null && stopPlacesInFrame.getProperties() != null) {
+                Map<String, Schema> spProps = stopPlacesInFrame.getProperties();
+                if (spProps.containsKey("stopPlace_")) {
+                    spProps.remove("stopPlace_");
+                    Schema stopPlaceProp = new ArraySchema()
+                            .items(new Schema<>().$ref("#/components/schemas/StopPlace"));
+                    stopPlaceProp.xml(new io.swagger.v3.oas.models.media.XML().name("StopPlace"));
+                    spProps.put("stopPlace", stopPlaceProp);
+                    // Re-sort alphabetically
+                    Map<String, Schema> sorted = new LinkedHashMap<>();
+                    spProps.entrySet().stream()
+                            .sorted(Map.Entry.comparingByKey())
+                            .forEach(e -> sorted.put(e.getKey(), e.getValue()));
+                    stopPlacesInFrame.setProperties(sorted);
+                    stopPlacesInFrame.setRequired(List.of("stopPlace"));
+                }
+            }
+
+            // Fix StopPlaceRefs_RelStructure: restore items ref and required
+            restoreJaxbElementArrayProp(schemas, "StopPlaceRefs_RelStructure",
+                    "stopPlaceRef", "StopPlaceRefStructure", "StopPlaceRef");
+
+            // Fix ParkingAreaRefs_RelStructure: restore items ref and required
+            restoreJaxbElementArrayProp(schemas, "ParkingAreaRefs_RelStructure",
+                    "parkingAreaRef", "ParkingAreaRefStructure", "ParkingAreaRef");
+
+            // Restore TariffZoneRef schema (removed in new model, still referenced)
+            if (!schemas.containsKey("TariffZoneRef")) {
+                schemas.put("TariffZoneRef", schemas.getOrDefault("ZoneRefStructure", new Schema<>()));
+            }
+        };
+    }
+
+    private static void restoreJaxbElementArrayProp(Map<String, Schema> schemas,
+                                                     String schemaName, String propName,
+                                                     String itemsRef, String xmlName) {
+        Schema schema = schemas.get(schemaName);
+        if (schema != null && schema.getProperties() != null) {
+            Map<String, Schema> props = schema.getProperties();
+            Schema prop = props.get(propName);
+            if (prop != null) {
+                prop.setItems(new Schema<>().$ref("#/components/schemas/" + itemsRef));
+                prop.xml(new io.swagger.v3.oas.models.media.XML().name(xmlName));
+                schema.setRequired(List.of(propName));
+            }
+        }
+    }
+
+    private static void renameProperty(Map<String, Schema> schemas, String schemaName,
+                                        String oldPropName, String newPropName) {
+        Schema schema = schemas.get(schemaName);
+        if (schema != null && schema.getProperties() != null) {
+            Map<String, Schema> props = schema.getProperties();
+            if (props.containsKey(oldPropName)) {
+                Schema prop = props.remove(oldPropName);
+                // Reset items to empty schema (unwrapped JAXBElements)
+                if (prop.getItems() != null) {
+                    prop.setItems(new Schema<>());
+                }
+                props.put(newPropName, prop);
+                // Re-sort alphabetically
+                Map<String, Schema> sorted = new LinkedHashMap<>();
+                props.entrySet().stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .forEach(e -> sorted.put(e.getKey(), e.getValue()));
+                schema.setProperties(sorted);
+            }
+        }
     }
 
     @Bean

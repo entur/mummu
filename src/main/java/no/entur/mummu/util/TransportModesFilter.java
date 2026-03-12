@@ -15,6 +15,13 @@ public class TransportModesFilter implements Predicate<StopPlace> {
 
     @Override
     public boolean test(StopPlace stopPlace) {
-        return transportModes == null || transportModes.contains(stopPlace.getTransportMode());
+        if (transportModes == null) {
+            return true;
+        }
+        if (stopPlace.getTransportMode() == null) {
+            return false;
+        }
+        return transportModes.stream()
+                .anyMatch(mode -> mode.value().equals(stopPlace.getTransportMode().value()));
     }
 }

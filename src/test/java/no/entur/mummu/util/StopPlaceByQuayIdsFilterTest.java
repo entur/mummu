@@ -1,12 +1,15 @@
 package no.entur.mummu.util;
 
+import jakarta.xml.bind.JAXBElement;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.rutebanken.netex.model.ObjectFactory;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.Quays_RelStructure;
 import org.rutebanken.netex.model.StopPlace;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -83,7 +86,7 @@ class StopPlaceByQuayIdsFilterTest {
     @Test
     void testReturnsFalse_WhenOnlyNullQuaysInStopPlace() {
         var filter = new StopPlaceByQuayIdsFilter(List.of("NSR:Quay:1"));
-        var quays = new ArrayList<>();
+        var quays = new ArrayList<JAXBElement<?>>();
         quays.add(null);
         var stopPlace = new StopPlace()
                 .withQuays(new Quays_RelStructure()
@@ -110,10 +113,11 @@ class StopPlaceByQuayIdsFilterTest {
         Assertions.assertFalse(filter.test(stopPlace));
     }
 
+    private static final ObjectFactory objectFactory = new ObjectFactory();
+
     private StopPlace createStopPlaceWithQuays(List<String> quayIds) {
-        var quays = quayIds.stream()
-                .map(id -> id != null ? new Quay().withId(id) : null)
-                .map(Object.class::cast)
+        List<JAXBElement<?>> quays = quayIds.stream()
+                .<JAXBElement<?>>map(id -> id != null ? objectFactory.createQuay(new Quay().withId(id)) : null)
                 .toList();
 
         return new StopPlace()
