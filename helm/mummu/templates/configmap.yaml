@@ -46,4 +46,5 @@ data:
     org.rutebanken.helper.stopplace.changelog.kafka.schema-registry-basic-auth-user-info=${KAFKAUSERNAME}:${KAFKAPASSWORD}
     org.rutebanken.helper.stopplace.changelog.kafka.topic={{ .Values.configMap.stopplace.changelog.kafka.topic }}
     org.rutebanken.helper.stopplace.changelog.repository.url={{ .Values.configMap.stopplace.changelog.repository.url }}
+    org.rutebanken.helper.stopplace.changelog.repository.etClientName=entur-mummu
     spring.main.allow-bean-definition-overriding=true
