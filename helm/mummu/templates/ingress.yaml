@@ -6,6 +6,7 @@ metadata:
     {{- include "mummu.common.labels" . | indent 4 }}
   annotations:
     kubernetes.io/ingress.class: traefik
+    {{- include "mummu.common.annotations" . | indent 4 }}
   name: stop-places-v1-read
   namespace: {{ .Release.Namespace }}
 spec:

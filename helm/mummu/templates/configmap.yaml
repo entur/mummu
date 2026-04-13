@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
   {{- include "mummu.common.labels" . | indent 4 }}
+  annotations:
+    {{- include "mummu.common.annotations" . | indent 4 }}
 data:
   application.properties: |-
     # Spring Actuator

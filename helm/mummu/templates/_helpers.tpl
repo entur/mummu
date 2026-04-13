@@ -25,6 +25,12 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 
+{{/* Generate common Helm ownership annotations */}}
+{{- define "mummu.common.annotations" }}
+meta.helm.sh/release-name: {{ .Release.Name }}
+meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+{{- end }}
+
 {{/* Generate basic labels */}}
 {{- define "mummu.common.labels" }}
 app: {{ template "app.name" . }}
@@ -33,6 +39,7 @@ release: {{ .Release.Name }}
 team: ror
 slack: talk-ror
 namespace: {{ .Release.Namespace }}
+app.kubernetes.io/managed-by: Helm
 {{- end }}
 
 {{- define "mummu.cron-job-template" }}

@@ -5,6 +5,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
       {{- include "mummu.common.labels" . | indent 4 }}
+  annotations:
+    {{- include "mummu.common.annotations" . | indent 4 }}
 spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 1
@@ -25,6 +27,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
       {{- include "mummu.common.labels" . | indent 4 }}
+  annotations:
+    {{- include "mummu.common.annotations" . | indent 4 }}
 spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 1
