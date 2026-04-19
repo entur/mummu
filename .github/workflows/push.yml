@@ -12,15 +12,15 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v5.2.0
         with:
           java-version: 21
           distribution: temurin
       - name: Cache Maven dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v5.0.5
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -75,7 +75,7 @@ jobs:
 
   openapi-lint:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/lint.yml@v4
+    uses: entur/gha-api/.github/workflows/lint.yml@v4.2.1
     secrets: inherit
     with:
       artifact: apispec
@@ -85,7 +85,7 @@ jobs:
   openapi-publish:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [ openapi-lint ]
-    uses: entur/gha-api/.github/workflows/publish.yml@v4
+    uses: entur/gha-api/.github/workflows/publish.yml@v4.2.1
     secrets: inherit
     with:
       visibility: 'public'
@@ -94,21 +94,21 @@ jobs:
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [maven-verify]
-    uses: entur/gha-docker/.github/workflows/build.yml@v1
+    uses: entur/gha-docker/.github/workflows/build.yml@v1.10.2
     with:
       build_artifact_name: target
       build_artifact_path: target
   docker-scan:
     needs: [ docker-build ]
-    uses: entur/gha-security/.github/workflows/docker-scan.yml@v2
+    uses: entur/gha-security/.github/workflows/docker-scan.yml@v2.12.1
     with:
       image_artifact: ${{ needs.docker-build.outputs.image_artifact }}
   docker-push:
     needs: [docker-build]
-    uses: entur/gha-docker/.github/workflows/push.yml@v1
+    uses: entur/gha-docker/.github/workflows/push.yml@v1.10.2
 
   helm-lint:
-    uses: entur/gha-helm/.github/workflows/lint.yml@v1
+    uses: entur/gha-helm/.github/workflows/lint.yml@v1.4.1
     with:
       environment: dev
 
@@ -116,7 +116,7 @@ jobs:
   deploy-dev:
     if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request' }}
     needs: [ helm-lint, docker-push ]
-    uses: entur/gha-helm/.github/workflows/deploy.yml@v1
+    uses: entur/gha-helm/.github/workflows/deploy.yml@v1.4.1
     with:
       environment: dev
       image: ${{ needs.docker-push.outputs.image_name }}:${{ needs.docker-push.outputs.image_tag}}
@@ -139,7 +139,7 @@ jobs:
   deploy-tst:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ docker-push, approval-tst ]
-    uses: entur/gha-helm/.github/workflows/deploy.yml@v1
+    uses: entur/gha-helm/.github/workflows/deploy.yml@v1.4.1
     with:
       environment: tst
       image: ${{ needs.docker-push.outputs.image_name }}:${{ needs.docker-push.outputs.image_tag}}
@@ -162,7 +162,7 @@ jobs:
   deploy-prd:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: [ docker-push, approval-prd ]
-    uses: entur/gha-helm/.github/workflows/deploy.yml@v1
+    uses: entur/gha-helm/.github/workflows/deploy.yml@v1.4.1
     with:
       environment: prd
       image: ${{ needs.docker-push.outputs.image_name }}:${{ needs.docker-push.outputs.image_tag}}
