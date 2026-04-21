@@ -94,7 +94,7 @@ jobs:
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [maven-verify]
-    uses: entur/gha-docker/.github/workflows/build.yml@v1
+    uses: entur/gha-docker/.github/workflows/build.yml@123-build-args.20240906-SHA3e0016a
     with:
       build_artifact_name: target
       build_artifact_path: target
@@ -105,7 +105,7 @@ jobs:
       image_artifact: ${{ needs.docker-build.outputs.image_artifact }}
   docker-push:
     needs: [docker-build]
-    uses: entur/gha-docker/.github/workflows/push.yml@v1
+    uses: entur/gha-docker/.github/workflows/push.yml@123-build-args.20240906-SHA3e0016a
 
   helm-lint:
     uses: entur/gha-helm/.github/workflows/lint.yml@v1
