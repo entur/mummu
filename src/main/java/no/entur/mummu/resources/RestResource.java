@@ -1098,7 +1098,7 @@ public class RestResource {
 
     @Operation(
             summary = "Get parking facility by ID",
-            description = "Retrieves detailed information about a specific parking facility including location, capacity, parking types, pricing, and accessibility features. Supports both JSON (default) and XML formats via Accept header.",
+            description = "Retrieves detailed information about a specific parking facility including location, capacity and accessibility features. Supports both JSON (default) and XML formats via Accept header.",
             tags = {"Parking"}
     )
     @ApiResponse(responseCode = "200", description = "Successfully retrieved parking facility",
