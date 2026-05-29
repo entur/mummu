@@ -63,10 +63,11 @@ public class SwaggerConfiguration {
                     .name("Entur API Support")
                     .url("https://developer.entur.org"))
                 .extensions(Map.of(
-                        "x-entur-metadata.id", "stop-place-v1-read",
-                        "x-entur-metadata.audience", "open",
-                        "x-entur-metadata.owner", "team-ror"
-                )))
+                        "x-entur-metadata", Map.of(
+                            "id", "stop-place-v1-read",
+                            "audience", "open",
+                            "owner", "team-ror"
+                ))))
             .tags(List.of(
                 new Tag()
                     .name("Stop Places")
