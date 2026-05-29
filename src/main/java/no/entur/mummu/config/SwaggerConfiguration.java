@@ -61,12 +61,12 @@ public class SwaggerConfiguration {
                 .description("The Stop Place Register provides access to public transportation infrastructure data across Norway, including stop places, quays, parkings, and related NeTEx entities. This API enables developers to query stop place information with details on location, accessibility features, transport modes, fare zones, and hierarchical relationships. Ideal for journey planning applications, transportation analysis, mobility services, and public transit integrations.")
                 .contact(new Contact()
                     .name("Entur API Support")
-                    .url("https://developer.entur.org")))
+                    .url("https://developer.entur.org"))
                 .extensions(Map.of(
                         "x-entur-metadata.id", "stop-place-v1-read",
                         "x-entur-metadata.audience", "open",
                         "x-entur-metadata.owner", "team-ror"
-                ))
+                )))
             .tags(List.of(
                 new Tag()
                     .name("Stop Places")
