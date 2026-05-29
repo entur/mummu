@@ -75,21 +75,27 @@ jobs:
 
   openapi-lint:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/lint.yml@v4
+    uses: entur/gha-api/.github/workflows/lint.yml@v6
     secrets: inherit
     with:
       artifact: apispec
-      artifact_contents: openapi.json
+      path: openapi.json
       upload_to_bucket: ${{ github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+
+  openapi-validate:
+    needs: [maven-verify]
+    uses: entur/gha-api/.github/workflows/validate.yml@v6
+    with:
+      artifact: apispec
+      path: openapi.json
 
   openapi-publish:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [ openapi-lint ]
-    uses: entur/gha-api/.github/workflows/publish.yml@v4
+    needs: [ openapi-lint, openapi-validate ]
+    uses: entur/gha-api/.github/workflows/publish.yml@v6
     secrets: inherit
     with:
-      visibility: 'public'
-      spec: 'src/main/resources/public/openapi.json'
+      path: 'src/main/resources/public/openapi.json'
 
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -161,7 +167,7 @@ jobs:
 
   deploy-prd:
     if: ${{ github.ref == 'refs/heads/master' }}
-    needs: [ docker-push, approval-prd ]
+    needs: [ docker-push, approval-prd, openapi-publish ]
     uses: entur/gha-helm/.github/workflows/deploy.yml@v1
     with:
       environment: prd
