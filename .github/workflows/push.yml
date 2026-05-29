@@ -79,7 +79,7 @@ jobs:
     secrets: inherit
     with:
       artifact: apispec
-      artifact_contents: openapi.json
+      path: openapi.json
       upload_to_bucket: ${{ github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
 
   openapi-publish:
@@ -88,8 +88,7 @@ jobs:
     uses: entur/gha-api/.github/workflows/publish.yml@v6
     secrets: inherit
     with:
-      visibility: 'public'
-      spec: 'src/main/resources/public/openapi.json'
+      path: 'src/main/resources/public/openapi.json'
 
   docker-build:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
