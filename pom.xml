@@ -17,7 +17,7 @@
         <entur.helpers.version>5.50.0</entur.helpers.version>
         <netex-parser-java.version>3.1.78</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.5</jakarta-xml-bind.version>
-        <glassfish-jaxb.version>4.0.7</glassfish-jaxb.version>
+        <glassfish-jaxb.version>4.0.9</glassfish-jaxb.version>
     </properties>
 
     <licenses>
@@ -118,8 +118,8 @@
         </dependency>
         <dependency>
             <groupId>com.atlassian.oai</groupId>
-            <artifactId>swagger-request-validator-mockmvc</artifactId>
-            <version>2.46.1</version>
+            <artifactId>openapi-request-validator-mockmvc</artifactId>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
