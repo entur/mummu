@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.entur.ror</groupId>
         <artifactId>superpom</artifactId>
-        <version>5.6.0</version>
+        <version>6.4.0</version>
     </parent>
     <groupId>org.entur</groupId>
     <artifactId>mummu</artifactId>
@@ -14,7 +14,7 @@
     <description>Read-only API for stop place related NeTEx entities</description>
     <properties>
         <java.version>21</java.version>
-        <entur.helpers.version>5.50.0</entur.helpers.version>
+        <entur.helpers.version>7.1.0</entur.helpers.version>
         <netex-parser-java.version>3.1.78</netex-parser-java.version>
         <jakarta-xml-bind.version>4.0.5</jakarta-xml-bind.version>
         <glassfish-jaxb.version>4.0.7</glassfish-jaxb.version>
@@ -98,6 +98,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
@@ -125,7 +130,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.8.16</version>
+            <version>3.0.3</version>
         </dependency>
     </dependencies>
     <build>
