@@ -43,7 +43,7 @@ jobs:
 
       - name: Check for breaking API changes
         if: github.event_name == 'pull_request'
-        uses: oasdiff/oasdiff-action/breaking@v0.0.37
+        uses: oasdiff/oasdiff-action/breaking@5fbe96ede8d0c53aeadef122d7a0abb79152d493 # v0.1.1
         with:
           base: 'origin/${{ github.base_ref }}:src/main/resources/public/openapi.json'
           revision: 'HEAD:src/main/resources/public/openapi.json'
@@ -64,11 +64,11 @@ jobs:
                   -Dsonar.projectName=${SONAR_PROJECT_NAME} \
                   -Dsonar.host.url=https://sonarcloud.io \
                   -Dsonar.token=${SONAR_TOKEN}
-      - uses: actions/upload-artifact@v4.6.2
+      - uses: actions/upload-artifact@v7.0.1
         with:
           name: target
           path: target
-      - uses: actions/upload-artifact@v4.6.2
+      - uses: actions/upload-artifact@v7.0.1
         with:
           name: apispec
           path: src/main/resources/public/openapi.json
