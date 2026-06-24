@@ -1,6 +1,8 @@
 package no.entur.mummu.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,6 +74,18 @@ public class WebConfig implements WebMvcConfigurer {
                 .serializationInclusion(JsonInclude.Include.NON_EMPTY)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .featuresToEnable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+                // Serialize via fields, not getters. The NeTEx model getters lazy-initialize
+                // collection fields (null -> empty list) on first call. Because the index holds
+                // shared entity instances, getter-based JSON serialization permanently mutates
+                // them; a later XML (JAXB) response then marshals those empty lists as empty
+                // elements (e.g. <CardsAccepted></CardsAccepted>), which is invalid NeTEx.
+                // Reading fields directly avoids triggering the getters and keeps the shared
+                // model immutable across requests. Explicitly annotated getters (the mixins)
+                // are still honoured regardless of visibility.
+                .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
+                .visibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE)
+                .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
+                .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
                 .modules(modules)
                 .mixIn(Quays_RelStructure.class, NetexJsonMixins.QuaysRelStructureMixin.class)
                 .mixIn(TariffZoneRefs_RelStructure.class, NetexJsonMixins.TariffZoneRefsRelStructureMixin.class)

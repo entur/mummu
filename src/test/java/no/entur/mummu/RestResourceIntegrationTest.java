@@ -58,6 +58,9 @@ class RestResourceIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private no.entur.mummu.services.NetexEntitiesIndexLoader netexEntitiesIndexLoader;
+
     @Test
     void testGetGroupsOfStopPlaces() throws Exception {
 
@@ -439,6 +442,48 @@ class RestResourceIntegrationTest {
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name.value").value("Jernbanetorget"))
                 .andExpect(openApi().isValid(validator));
+    }
+
+    @Test
+    void testJsonSerializationDoesNotMutateSharedModel() throws Exception {
+        // The index holds a single shared Parking instance. The NeTEx model's collection
+        // getters lazy-initialise (null -> new ArrayList<>()). If Jackson serialized via
+        // those getters it would permanently mutate the shared object, and a later XML
+        // response would then marshal the empty lists as empty elements (invalid NeTEx).
+        // cardsAccepted is absent from the fixture, so the field must stay null across a
+        // JSON request - proving JSON serialization uses field access and does not mutate.
+        var parking = netexEntitiesIndexLoader.getNetexEntitiesIndex()
+                .getParkingIndex().getLatestVersion("NSR:Parking:1");
+        var field = org.rutebanken.netex.model.Parking_VersionStructure.class
+                .getDeclaredField("cardsAccepted");
+        field.setAccessible(true);
+        Assertions.assertNull(field.get(parking), "precondition: cardsAccepted starts null");
+
+        mvc.perform(get("/parkings/NSR:Parking:1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        Assertions.assertNull(field.get(parking),
+                "JSON serialization must not lazy-init cardsAccepted on the shared model");
+    }
+
+    @Test
+    void testJsonRequestDoesNotLeakFabricatedEmptyElementsIntoXml() throws Exception {
+        // A JSON request followed by an XML request for the same shared entity must not
+        // introduce empty elements that were never in the source data.
+        mvc.perform(get("/parkings/NSR:Parking:1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        String xml = mvc.perform(get("/parkings/NSR:Parking:1")
+                        .accept(MediaType.APPLICATION_XML))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        // These were never in the source; they must not be fabricated into the XML.
+        Assertions.assertFalse(xml.contains("<CardsAccepted"), xml);
+        Assertions.assertFalse(xml.contains("<PaymentMethods"), xml);
+        Assertions.assertFalse(xml.contains("<CurrenciesAccepted"), xml);
+        // Real content is still present.
+        Assertions.assertTrue(xml.contains("<ParkingVehicleTypes>pedalCycle</ParkingVehicleTypes>"), xml);
     }
 
     @Test
