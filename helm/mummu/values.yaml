@@ -10,8 +10,8 @@ common:
   container:
     image: <+artifacts.primary.image>
     cpu: 1
-    memory: 5200
-    memoryLimit: 5200
+    memory: 6656
+    memoryLimit: 6656
     probes:
       liveness:
         path: /actuator/health/liveness
@@ -33,7 +33,7 @@ common:
     enabled: false
   configmap:
     data:
-      JDK_JAVA_OPTIONS: -server -Xmx4096m -Xss1024m -Xms4096m -Dspring.config.location=/etc/application-config/application.properties
+      JDK_JAVA_OPTIONS: -server -Xmx5120m -Xss1m -Xms5120m -Dspring.config.location=/etc/application-config/application.properties
         -Dfile.encoding=UTF-8
       TZ: Europe/Oslo
     enabled: true
