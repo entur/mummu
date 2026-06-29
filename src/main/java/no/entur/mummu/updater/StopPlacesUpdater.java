@@ -62,7 +62,7 @@ public class StopPlacesUpdater implements StopPlaceChangelogListener {
         try (stopPlaceUpdate) {
             netexEntitiesIndexLoader.updateWithPublicationDeliveryStream(stopPlaceUpdate);
         } catch (RuntimeException | IOException exception) {
-            log.warn("Failed to stop with id {} from stop place repository. Skipping due to {}", stopPlaceId, exception.toString());
+            log.warn("Failed to update stop place {}. Skipping due to {}", stopPlaceId, exception.toString());
         }
     }
 }
