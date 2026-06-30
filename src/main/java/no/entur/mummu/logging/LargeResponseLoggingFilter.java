@@ -65,9 +65,25 @@ public class LargeResponseLoggingFilter extends OncePerRequestFilter {
         return queryString == null ? "" : "?" + sanitize(queryString);
     }
 
-    /** Neutralizes control characters in user-controlled values to prevent log forging (CWE-117). */
+    /**
+     * Removes line breaks and other control characters from user-controlled values
+     * to prevent log forging (CWE-117). The explicit CR/LF handling lets CodeQL
+     * recognize this as a log-injection sanitizer (java/log-injection).
+     */
     static String sanitize(String value) {
-        return value == null ? null : value.replaceAll("\\p{Cntrl}", "_");
+        if (value == null) {
+            return null;
+        }
+        StringBuilder sanitized = new StringBuilder(value.length());
+        for (int i = 0; i < value.length(); i++) {
+            char ch = value.charAt(i);
+            if (ch == '\r' || ch == '\n' || Character.isISOControl(ch)) {
+                sanitized.append('_');
+            } else {
+                sanitized.append(ch);
+            }
+        }
+        return sanitized.toString();
     }
 
     private static final class CountingResponseWrapper extends HttpServletResponseWrapper {
