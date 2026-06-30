@@ -15,7 +15,9 @@ class CountingServletOutputStreamTest {
         return new ServletOutputStream() {
             @Override public void write(int b) { buf.write(b); }
             @Override public boolean isReady() { return true; }
-            @Override public void setWriteListener(WriteListener writeListener) { }
+            @Override public void setWriteListener(WriteListener writeListener) {
+                // no-op: synchronous test sink, async write callbacks are not exercised
+            }
         };
     }
 

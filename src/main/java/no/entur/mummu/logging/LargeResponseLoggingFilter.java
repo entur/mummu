@@ -53,9 +53,10 @@ public class LargeResponseLoggingFilter extends OncePerRequestFilter {
         } finally {
             long bytes = wrapper.bytesWritten();
             if (bytes > thresholdBytes) {
+                int status = response.getStatus();
+                String contentType = sanitize(response.getContentType());
                 log.warn("Large response completed: {} bytes {} {} status={} contentType={} client={} clientId={} correlationId={}",
-                        bytes, method, path, response.getStatus(), sanitize(response.getContentType()),
-                        client, clientId, correlationId);
+                        bytes, method, path, status, contentType, client, clientId, correlationId);
             }
         }
     }
