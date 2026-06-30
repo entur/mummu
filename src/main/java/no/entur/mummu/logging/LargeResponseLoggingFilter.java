@@ -39,10 +39,10 @@ public class LargeResponseLoggingFilter extends OncePerRequestFilter {
         // forging (CWE-117): the URI, query string and request headers can carry
         // control characters that would otherwise inject forged log lines.
         String method = request.getMethod();
-        String path = sanitize(request.getRequestURI()) + query(request);
-        String client = sanitize(request.getHeader("ET-Client-Name"));
-        String clientId = sanitize(request.getHeader("ET-Client-ID"));
-        String correlationId = sanitize(request.getHeader("X-Correlation-Id"));
+        String path = LogSanitizer.sanitize(request.getRequestURI()) + query(request);
+        String client = LogSanitizer.sanitize(request.getHeader("ET-Client-Name"));
+        String clientId = LogSanitizer.sanitize(request.getHeader("ET-Client-ID"));
+        String correlationId = LogSanitizer.sanitize(request.getHeader("X-Correlation-Id"));
 
         CountingResponseWrapper wrapper = new CountingResponseWrapper(response, thresholdBytes,
                 () -> log.warn("Large response crossing {} bytes while streaming: {} {} client={} clientId={} correlationId={}",
@@ -54,7 +54,7 @@ public class LargeResponseLoggingFilter extends OncePerRequestFilter {
             long bytes = wrapper.bytesWritten();
             if (bytes > thresholdBytes) {
                 int status = response.getStatus();
-                String contentType = sanitize(response.getContentType());
+                String contentType = LogSanitizer.sanitize(response.getContentType());
                 log.warn("Large response completed: {} bytes {} {} status={} contentType={} client={} clientId={} correlationId={}",
                         bytes, method, path, status, contentType, client, clientId, correlationId);
             }
@@ -63,28 +63,7 @@ public class LargeResponseLoggingFilter extends OncePerRequestFilter {
 
     private static String query(HttpServletRequest request) {
         String queryString = request.getQueryString();
-        return queryString == null ? "" : "?" + sanitize(queryString);
-    }
-
-    /**
-     * Removes line breaks and other control characters from user-controlled values
-     * to prevent log forging (CWE-117). The explicit CR/LF handling lets CodeQL
-     * recognize this as a log-injection sanitizer (java/log-injection).
-     */
-    static String sanitize(String value) {
-        if (value == null) {
-            return null;
-        }
-        StringBuilder sanitized = new StringBuilder(value.length());
-        for (int i = 0; i < value.length(); i++) {
-            char ch = value.charAt(i);
-            if (ch == '\r' || ch == '\n' || Character.isISOControl(ch)) {
-                sanitized.append('_');
-            } else {
-                sanitized.append(ch);
-            }
-        }
-        return sanitized.toString();
+        return queryString == null ? "" : "?" + LogSanitizer.sanitize(queryString);
     }
 
     private static final class CountingResponseWrapper extends HttpServletResponseWrapper {
