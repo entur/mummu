@@ -35,27 +35,39 @@ public class LargeResponseLoggingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        // User-controlled values are neutralized before logging to prevent log
+        // forging (CWE-117): the URI, query string and request headers can carry
+        // control characters that would otherwise inject forged log lines.
+        String method = request.getMethod();
+        String path = sanitize(request.getRequestURI()) + query(request);
+        String client = sanitize(request.getHeader("ET-Client-Name"));
+        String clientId = sanitize(request.getHeader("ET-Client-ID"));
+        String correlationId = sanitize(request.getHeader("X-Correlation-Id"));
+
         CountingResponseWrapper wrapper = new CountingResponseWrapper(response, thresholdBytes,
-                () -> log.warn("Large response crossing {} bytes while streaming: {} {}{} client={} clientId={} correlationId={}",
-                        thresholdBytes, request.getMethod(), request.getRequestURI(), query(request),
-                        request.getHeader("ET-Client-Name"), request.getHeader("ET-Client-ID"),
-                        request.getHeader("X-Correlation-Id")));
+                () -> log.warn("Large response crossing {} bytes while streaming: {} {} client={} clientId={} correlationId={}",
+                        thresholdBytes, method, path, client, clientId, correlationId));
 
         try {
             chain.doFilter(request, wrapper);
         } finally {
             long bytes = wrapper.bytesWritten();
             if (bytes > thresholdBytes) {
-                log.warn("Large response completed: {} bytes {} {}{} status={} contentType={} client={} clientId={} correlationId={}",
-                        bytes, request.getMethod(), request.getRequestURI(), query(request), response.getStatus(),
-                        response.getContentType(), request.getHeader("ET-Client-Name"), request.getHeader("ET-Client-ID"),
-                        request.getHeader("X-Correlation-Id"));
+                log.warn("Large response completed: {} bytes {} {} status={} contentType={} client={} clientId={} correlationId={}",
+                        bytes, method, path, response.getStatus(), sanitize(response.getContentType()),
+                        client, clientId, correlationId);
             }
         }
     }
 
     private static String query(HttpServletRequest request) {
-        return request.getQueryString() == null ? "" : "?" + request.getQueryString();
+        String queryString = request.getQueryString();
+        return queryString == null ? "" : "?" + sanitize(queryString);
+    }
+
+    /** Neutralizes control characters in user-controlled values to prevent log forging (CWE-117). */
+    static String sanitize(String value) {
+        return value == null ? null : value.replaceAll("\\p{Cntrl}", "_");
     }
 
     private static final class CountingResponseWrapper extends HttpServletResponseWrapper {
