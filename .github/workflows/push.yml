@@ -75,7 +75,7 @@ jobs:
 
   openapi-lint:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/lint.yml@v6.2.2
+    uses: entur/gha-api/.github/workflows/lint.yml@v6.2.3
     secrets: inherit
     with:
       artifact: apispec
@@ -84,7 +84,7 @@ jobs:
 
   openapi-validate:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/validate.yml@v6.2.2
+    uses: entur/gha-api/.github/workflows/validate.yml@v6.2.3
     with:
       artifact: apispec
       path: openapi.json
@@ -92,7 +92,7 @@ jobs:
   openapi-publish:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [ openapi-lint, openapi-validate ]
-    uses: entur/gha-api/.github/workflows/publish.yml@v6.2.2
+    uses: entur/gha-api/.github/workflows/publish.yml@v6.2.3
     secrets: inherit
     with:
       path: 'src/main/resources/public/openapi.json'
