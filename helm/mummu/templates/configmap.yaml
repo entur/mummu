@@ -18,6 +18,7 @@ data:
     management.endpoint.prometheus.enabled=true
     management.endpoints.web.exposure.include=info,health,prometheus
     management.metrics.distribution.percentiles-histogram.http.server.requests=true
+    management.metrics.enable.kafka=false
 
     # Logging
     logging.level.no.entur.mummu={{ .Values.configMap.logLevel }}
