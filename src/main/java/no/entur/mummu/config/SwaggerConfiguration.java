@@ -94,6 +94,27 @@ public class SwaggerConfiguration {
     }
 
     @Bean
+    public OpenApiCustomizer countParameterDescriptionCustomizer() {
+        String limitInfo = "Supported up to 1000; larger values are best-effort and may be limited or "
+            + "rejected — page with skip/count or use the bulk NeTEx export for the full dataset.";
+        return openApi -> openApi.getPaths().values().forEach(pathItem ->
+            pathItem.readOperations().forEach(operation -> {
+                if (operation.getParameters() == null) {
+                    return;
+                }
+                operation.getParameters().stream()
+                    .filter(parameter -> "count".equals(parameter.getName()))
+                    .forEach(parameter -> {
+                        String base = parameter.getDescription() == null ? "" : parameter.getDescription().strip();
+                        if (!base.contains("Supported up to")) {
+                            String prefix = base.isEmpty() ? "" : (base.endsWith(".") ? base + " " : base + ". ");
+                            parameter.setDescription(prefix + limitInfo);
+                        }
+                    });
+            }));
+    }
+
+    @Bean
     public OpenApiCustomizer netexModelCompatibilityCustomizer() {
         return openApi -> {
             Map<String, Schema> schemas = openApi.getComponents().getSchemas();
