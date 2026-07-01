@@ -1,4 +1,4 @@
-package no.entur.mummu.logging;
+package no.entur.mummu.web;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package no.entur.mummu.logging;
+package no.entur.mummu.web;
 
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,38 +23,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(classes = MummuApplication.class)
 @AutoConfigureMockMvc
-@TestPropertySource(properties = "no.entur.mummu.logging.large-response-threshold-bytes=10")
-class LargeResponseLoggingFilterIntegrationTest {
+@TestPropertySource(properties = {
+        "no.entur.mummu.list.enforce-max-count=false",
+        "no.entur.mummu.list.max-count=5"
+})
+class MaxCountInterceptorLoggingTest {
 
     @Autowired
     private MockMvc mvc;
 
-    private Logger filterLogger;
+    private Logger interceptorLogger;
     private ListAppender<ILoggingEvent> appender;
 
     @BeforeEach
     void attachAppender() {
-        filterLogger = (Logger) LoggerFactory.getLogger(LargeResponseLoggingFilter.class);
+        interceptorLogger = (Logger) LoggerFactory.getLogger(MaxCountInterceptor.class);
         appender = new ListAppender<>();
         appender.start();
-        filterLogger.addAppender(appender);
+        interceptorLogger.addAppender(appender);
     }
 
     @AfterEach
     void detachAppender() {
-        filterLogger.detachAppender(appender);
+        interceptorLogger.detachAppender(appender);
     }
 
     @Test
-    void logsLargeResponseWithPath() throws Exception {
-        mvc.perform(get("/stop-places").accept("application/json"))
+    void logsButServesWhenNotEnforcing() throws Exception {
+        mvc.perform(get("/stop-places?count=10").accept(MediaType.APPLICATION_JSON)
+                        .header("ET-Client-Name", "bulk-client"))
                 .andExpect(status().isOk());
 
         boolean logged = appender.list.stream()
                 .map(ILoggingEvent::getFormattedMessage)
-                .anyMatch(m -> m.contains("Large response completed") && m.contains("/stop-places"));
+                .anyMatch(m -> m.contains("Request count 10 exceeds max 5 for /stop-places")
+                        && m.contains("client=bulk-client"));
 
-        Assertions.assertTrue(logged, "expected a large-response log line for /stop-places; got: "
+        Assertions.assertTrue(logged, "expected an over-max WARN when not enforcing; got: "
                 + appender.list.stream().map(ILoggingEvent::getFormattedMessage).toList());
     }
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static jakarta.servlet.RequestDispatcher.ERROR_MESSAGE;
 import static jakarta.servlet.RequestDispatcher.ERROR_STATUS_CODE;
 
 @Controller
@@ -19,7 +21,16 @@ public class RestErrorController implements ErrorController {
     @ResponseBody
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
-        return new ResponseEntity<>(status);
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("status", status.value());
+        body.put("error", status.getReasonPhrase());
+        // Include the message for client errors only (e.g. the max-count 400), so we
+        // surface actionable hints without leaking internal 5xx exception details.
+        Object message = request.getAttribute(ERROR_MESSAGE);
+        if (status.is4xxClientError() && message != null && !message.toString().isBlank()) {
+            body.put("message", message.toString());
+        }
+        return new ResponseEntity<>(body, status);
     }
 
     private HttpStatus getStatus(HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package no.entur.mummu.logging;
+package no.entur.mummu.web;
 
 /**
  * Neutralizes control characters in user-controlled values before they are logged,

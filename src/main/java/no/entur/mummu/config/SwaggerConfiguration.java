@@ -7,6 +7,7 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -91,6 +92,34 @@ public class SwaggerConfiguration {
                     .name("Groupings")
                     .description("Access logical groupings of stop places and fare zones for organizational and operational purposes.")
             ));
+    }
+
+    @Bean
+    public OpenApiCustomizer countParameterDescriptionCustomizer() {
+        String limitInfo = "Supported up to 1000; larger values are best-effort and may be limited or "
+            + "rejected — page with skip/count or use the bulk NeTEx export for the full dataset.";
+        return openApi -> openApi.getPaths().values().stream()
+            .flatMap(pathItem -> pathItem.readOperations().stream())
+            .filter(operation -> operation.getParameters() != null)
+            .flatMap(operation -> operation.getParameters().stream())
+            .filter(parameter -> "count".equals(parameter.getName()))
+            .forEach(parameter -> appendLimitInfo(parameter, limitInfo));
+    }
+
+    private static void appendLimitInfo(Parameter parameter, String limitInfo) {
+        String base = parameter.getDescription() == null ? "" : parameter.getDescription().strip();
+        if (base.contains("Supported up to")) {
+            return;
+        }
+        String separator;
+        if (base.isEmpty()) {
+            separator = "";
+        } else if (base.endsWith(".")) {
+            separator = " ";
+        } else {
+            separator = ". ";
+        }
+        parameter.setDescription(base + separator + limitInfo);
     }
 
     @Bean

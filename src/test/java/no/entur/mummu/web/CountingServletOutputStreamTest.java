@@ -1,4 +1,4 @@
-package no.entur.mummu.logging;
+package no.entur.mummu.web;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;
