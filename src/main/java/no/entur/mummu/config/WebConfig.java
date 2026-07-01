@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import no.entur.mummu.logging.MaxCountInterceptor;
 import no.entur.mummu.serializers.CustomSerializers;
 import no.entur.mummu.serializers.NetexJsonMixins;
 import org.rutebanken.netex.model.ParkingAreaRefs_RelStructure;
@@ -26,6 +27,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -38,10 +40,17 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final CustomSerializers customSerializers;
+    private final MaxCountInterceptor maxCountInterceptor;
 
     @Autowired
-    public WebConfig(CustomSerializers customSerializers) {
+    public WebConfig(CustomSerializers customSerializers, MaxCountInterceptor maxCountInterceptor) {
         this.customSerializers = customSerializers;
+        this.maxCountInterceptor = maxCountInterceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(maxCountInterceptor);
     }
 
     @Override

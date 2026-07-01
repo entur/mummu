@@ -20,6 +20,13 @@ data:
     management.metrics.distribution.percentiles-histogram.http.server.requests=true
     management.metrics.enable.kafka=false
 
+    # List endpoint count limit. Enforcement is off by default (log-only); flip
+    # enforce-max-count per env after over-limit consumers have been notified.
+    no.entur.mummu.list.max-count=1000
+    no.entur.mummu.list.max-count-overrides.fare-zones=9999
+    no.entur.mummu.list.max-count-overrides.tariff-zones=9999
+    no.entur.mummu.list.enforce-max-count=false
+
     # Logging
     logging.level.no.entur.mummu={{ .Values.configMap.logLevel }}
 

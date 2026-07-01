@@ -23,52 +23,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(classes = MummuApplication.class)
 @AutoConfigureMockMvc
-@TestPropertySource(properties = "no.entur.mummu.list.max-count=5")
-class MaxCountLoggingFilterIntegrationTest {
+@TestPropertySource(properties = {
+        "no.entur.mummu.list.enforce-max-count=false",
+        "no.entur.mummu.list.max-count=5"
+})
+class MaxCountInterceptorLoggingTest {
 
     @Autowired
     private MockMvc mvc;
 
-    private Logger filterLogger;
+    private Logger interceptorLogger;
     private ListAppender<ILoggingEvent> appender;
 
     @BeforeEach
     void attachAppender() {
-        filterLogger = (Logger) LoggerFactory.getLogger(MaxCountLoggingFilter.class);
+        interceptorLogger = (Logger) LoggerFactory.getLogger(MaxCountInterceptor.class);
         appender = new ListAppender<>();
         appender.start();
-        filterLogger.addAppender(appender);
+        interceptorLogger.addAppender(appender);
     }
 
     @AfterEach
     void detachAppender() {
-        filterLogger.detachAppender(appender);
+        interceptorLogger.detachAppender(appender);
     }
 
     @Test
-    void logsClientWhenCountExceedsMax() throws Exception {
+    void logsButServesWhenNotEnforcing() throws Exception {
         mvc.perform(get("/stop-places?count=10").accept(MediaType.APPLICATION_JSON)
                         .header("ET-Client-Name", "bulk-client"))
                 .andExpect(status().isOk());
 
         boolean logged = appender.list.stream()
                 .map(ILoggingEvent::getFormattedMessage)
-                .anyMatch(m -> m.contains("Request count 10 exceeds max 5") && m.contains("client=bulk-client"));
+                .anyMatch(m -> m.contains("Request count 10 exceeds max 5 for /stop-places")
+                        && m.contains("client=bulk-client"));
 
-        Assertions.assertTrue(logged, "expected an over-max count log line; got: "
-                + appender.list.stream().map(ILoggingEvent::getFormattedMessage).toList());
-    }
-
-    @Test
-    void doesNotLogWhenCountWithinMax() throws Exception {
-        mvc.perform(get("/stop-places?count=3").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        boolean logged = appender.list.stream()
-                .map(ILoggingEvent::getFormattedMessage)
-                .anyMatch(m -> m.contains("exceeds max"));
-
-        Assertions.assertFalse(logged, "should not log when count is within max; got: "
+        Assertions.assertTrue(logged, "expected an over-max WARN when not enforcing; got: "
                 + appender.list.stream().map(ILoggingEvent::getFormattedMessage).toList());
     }
 }
