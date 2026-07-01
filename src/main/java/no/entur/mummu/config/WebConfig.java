@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import no.entur.mummu.logging.MaxCountInterceptor;
+import no.entur.mummu.web.MaxCountInterceptor;
 import no.entur.mummu.serializers.CustomSerializers;
 import no.entur.mummu.serializers.NetexJsonMixins;
 import org.rutebanken.netex.model.ParkingAreaRefs_RelStructure;
