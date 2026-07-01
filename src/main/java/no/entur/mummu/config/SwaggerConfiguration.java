@@ -111,8 +111,15 @@ public class SwaggerConfiguration {
         if (base.contains("Supported up to")) {
             return;
         }
-        String prefix = base.isEmpty() ? "" : (base.endsWith(".") ? base + " " : base + ". ");
-        parameter.setDescription(prefix + limitInfo);
+        String separator;
+        if (base.isEmpty()) {
+            separator = "";
+        } else if (base.endsWith(".")) {
+            separator = " ";
+        } else {
+            separator = ". ";
+        }
+        parameter.setDescription(base + separator + limitInfo);
     }
 
     @Bean
