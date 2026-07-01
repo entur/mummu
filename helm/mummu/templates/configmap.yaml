@@ -25,7 +25,7 @@ data:
     no.entur.mummu.list.max-count=1000
     no.entur.mummu.list.max-count-overrides.fare-zones=9999
     no.entur.mummu.list.max-count-overrides.tariff-zones=9999
-    no.entur.mummu.list.enforce-max-count=false
+    no.entur.mummu.list.enforce-max-count={{ .Values.configMap.enforceMaxCount | default "false" }}
 
     # Logging
     logging.level.no.entur.mummu={{ .Values.configMap.logLevel }}
