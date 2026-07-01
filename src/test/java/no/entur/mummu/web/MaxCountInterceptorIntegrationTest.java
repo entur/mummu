@@ -1,6 +1,7 @@
 package no.entur.mummu.web;
 
 import no.entur.mummu.MummuApplication;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +28,17 @@ class MaxCountInterceptorIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    void rejectsCountOverDefaultMax() throws Exception {
-        mvc.perform(get("/stop-places?count=10").accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+    void rejectsCountOverDefaultMaxWithMessage() throws Exception {
+        // MockMvc does not run the error dispatch, so the message is on the sendError
+        // (getErrorMessage) rather than the body; RestErrorController renders it into the
+        // body in the real container (see RestErrorControllerTest).
+        var result = mvc.perform(get("/stop-places?count=10").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        String message = result.getResponse().getErrorMessage();
+        Assertions.assertNotNull(message, "400 should carry a message");
+        Assertions.assertTrue(message.contains("exceeds the maximum"), "got: " + message);
     }
 
     @Test
