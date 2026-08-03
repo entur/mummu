@@ -43,7 +43,7 @@ jobs:
 
       - name: Check for breaking API changes
         if: github.event_name == 'pull_request'
-        uses: oasdiff/oasdiff-action/breaking@4bdf89062dad92caea71236f59704b04d3ce9682 # v0.1.8
+        uses: oasdiff/oasdiff-action/breaking@0ab8ad204b00d25acc5ae87106281433e288d0c1 # v0.1.10
         with:
           base: 'origin/${{ github.base_ref }}:src/main/resources/public/openapi.json'
           revision: 'HEAD:src/main/resources/public/openapi.json'
@@ -75,7 +75,7 @@ jobs:
 
   openapi-lint:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/lint.yml@v6.2.3
+    uses: entur/gha-api/.github/workflows/lint.yml@v6.3.1
     secrets: inherit
     with:
       artifact: apispec
@@ -84,7 +84,7 @@ jobs:
 
   openapi-validate:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/validate.yml@v6.2.3
+    uses: entur/gha-api/.github/workflows/validate.yml@v6.3.1
     with:
       artifact: apispec
       path: openapi.json
@@ -92,7 +92,7 @@ jobs:
   openapi-publish:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [ openapi-lint, openapi-validate ]
-    uses: entur/gha-api/.github/workflows/publish.yml@v6.2.3
+    uses: entur/gha-api/.github/workflows/publish.yml@v6.3.1
     secrets: inherit
     with:
       path: 'src/main/resources/public/openapi.json'
@@ -106,7 +106,7 @@ jobs:
       build_artifact_path: target
   docker-scan:
     needs: [ docker-build ]
-    uses: entur/gha-security/.github/workflows/docker-scan.yml@v2.15.0
+    uses: entur/gha-security/.github/workflows/docker-scan.yml@v2.15.1
     with:
       image_artifact: ${{ needs.docker-build.outputs.image_artifact }}
   docker-push:
