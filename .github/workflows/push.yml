@@ -43,7 +43,7 @@ jobs:
 
       - name: Check for breaking API changes
         if: github.event_name == 'pull_request'
-        uses: oasdiff/oasdiff-action/breaking@033c15c845bef10f148afb0fa781bf1b2a7fe1bf # v0.1.12
+        uses: oasdiff/oasdiff-action/breaking@2649ebe137aeb72a95707671204e829f86e091fc # v0.1.13
         with:
           base: 'origin/${{ github.base_ref }}:src/main/resources/public/openapi.json'
           revision: 'HEAD:src/main/resources/public/openapi.json'
@@ -75,7 +75,7 @@ jobs:
 
   openapi-lint:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/lint.yml@v6.3.2
+    uses: entur/gha-api/.github/workflows/lint.yml@v6.4.0
     secrets: inherit
     with:
       artifact: apispec
@@ -84,7 +84,7 @@ jobs:
 
   openapi-validate:
     needs: [maven-verify]
-    uses: entur/gha-api/.github/workflows/validate.yml@v6.3.2
+    uses: entur/gha-api/.github/workflows/validate.yml@v6.4.0
     with:
       artifact: apispec
       path: openapi.json
@@ -92,7 +92,7 @@ jobs:
   openapi-publish:
     if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [ openapi-lint, openapi-validate ]
-    uses: entur/gha-api/.github/workflows/publish.yml@v6.3.2
+    uses: entur/gha-api/.github/workflows/publish.yml@v6.4.0
     secrets: inherit
     with:
       path: 'src/main/resources/public/openapi.json'
