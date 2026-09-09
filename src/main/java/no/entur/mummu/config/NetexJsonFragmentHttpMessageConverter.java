@@ -59,7 +59,16 @@ public class NetexJsonFragmentHttpMessageConverter implements GenericHttpMessage
 
     @Override
     public boolean canWrite(Type type, Class<?> clazz, MediaType mediaType) {
-        return isJson(mediaType) && PRE_RENDERED_TYPES.contains(entityType(type, clazz));
+        if (!isJson(mediaType)) {
+            return false;
+        }
+        // Spring offers every response to every converter, so this has to answer
+        // for types it knows nothing about, including ones ResolvableType cannot
+        // resolve at all — the body of a raw ResponseEntity, or a raw Collection.
+        // entityType is null for those, and PRE_RENDERED_TYPES is a Set.of(),
+        // which throws on contains(null) rather than answering false.
+        Class<?> entityType = entityType(type, clazz);
+        return entityType != null && PRE_RENDERED_TYPES.contains(entityType);
     }
 
     @Override
