@@ -1,21 +1,7 @@
 package no.entur.mummu.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import no.entur.mummu.serializers.NetexJsonObjectMapper;
 import no.entur.mummu.web.MaxCountInterceptor;
-import no.entur.mummu.serializers.CustomSerializers;
-import no.entur.mummu.serializers.NetexJsonMixins;
-import org.rutebanken.netex.model.ParkingAreaRefs_RelStructure;
-import org.rutebanken.netex.model.ParkingAreas_RelStructure;
-import org.rutebanken.netex.model.Quays_RelStructure;
-import org.rutebanken.netex.model.StopPlaceRefs_RelStructure;
-import org.rutebanken.netex.model.TariffZoneRefs_RelStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -23,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -31,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,12 +23,18 @@ import java.util.List;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    private final CustomSerializers customSerializers;
+    private final NetexJsonObjectMapper netexJsonObjectMapper;
+    private final NetexJsonFragmentHttpMessageConverter netexJsonFragmentHttpMessageConverter;
     private final MaxCountInterceptor maxCountInterceptor;
 
     @Autowired
-    public WebConfig(CustomSerializers customSerializers, MaxCountInterceptor maxCountInterceptor) {
-        this.customSerializers = customSerializers;
+    public WebConfig(
+            NetexJsonObjectMapper netexJsonObjectMapper,
+            NetexJsonFragmentHttpMessageConverter netexJsonFragmentHttpMessageConverter,
+            MaxCountInterceptor maxCountInterceptor
+    ) {
+        this.netexJsonObjectMapper = netexJsonObjectMapper;
+        this.netexJsonFragmentHttpMessageConverter = netexJsonFragmentHttpMessageConverter;
         this.maxCountInterceptor = maxCountInterceptor;
     }
 
@@ -63,7 +53,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new ByteArrayHttpMessageConverter());
         converters.add(new StringHttpMessageConverter());
-        converters.add(new MappingJackson2HttpMessageConverter(jsonObjectMapper()));
+        // Ahead of Jackson: serves pre-rendered fragments for the entity types it
+        // claims, and declines everything else so Jackson still handles it.
+        converters.add(netexJsonFragmentHttpMessageConverter);
+        converters.add(new MappingJackson2HttpMessageConverter(netexJsonObjectMapper.get()));
         converters.add(new NetexHttpMessageConverter());
     }
 
@@ -72,36 +65,6 @@ public class WebConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.addFormatters(registry);
         registry.addFormatter(new StringToVehicleModeEnumeration());
         registry.addFormatter(new StringToStopTypeEnumeration());
-    }
-
-    public ObjectMapper jsonObjectMapper() {
-        ArrayList<Module> modules = new ArrayList<>();
-        var customSerializersModule = new SimpleModule();
-        customSerializersModule.setSerializers(customSerializers);
-        modules.add(customSerializersModule);
-        return Jackson2ObjectMapperBuilder.json()
-                .serializationInclusion(JsonInclude.Include.NON_EMPTY)
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .featuresToEnable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
-                // Serialize via fields, not getters. The NeTEx model getters lazy-initialize
-                // collection fields (null -> empty list) on first call. Because the index holds
-                // shared entity instances, getter-based JSON serialization permanently mutates
-                // them; a later XML (JAXB) response then marshals those empty lists as empty
-                // elements (e.g. <CardsAccepted></CardsAccepted>), which is invalid NeTEx.
-                // Reading fields directly avoids triggering the getters and keeps the shared
-                // model immutable across requests. Explicitly annotated getters (the mixins)
-                // are still honoured regardless of visibility.
-                .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
-                .visibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE)
-                .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
-                .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-                .modules(modules)
-                .mixIn(Quays_RelStructure.class, NetexJsonMixins.QuaysRelStructureMixin.class)
-                .mixIn(TariffZoneRefs_RelStructure.class, NetexJsonMixins.TariffZoneRefsRelStructureMixin.class)
-                .mixIn(ParkingAreas_RelStructure.class, NetexJsonMixins.ParkingAreasRelStructureMixin.class)
-                .mixIn(StopPlaceRefs_RelStructure.class, NetexJsonMixins.StopPlaceRefsRelStructureMixin.class)
-                .mixIn(ParkingAreaRefs_RelStructure.class, NetexJsonMixins.ParkingAreaRefsRelStructureMixin.class)
-                .build();
     }
 
     @Override
