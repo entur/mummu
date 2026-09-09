@@ -1,5 +1,6 @@
 package no.entur.mummu.serializers;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import no.entur.mummu.services.NetexEntitiesIndexLoader;
 import no.entur.mummu.updater.StopPlacesUpdater;
 import org.entur.netex.index.api.NetexEntitiesIndex;
@@ -48,7 +49,7 @@ class NetexJsonFragmentCacheUpdateTest {
                 new NetexEntitiesIndexLoader("src/test/resources/no/entur/mummu/updater/UpdateBaseFixture.xml.zip");
         index = loader.getNetexEntitiesIndex();
         objectMapper = new NetexJsonObjectMapper(new CustomSerializers(new MummuSerializerContext(loader)));
-        cache = new NetexJsonFragmentCache(objectMapper);
+        cache = new NetexJsonFragmentCache(objectMapper, new SimpleMeterRegistry(), 64L * 1024 * 1024);
         updater = new StopPlacesUpdater(loader, stopPlaceChangelog);
     }
 

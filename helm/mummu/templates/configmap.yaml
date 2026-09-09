@@ -27,6 +27,13 @@ data:
     no.entur.mummu.list.max-count-overrides.tariff-zones=9999
     no.entur.mummu.list.enforce-max-count={{ .Values.configMap.enforceMaxCount | default "false" }}
 
+    # Ceiling on the pre-rendered JSON fragment cache. Guava does not evict
+    # under memory pressure, so this is what leaves heap for the NeTEx index
+    # (~1.9 GB) and for serializing responses that are not cached. Evicting is
+    # safe: the fragment is simply rendered again. Observe with
+    # mummu_fragment_cache_bytes against mummu_fragment_cache_max_bytes.
+    no.entur.mummu.fragment-cache.max-bytes={{ .Values.configMap.fragmentCacheMaxBytes | default 268435456 }}
+
     # Logging
     logging.level.no.entur.mummu={{ .Values.configMap.logLevel }}
 
