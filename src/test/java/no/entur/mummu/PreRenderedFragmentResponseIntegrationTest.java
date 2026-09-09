@@ -1,6 +1,6 @@
 package no.entur.mummu;
 
-import no.entur.mummu.serializers.NetexJsonFragmentCache;
+import io.micrometer.core.instrument.MeterRegistry;
 import no.entur.mummu.serializers.NetexJsonObjectMapper;
 import no.entur.mummu.services.NetexEntitiesService;
 import no.entur.mummu.services.StopPlacesRequestParams;
@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,7 +38,7 @@ class PreRenderedFragmentResponseIntegrationTest {
     private NetexJsonObjectMapper netexJsonObjectMapper;
 
     @Autowired
-    private NetexJsonFragmentCache fragmentCache;
+    private MeterRegistry meterRegistry;
 
     @Test
     void stopPlacesResponseIsUnchanged() throws Exception {
@@ -74,7 +75,11 @@ class PreRenderedFragmentResponseIntegrationTest {
     void servesStopPlacesFromPreRenderedFragments() throws Exception {
         mvc.perform(get("/stop-places")).andExpect(status().isOk());
 
-        assertTrue(fragmentCache.size() > 0,
+        // Asserted through the gauge operators actually watch, so the metric is
+        // covered by the same test that proves the converter is wired in.
+        var retained = meterRegistry.find("mummu.fragment.cache.bytes").gauge();
+        assertNotNull(retained, "the fragment cache publishes no bytes gauge");
+        assertTrue(retained.value() > 0,
                 "no fragments were rendered, so the response was serialized by Jackson instead");
     }
 
