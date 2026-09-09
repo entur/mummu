@@ -9,10 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.rutebanken.helper.stopplace.changelog.StopPlaceChangelog;
+import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class NetexJsonFragmentCacheUpdateTest {
 
     private static final String UPDATED_STOP_PLACE = "NSR:StopPlace:337";
+    private static final String UPDATED_QUAY = "NSR:Quay:100148";
 
     @Mock
     private StopPlaceChangelog stopPlaceChangelog;
@@ -53,6 +56,10 @@ class NetexJsonFragmentCacheUpdateTest {
         return index.getStopPlaceIndex().getLatestVersion(UPDATED_STOP_PLACE);
     }
 
+    private Quay latestQuay() {
+        return index.getQuayIndex().getLatestVersion(UPDATED_QUAY);
+    }
+
     private String fragmentText(StopPlace stopPlace) {
         return new String(cache.fragment(stopPlace), StandardCharsets.UTF_8);
     }
@@ -71,5 +78,25 @@ class NetexJsonFragmentCacheUpdateTest {
         assertEquals("test", updated.getDescription().getValue(), "precondition: the update landed in the index");
         assertTrue(fragmentText(updated).contains("\"test\""), "the cache served a stale fragment");
         assertArrayEquals(objectMapper.get().writeValueAsBytes(updated), cache.fragment(updated));
+    }
+
+    @Test
+    void doesNotServeAStaleQuayFragmentAfterAChangelogUpdate() throws Exception {
+        Quay before = latestQuay();
+        assertEquals("12", before.getVersion(), "fixture precondition: the quay starts at version 12");
+
+        // Render the fragment before the update, so a stale entry exists.
+        byte[] stale = cache.fragment(before);
+
+        updater.onStopPlaceUpdated(
+                "NSR:StopPlace:59872",
+                getClass().getClassLoader().getResourceAsStream("no/entur/mummu/updater/UpdateMultiModalFixture.xml"));
+
+        Quay updated = latestQuay();
+        assertEquals("13", updated.getVersion(), "precondition: the update landed in the index");
+
+        byte[] fresh = cache.fragment(updated);
+        assertFalse(Arrays.equals(stale, fresh), "the cache served the fragment it rendered before the update");
+        assertArrayEquals(objectMapper.get().writeValueAsBytes(updated), fresh);
     }
 }
