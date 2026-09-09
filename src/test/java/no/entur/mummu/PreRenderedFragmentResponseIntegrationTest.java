@@ -79,6 +79,26 @@ class PreRenderedFragmentResponseIntegrationTest {
     }
 
     @Test
+    void topographicPlacesResponseIsUnchanged() throws Exception {
+        byte[] expected = netexJsonObjectMapper.get()
+                .writeValueAsBytes(netexEntitiesService.getTopographicPlaces(10, 0, null));
+
+        mvc.perform(get("/topographic-places"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(expected));
+    }
+
+    @Test
+    void singleTopographicPlaceResponseIsUnchanged() throws Exception {
+        byte[] expected = netexJsonObjectMapper.get()
+                .writeValueAsBytes(netexEntitiesService.getTopographicPlaceById("KVE:TopographicPlace:0301"));
+
+        mvc.perform(get("/topographic-places/KVE:TopographicPlace:0301"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(expected));
+    }
+
+    @Test
     void stillServesStopPlacesAsXml() throws Exception {
         mvc.perform(get("/stop-places").accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())

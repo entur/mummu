@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TariffZone;
+import org.rutebanken.netex.model.TopographicPlace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ResolvableType;
@@ -47,6 +48,10 @@ class NetexJsonFragmentHttpMessageConverterTest {
         return new ArrayList<>(loader.getNetexEntitiesIndex().getQuayIndex().getLatestVersions());
     }
 
+    private List<TopographicPlace> topographicPlaces() {
+        return new ArrayList<>(loader.getNetexEntitiesIndex().getTopographicPlaceIndex().getLatestVersions());
+    }
+
     private byte[] write(Object body, Type type) throws Exception {
         MockHttpOutputMessage message = new MockHttpOutputMessage();
         converter.write(body, type, MediaType.APPLICATION_JSON, message);
@@ -67,6 +72,21 @@ class NetexJsonFragmentHttpMessageConverterTest {
         assertArrayEquals(
                 netexJsonObjectMapper.get().writeValueAsBytes(body),
                 write(body, listOf(Quay.class)));
+    }
+
+    @Test
+    void writesTopographicPlaceListByteIdenticallyToJackson() throws Exception {
+        List<TopographicPlace> body = topographicPlaces();
+        assertFalse(body.isEmpty(), "fixture precondition: the index has topographic places");
+        assertArrayEquals(
+                netexJsonObjectMapper.get().writeValueAsBytes(body),
+                write(body, listOf(TopographicPlace.class)));
+    }
+
+    @Test
+    void handlesTopographicPlacesAsJson() {
+        assertTrue(converter.canWrite(listOf(TopographicPlace.class), List.class, MediaType.APPLICATION_JSON));
+        assertTrue(converter.canWrite(TopographicPlace.class, TopographicPlace.class, MediaType.APPLICATION_JSON));
     }
 
     @Test

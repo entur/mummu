@@ -4,6 +4,7 @@ import no.entur.mummu.serializers.NetexJsonFragmentCache;
 import org.rutebanken.netex.model.EntityInVersionStructure;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
+import org.rutebanken.netex.model.TopographicPlace;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -36,11 +37,19 @@ public class NetexJsonFragmentHttpMessageConverter implements GenericHttpMessage
 
     /**
      * The types worth pre-rendering: stop places and quays account for the bulk
-     * of the bytes this API serves. Adding a type here costs the heap needed to
-     * retain its rendered JSON, so it is a deliberate choice rather than a
-     * blanket rule.
+     * of the bytes this API serves, and topographic places for the slowest
+     * single responses — they are few but very large (~119 KB of JSON each,
+     * with polygon geometries reaching tens of MB), so serializing them per
+     * request dominates the latency of {@code /topographic-places}.
+     * <p>
+     * Adding a type here costs the heap needed to retain its rendered JSON, so
+     * it is a deliberate choice rather than a blanket rule. Note that a
+     * multi-MB fragment is a humongous allocation for the garbage collector:
+     * retaining it removes the per-request churn, but places a large long-lived
+     * object in the old generation that streaming never materialized.
      */
-    private static final Set<Class<?>> PRE_RENDERED_TYPES = Set.of(StopPlace.class, Quay.class);
+    private static final Set<Class<?>> PRE_RENDERED_TYPES =
+            Set.of(StopPlace.class, Quay.class, TopographicPlace.class);
 
     private final NetexJsonFragmentCache fragmentCache;
 
