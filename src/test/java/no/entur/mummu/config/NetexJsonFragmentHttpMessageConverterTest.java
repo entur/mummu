@@ -4,6 +4,8 @@ import no.entur.mummu.MummuApplication;
 import no.entur.mummu.serializers.NetexJsonObjectMapper;
 import no.entur.mummu.services.NetexEntitiesIndexLoader;
 import org.junit.jupiter.api.Test;
+import org.rutebanken.netex.model.FareZone;
+import org.rutebanken.netex.model.Parking;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TariffZone;
@@ -50,6 +52,14 @@ class NetexJsonFragmentHttpMessageConverterTest {
 
     private List<TopographicPlace> topographicPlaces() {
         return new ArrayList<>(loader.getNetexEntitiesIndex().getTopographicPlaceIndex().getLatestVersions());
+    }
+
+    private List<TariffZone> tariffZones() {
+        return new ArrayList<>(loader.getNetexEntitiesIndex().getTariffZoneIndex().getLatestVersions());
+    }
+
+    private List<FareZone> fareZones() {
+        return new ArrayList<>(loader.getNetexEntitiesIndex().getFareZoneIndex().getLatestVersions());
     }
 
     private byte[] write(Object body, Type type) throws Exception {
@@ -111,9 +121,41 @@ class NetexJsonFragmentHttpMessageConverterTest {
     }
 
     @Test
+    void handlesTariffZonesAndFareZonesAsJson() {
+        assertTrue(converter.canWrite(listOf(TariffZone.class), List.class, MediaType.APPLICATION_JSON));
+        assertTrue(converter.canWrite(listOf(FareZone.class), List.class, MediaType.APPLICATION_JSON));
+        assertTrue(converter.canWrite(TariffZone.class, TariffZone.class, MediaType.APPLICATION_JSON));
+        assertTrue(converter.canWrite(FareZone.class, FareZone.class, MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void writesTariffZoneListByteIdenticallyToJackson() throws Exception {
+        List<TariffZone> body = tariffZones();
+        assertFalse(body.isEmpty(), "fixture precondition: the index has tariff zones");
+        assertArrayEquals(
+                netexJsonObjectMapper.get().writeValueAsBytes(body),
+                write(body, listOf(TariffZone.class)));
+    }
+
+    @Test
+    void writesFareZoneListByteIdenticallyToJackson() throws Exception {
+        List<FareZone> body = fareZones();
+        assertFalse(body.isEmpty(), "fixture precondition: the index has fare zones");
+        assertArrayEquals(
+                netexJsonObjectMapper.get().writeValueAsBytes(body),
+                write(body, listOf(FareZone.class)));
+    }
+
+    /**
+     * Parking stands in for every type the converter does not claim. Keeping one
+     * such type asserted is what stops the converter quietly widening to
+     * responses it cannot render — it used to be TariffZone, which is now
+     * pre-rendered itself.
+     */
+    @Test
     void leavesOtherEntityTypesToJackson() {
-        assertFalse(converter.canWrite(listOf(TariffZone.class), List.class, MediaType.APPLICATION_JSON));
-        assertFalse(converter.canWrite(TariffZone.class, TariffZone.class, MediaType.APPLICATION_JSON));
+        assertFalse(converter.canWrite(listOf(Parking.class), List.class, MediaType.APPLICATION_JSON));
+        assertFalse(converter.canWrite(Parking.class, Parking.class, MediaType.APPLICATION_JSON));
     }
 
     @Test

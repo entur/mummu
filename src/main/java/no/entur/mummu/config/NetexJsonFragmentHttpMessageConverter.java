@@ -2,8 +2,10 @@ package no.entur.mummu.config;
 
 import no.entur.mummu.serializers.NetexJsonFragmentCache;
 import org.rutebanken.netex.model.EntityInVersionStructure;
+import org.rutebanken.netex.model.FareZone;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
+import org.rutebanken.netex.model.TariffZone;
 import org.rutebanken.netex.model.TopographicPlace;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpInputMessage;
@@ -42,6 +44,10 @@ public class NetexJsonFragmentHttpMessageConverter implements GenericHttpMessage
      * with polygon geometries reaching tens of MB), so serializing them per
      * request dominates the latency of {@code /topographic-places}.
      * <p>
+     * Tariff zones and fare zones are here for the same reason as topographic
+     * places: they carry polygon geometry, so serializing them per request
+     * dominates the latency of {@code /tariff-zones} and {@code /fare-zones}.
+     * <p>
      * Adding a type here costs the heap needed to retain its rendered JSON, so
      * it is a deliberate choice rather than a blanket rule. Note that a
      * multi-MB fragment is a humongous allocation for the garbage collector:
@@ -49,7 +55,7 @@ public class NetexJsonFragmentHttpMessageConverter implements GenericHttpMessage
      * object in the old generation that streaming never materialized.
      */
     private static final Set<Class<?>> PRE_RENDERED_TYPES =
-            Set.of(StopPlace.class, Quay.class, TopographicPlace.class);
+            Set.of(StopPlace.class, Quay.class, TopographicPlace.class, TariffZone.class, FareZone.class);
 
     private final NetexJsonFragmentCache fragmentCache;
 
