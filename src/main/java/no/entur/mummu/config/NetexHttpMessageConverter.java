@@ -1,6 +1,7 @@
 package no.entur.mummu.config;
 
 import jakarta.xml.bind.JAXBContext;
+import no.entur.mummu.resources.ErrorResponse;
 import org.rutebanken.netex.model.PublicationDeliveryStructure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,24 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
 
     private static final Logger log = LoggerFactory.getLogger(NetexHttpMessageConverter.class);
     private static final JAXBContext publicationDeliveryContext = createContext(PublicationDeliveryStructure.class);
+
+    /**
+     * Error bodies get their own context rather than joining the NeTEx one.
+     * <p>
+     * {@link #supports} answers for every class, so this converter — not Jackson
+     * — is what Spring picks to write an {@link ErrorResponse} under
+     * {@code Accept: application/xml}. The context therefore has to know the
+     * type, or marshalling throws mid-write and the container turns the intended
+     * 404 or 400 into a 500.
+     * <p>
+     * Adding it to the NeTEx context instead would work, but ErrorResponse is in
+     * no namespace and would claim the default one, pushing every NeTEx element
+     * onto a generated prefix ({@code <ns4:StopPlace>} where clients have always
+     * been served {@code <StopPlace>}). Keeping the contexts apart keeps the
+     * NeTEx wire format byte-for-byte what it was.
+     */
+    private static final JAXBContext errorContext = createContext(ErrorResponse.class);
+
     private Marshaller marshaller;
 
     @Override
@@ -29,7 +48,11 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
 
     @Override
     protected void writeToResult(Object o, HttpHeaders headers, Result result) throws Exception {
-        createMarshaller().marshal(o, result);
+        createMarshaller(contextFor(o)).marshal(o, result);
+    }
+
+    private static JAXBContext contextFor(Object o) {
+        return o instanceof ErrorResponse ? errorContext : publicationDeliveryContext;
     }
 
     @Override
@@ -42,8 +65,8 @@ public class NetexHttpMessageConverter extends AbstractXmlHttpMessageConverter<O
         return List.of(MediaType.APPLICATION_XML);
     }
 
-    private Marshaller createMarshaller() throws JAXBException {
-        Marshaller marshallerInstance = publicationDeliveryContext.createMarshaller();
+    private Marshaller createMarshaller(JAXBContext context) throws JAXBException {
+        Marshaller marshallerInstance = context.createMarshaller();
         marshallerInstance.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshallerInstance.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "");
         return marshallerInstance;
