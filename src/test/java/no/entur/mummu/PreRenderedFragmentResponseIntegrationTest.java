@@ -111,11 +111,51 @@ class PreRenderedFragmentResponseIntegrationTest {
     }
 
     @Test
-    void stillServesTypesThatAreNotPreRendered() throws Exception {
+    void tariffZonesResponseIsUnchanged() throws Exception {
         byte[] expected = netexJsonObjectMapper.get()
                 .writeValueAsBytes(netexEntitiesService.getTariffZones(10, 0, null, null));
 
         mvc.perform(get("/tariff-zones"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(expected));
+    }
+
+    @Test
+    void fareZonesResponseIsUnchanged() throws Exception {
+        byte[] expected = netexJsonObjectMapper.get()
+                .writeValueAsBytes(netexEntitiesService.getFareZones(10, 0, null, null));
+
+        mvc.perform(get("/fare-zones"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(expected));
+    }
+
+    @Test
+    void singleTariffZoneResponseIsUnchanged() throws Exception {
+        byte[] expected = netexJsonObjectMapper.get()
+                .writeValueAsBytes(netexEntitiesService.getTariffZone("ATB:TariffZone:13"));
+
+        mvc.perform(get("/tariff-zones/ATB:TariffZone:13"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(expected));
+    }
+
+    @Test
+    void singleFareZoneResponseIsUnchanged() throws Exception {
+        byte[] expected = netexJsonObjectMapper.get()
+                .writeValueAsBytes(netexEntitiesService.getFareZone("BRA:FareZone:22"));
+
+        mvc.perform(get("/fare-zones/BRA:FareZone:22"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(expected));
+    }
+
+    @Test
+    void stillServesTypesThatAreNotPreRendered() throws Exception {
+        byte[] expected = netexJsonObjectMapper.get()
+                .writeValueAsBytes(netexEntitiesService.getParkings(10, 0, null));
+
+        mvc.perform(get("/parkings"))
                 .andExpect(status().isOk())
                 .andExpect(content().bytes(expected));
     }
