@@ -43,7 +43,7 @@ jobs:
 
       - name: Check for breaking API changes
         if: github.event_name == 'pull_request'
-        uses: oasdiff/oasdiff-action/breaking@54d7a752569cb30b644b7f27a362c1077973d1c0 # v0.1.14
+        uses: oasdiff/oasdiff-action/breaking@14ca7009a63c417dfe27b7c44359c4bcccaf8eee # v0.2.1
         with:
           base: 'origin/${{ github.base_ref }}:src/main/resources/public/openapi.json'
           revision: 'HEAD:src/main/resources/public/openapi.json'
