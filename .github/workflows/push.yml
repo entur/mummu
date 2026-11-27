@@ -50,6 +50,8 @@ jobs:
           fail-on: ERR
 
       - name: Sonar Scan
+        # Dependabot runs get no Actions secrets, so the scan cannot authenticate
+        if: github.actor != 'dependabot[bot]'
         env:
           SONAR_TOKEN: ${{ secrets.ENTUR_SONAR_PASSWORD }}
           SONAR_PROJECT_NAME: ${{ github.event.repository.name }}
