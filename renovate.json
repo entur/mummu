@@ -1,9 +1,0 @@
-{
-  "extends": ["github>entur/ror-renovate-config"],
-  "packageRules": [
-    {
-      "matchPackageNames": ["io.confluent:kafka-avro-serializer"],
-      "allowedVersions": "7.5.0"
-    }
-  ]
-}
